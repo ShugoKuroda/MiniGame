@@ -1,5 +1,4 @@
-﻿  title.cpp
-  camera.cpp
-  コードを生成中...
+﻿  camera.cpp
+cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   MiniGame.vcxproj -> C:\Users\student\Desktop\Gitフォルダ\MiniGame\MiniGame\MiniGame.exe
   MiniGame.vcxproj -> C:\Users\student\Desktop\Gitフォルダ\MiniGame\MiniGame\MiniGame.pdb (Full PDB)

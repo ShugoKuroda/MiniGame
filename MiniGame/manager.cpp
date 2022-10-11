@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // マネージャー処理 [manager.cpp]
-// Author : 
+// Author : SHUGO KURODA
 //
 //=============================================================================
 #include "manager.h"
@@ -10,6 +10,7 @@
 #include "fade.h"
 #include "sound.h"
 #include "load.h"
+#include "texture.h"
 
 #include "input_keyboard.h"
 #include "input_joypad.h"
@@ -33,6 +34,7 @@ CInputKeyboard *CManager::m_pInputKeyboard = nullptr;
 CInputJoypad *CManager::m_pInputJoypad = nullptr;
 CInputMouse *CManager::m_pInputMouse = nullptr;
 CSound *CManager::m_pSound = nullptr;	
+CTexture *CManager::m_pTexture = nullptr;
 // フェードクラス
 CFade* CManager::m_pFade = nullptr;// サウンド情報のポインタ
 bool CManager::m_bPause = false;
@@ -92,6 +94,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	if (m_pInputMouse != nullptr)
 	{
 		m_pInputMouse->Init(hInstance, hWnd);
+	}
+
+	//テクスチャクラスの初期化処理
+	m_pTexture = new CTexture;
+
+	if (m_pTexture != nullptr)
+	{
+		m_pTexture->Init();
 	}
 
 	// サウンドの初期化処理
@@ -154,6 +164,14 @@ void CManager::Uninit()
 		m_pBase->Uninit();
 		delete m_pBase;
 		m_pBase = nullptr;
+	}
+
+	//テクスチャの破棄
+	if (m_pTexture != nullptr)
+	{
+		m_pTexture->Uninit();
+		delete m_pTexture;
+		m_pTexture = nullptr;
 	}
 
 	// キーボードの終了処理

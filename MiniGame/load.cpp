@@ -4,6 +4,7 @@
 // Author : SHUGO KURODA
 //
 //=============================================================================
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "load.h"
 #include "enemy_data.h"

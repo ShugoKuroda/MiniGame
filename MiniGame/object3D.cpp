@@ -6,6 +6,7 @@
 //===================================================================
 #include "manager.h"
 #include "renderer.h"
+#include "texture.h"
 
 #include "object3D.h"
 
@@ -37,6 +38,9 @@ CObject3D *CObject3D::Create(const D3DXVECTOR3 & pos)
 	// 初期化
 	pObject3D->Init();
 
+	// テクスチャの割り当て
+	pObject3D->BindTexture(CManager::GetTexture()->GetTexture("TEX_TYPE_TITLE_FLOOR"));
+
 	return pObject3D;
 }
 
@@ -58,6 +62,7 @@ HRESULT CObject3D::Init()
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_11.jpg", &m_pTexture);
+	
 
 	VERTEX_3D *pVtx = nullptr;
 
