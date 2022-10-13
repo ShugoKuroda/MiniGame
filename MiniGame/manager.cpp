@@ -11,6 +11,7 @@
 #include "sound.h"
 #include "load.h"
 #include "texture.h"
+#include "x_file.h"
 
 #include "input_keyboard.h"
 #include "input_joypad.h"
@@ -35,6 +36,7 @@ CInputJoypad *CManager::m_pInputJoypad = nullptr;
 CInputMouse *CManager::m_pInputMouse = nullptr;
 CSound *CManager::m_pSound = nullptr;	
 CTexture *CManager::m_pTexture = nullptr;
+CXFile *CManager::m_pXFile = nullptr;
 // フェードクラス
 CFade* CManager::m_pFade = nullptr;// サウンド情報のポインタ
 bool CManager::m_bPause = false;
@@ -102,6 +104,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	if (m_pTexture != nullptr)
 	{
 		m_pTexture->Init();
+	}
+	
+	//Xファイルクラスの初期化処理
+	m_pXFile = new CXFile;
+
+	if (m_pXFile != nullptr)
+	{
+		m_pXFile->Init();
 	}
 
 	// サウンドの初期化処理
@@ -172,6 +182,14 @@ void CManager::Uninit()
 		m_pTexture->Uninit();
 		delete m_pTexture;
 		m_pTexture = nullptr;
+	}
+
+	//Xファイルの破棄
+	if (m_pXFile != nullptr)
+	{
+		m_pXFile->Uninit();
+		delete m_pXFile;
+		m_pXFile = nullptr;
 	}
 
 	// キーボードの終了処理

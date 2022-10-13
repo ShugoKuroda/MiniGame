@@ -304,15 +304,15 @@ bool CBullet::Collision(D3DXVECTOR3 posStart)
 					{
 						fStartLength -= 20.0f;
 					}
-					if (LibrarySpace::SphereCollision2D(posStart, pPlayer->GetPosition(), fStartLength - 10.0f, pPlayer->GetLength() - 30.0f))
-					{//’e‚Æ“–‚½‚Á‚½‚ç(‹…‘Ì‚Ì“–‚½‚è”»’è)
+					//if (LibrarySpace::SphereCollision2D(posStart, pPlayer->GetPosition(), fStartLength - 10.0f, pPlayer->GetLength() - 30.0f))
+					//{//’e‚Æ“–‚½‚Á‚½‚ç(‹…‘Ì‚Ì“–‚½‚è”»’è)
 
-						//ƒ_ƒ[ƒWˆ—
-						pPlayer->Damage();
-						// ’e‚Ì”jŠü
-						Uninit();
-						return true;	//“–‚½‚Á‚½
-					}
+					//	//ƒ_ƒ[ƒWˆ—
+					//	pPlayer->Damage();
+					//	// ’e‚Ì”jŠü
+					//	Uninit();
+					//	return true;	//“–‚½‚Á‚½
+					//}
 				}
 			}
 		}

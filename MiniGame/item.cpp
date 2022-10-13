@@ -227,36 +227,36 @@ void CItem::Draw()
 //-----------------------------------------------------------------------------------------------
 bool CItem::Collision(D3DXVECTOR3 posStart)
 {
-	//アイテムのサイズ取得
-	float fStartLength = GetLength();
+	////アイテムのサイズ取得
+	//float fStartLength = GetLength();
 
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		// プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	// プレイヤー情報の取得
+	//	CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
 
-		if (pPlayer != nullptr)
-		{
-			if (LibrarySpace::SphereCollision2D(posStart, pPlayer->GetPosition(), fStartLength, pPlayer->GetLength()))
-			{//アイテムと当たったら(球体の当たり判定)
+	//	if (pPlayer != nullptr)
+	//	{
+	//		if (LibrarySpace::SphereCollision2D(posStart, pPlayer->GetPosition(), fStartLength, pPlayer->GetLength()))
+	//		{//アイテムと当たったら(球体の当たり判定)
 
-				//パワーアップ処理
-				pPlayer->SetLevel(m_type);
+	//			//パワーアップ処理
+	//			pPlayer->SetLevel(m_type);
 
-				// プレイヤー死亡音
-				CSound::Play(CSound::SOUND_LABEL_SE_ITEM);
+	//			// プレイヤー死亡音
+	//			CSound::Play(CSound::SOUND_LABEL_SE_ITEM);
 
-				//スコア加算
-				CScore* pScore = pPlayer->GetScore();
-				if (pScore != nullptr)
-				{
-					pScore->Add(200);
-				}
+	//			//スコア加算
+	//			CScore* pScore = pPlayer->GetScore();
+	//			if (pScore != nullptr)
+	//			{
+	//				pScore->Add(200);
+	//			}
 
-				return true;	//当たった
-			}
-		}
-	}
+	//			return true;	//当たった
+	//		}
+	//	}
+	//}
 
 	return false;		//当たってない
 }

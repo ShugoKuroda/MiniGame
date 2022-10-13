@@ -133,67 +133,67 @@ void CGauge::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CGauge::Update()
 {
-	// プレイヤー情報の取得
-	CPlayer *pPlayer = CGame::GetPlayer(m_parent);
+	//// プレイヤー情報の取得
+	//CPlayer *pPlayer = CGame::GetPlayer(m_parent);
 
-	// 親プレイヤーが破棄されていたら
-	if (pPlayer == nullptr)
-	{// 破棄
-		Uninit();
-		return;
-	}
+	//// 親プレイヤーが破棄されていたら
+	//if (pPlayer == nullptr)
+	//{// 破棄
+	//	Uninit();
+	//	return;
+	//}
 
-	// 変数宣言
-	D3DXVECTOR2 size = GetSize();
-	int nPlayerLevel = 0;
+	//// 変数宣言
+	//D3DXVECTOR2 size = GetSize();
+	//int nPlayerLevel = 0;
 
-	switch (m_type)
-	{
-		// メイン弾
-	case CGauge::TYPE_BULLET:
-		// メイン弾の強化段階の取得
-		nPlayerLevel = pPlayer->GetBulletLevel();
+	//switch (m_type)
+	//{
+	//	// メイン弾
+	//case CGauge::TYPE_BULLET:
+	//	// メイン弾の強化段階の取得
+	//	nPlayerLevel = pPlayer->GetBulletLevel();
 
-		// 横サイズ調整
-		size.x = SIZE_X / ((float)MAX_LEVEL / ((float)nPlayerLevel + 1.0f));
+	//	// 横サイズ調整
+	//	size.x = SIZE_X / ((float)MAX_LEVEL / ((float)nPlayerLevel + 1.0f));
 
-		// 画像の描画範囲を調整
-		CObject2D::SetTextureRange(nPlayerLevel + 1, MAX_LEVEL);
-		break;
+	//	// 画像の描画範囲を調整
+	//	CObject2D::SetTextureRange(nPlayerLevel + 1, MAX_LEVEL);
+	//	break;
 
-		// オプション弾
-	case CGauge::TYPE_BULLET_OPTION:
+	//	// オプション弾
+	//case CGauge::TYPE_BULLET_OPTION:
 
-		// オプション弾の強化段階の取得
-		nPlayerLevel = pPlayer->GetOptionLevel();
+	//	// オプション弾の強化段階の取得
+	//	nPlayerLevel = pPlayer->GetOptionLevel();
 
-		// 横サイズ調整
-		size.x = SIZE_X / ((float)MAX_LEVEL / ((float)nPlayerLevel));
+	//	// 横サイズ調整
+	//	size.x = SIZE_X / ((float)MAX_LEVEL / ((float)nPlayerLevel));
 
-		// 画像の描画範囲を調整
-		CObject2D::SetTextureRange(nPlayerLevel, MAX_LEVEL);
-		break;
+	//	// 画像の描画範囲を調整
+	//	CObject2D::SetTextureRange(nPlayerLevel, MAX_LEVEL);
+	//	break;
 
-		// バリア
-	case CGauge::TYPE_BARRIER:
-		// バリアの強化段階の取得
-		nPlayerLevel = pPlayer->GetBarrierLevel();
+	//	// バリア
+	//case CGauge::TYPE_BARRIER:
+	//	// バリアの強化段階の取得
+	//	nPlayerLevel = pPlayer->GetBarrierLevel();
 
-		// 横サイズ調整
-		size.x = SIZE_X / ((float)MAX_LEVEL / ((float)nPlayerLevel));
+	//	// 横サイズ調整
+	//	size.x = SIZE_X / ((float)MAX_LEVEL / ((float)nPlayerLevel));
 
-		// 画像の描画範囲を調整
-		CObject2D::SetTextureRange(nPlayerLevel, MAX_LEVEL);
-		break;
-	default:
-		break;
-	}
+	//	// 画像の描画範囲を調整
+	//	CObject2D::SetTextureRange(nPlayerLevel, MAX_LEVEL);
+	//	break;
+	//default:
+	//	break;
+	//}
 
-	//サイズの設定
-	CObject2D::SetSize(size);
+	////サイズの設定
+	//CObject2D::SetSize(size);
 
-	//頂点座標の設定
-	CObject2D::SetVertex();
+	////頂点座標の設定
+	//CObject2D::SetVertex();
 }
 
 //-----------------------------------------------------------------------------------------------

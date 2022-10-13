@@ -64,9 +64,9 @@ public:		//メンバ関数
 
 private:
 	// テクスチャ読み込み
-	static void LoadAll();
+	//static void LoadAll();
 	// テクスチャ破棄
-	static void UnloadAll();
+	//static void UnloadAll();
 
 private:	//メンバ変数
 	// プレイヤー情報

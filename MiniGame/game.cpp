@@ -149,7 +149,7 @@ HRESULT CGame::Init()
 void CGame::Uninit()
 {
 	//テクスチャの破棄
-	UnloadAll();
+	//UnloadAll();
 
 	// ポーズ状態を解除
 	CManager::SetPause(false);
@@ -466,94 +466,4 @@ void CGame::SetPlayerScore()
 			}
 		}
 	}
-}
-
-//-----------------------------------------------------------------------------------------------
-// テクスチャ読み込み
-//-----------------------------------------------------------------------------------------------
-void CGame::LoadAll()
-{
-	// エフェクト
-	CEffect::Load();
-	// 雲
-	CCloud::Load();
-	// プレイヤー
-	CPlayer::Load();
-	// 敵
-	CEnemy::Load();
-	// 弾
-	CBullet::Load();
-	// アイテム
-	CItem::Load();
-	// バリア
-	CBarrier::Load();
-	// 爆発
-	CExplosion::Load();
-	// 水しぶき
-	CSpray::Load();
-	// 泡エフェクト
-	CBubble::Load();
-	// 背景
-	CBg::Load();
-	// スコア
-	CNumber::Load();
-	// ロゴ
-	CLogo::Load();
-	// ポーズ画面
-	CPause::Load();
-	// 高速移動中の背景
-	CBgMove::Load();
-	// ボス背景
-	CMeshField::Load();
-	// 弾オプション
-	CBulletOption::Load();
-	// UI
-	CUi::Load();
-	// 強化ゲージ
-	CGauge::Load();
-}
-
-//-----------------------------------------------------------------------------------------------
-// テクスチャ破棄　
-//-----------------------------------------------------------------------------------------------
-void CGame::UnloadAll()
-{
-	// エフェクト
-	CEffect::Unload();
-	// 雲
-	CCloud::Unload();
-	// プレイヤー
-	CPlayer::Unload();
-	// 敵
-	CEnemy::Unload();
-	// 弾
-	CBullet::Unload();
-	// アイテム
-	CItem::Unload();
-	// バリア
-	CBarrier::Unload();
-	// 爆発
-	CExplosion::Unload();
-	// 水しぶき
-	CSpray::Unload();
-	// 泡エフェクト
-	CBubble::Unload();
-	// 背景
-	CBg::Unload();
-	// スコア
-	CNumber::Unload();
-	// ロゴ
-	CLogo::Unload();
-	// ポーズ画面
-	CPause::Unload();
-	// 高速移動中の背景
-	CBgMove::Unload();
-	// ボス背景
-	CMeshField::Unload();
-	// 弾オプション
-	CBulletOption::Unload();
-	// UI
-	CUi::Unload();
-	// 強化ゲージ
-	CGauge::Unload();
 }

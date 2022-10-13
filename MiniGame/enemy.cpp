@@ -362,12 +362,12 @@ bool CEnemy::Collision(D3DXVECTOR3 posStart)
 			// プレイヤーが通常状態だったら
 			if (pPlayer->GetState() == CPlayer::STATE_NORMAL)
 			{
-				//敵と当たったら(球体の当たり判定)
-				if (LibrarySpace::SphereCollision2D(posStart, pPlayer->GetPosition(), fStartLength, pPlayer->GetLength() - 30.0f))
-				{//ダメージ処理
-					pPlayer->Damage();
-					return true;	//当たった
-				}
+				////敵と当たったら(球体の当たり判定)
+				//if (LibrarySpace::SphereCollision2D(posStart, pPlayer->GetPosition(), fStartLength, pPlayer->GetLength() - 30.0f))
+				//{//ダメージ処理
+				//	pPlayer->Damage();
+				//	return true;	//当たった
+				//}
 			}
 		}
 	}

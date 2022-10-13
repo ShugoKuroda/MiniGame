@@ -21,6 +21,7 @@ class CInputKeyboard;		// キーボードクラス
 class CInputJoypad;			// ジョイパッドクラス
 class CInputMouse;			// マウスクラス
 class CTexture;				// テクスチャクラス
+class CXFile;				// Xファイルクラス
 
 //*****************************************************************************
 // クラス定義(基本クラス)
@@ -57,6 +58,7 @@ public:
 	static CInputJoypad *GetInputJoypad() { return m_pInputJoypad; }
 	static CInputMouse *GetInputMouse() { return m_pInputMouse; }
 	static CTexture *GetTexture() { return m_pTexture; }
+	static CXFile *GetXFile() { return m_pXFile; }
 
 	static bool GetPause() { return m_bPause; }
 	static void SetPause(bool bPause) { m_bPause = bPause; }
@@ -72,6 +74,7 @@ private:
 	static CBase *m_pBase;						// ベースシーン情報のポインタ
 	static CFade *m_pFade;						// 画面フェード情報のポインタ
 	static CTexture *m_pTexture;				// テクスチャ情報のポインタ
+	static CXFile *m_pXFile;					// Xファイル情報のポインタ
 	static MODE m_mode;							// モード情報
 	static bool m_bPause;						// ポーズするかどうか
 	static bool m_bEntry[CPlayer::PLAYER_MAX];	// 参加しているかどうか
