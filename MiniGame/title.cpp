@@ -25,6 +25,8 @@
 #include "object3D.h"
 #include "camera.h"
 #include "light.h"
+#include "player.h"
+#include "enemy_boss.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -36,6 +38,8 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // テクスチャのポインタ
 LPDIRECT3DTEXTURE9 CTitle::m_apTexture[OBJ_MAX] = { nullptr };
+CPlayer* CTitle::m_pPlayer = nullptr;
+CEnemyBoss* CTitle::m_pEnemyBoss = nullptr;
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -110,9 +114,17 @@ HRESULT CTitle::Init()
 {
 	// 板ポリ生成
 	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -400.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -600.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
 
 	// カメラ生成
-	CCamera::Create(D3DXVECTOR3(0.0f, 60.0f, -310), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	// ライト生成
 	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -122,7 +134,10 @@ HRESULT CTitle::Init()
 	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
 
 	// プレイヤー生成
-	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR");
+
+	// 敵ボス生成
+	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
 
 	//// テクスチャのロード
 	//CTitle::Load();

@@ -1,5 +1,3 @@
-﻿  player.cpp
-  camera.cpp
-  コードを生成中...
-  MiniGame.vcxproj -> C:\Users\student\Desktop\MiniGame\MiniGame\MiniGame.exe
-  MiniGame.vcxproj -> C:\Users\student\Desktop\MiniGame\MiniGame\MiniGame.pdb (Full PDB)
+﻿  enemy_boss.cpp
+  MiniGame.vcxproj -> C:\Users\student\Desktop\Gitフォルダ\MiniGame\MiniGame\MiniGame.exe
+  MiniGame.vcxproj -> C:\Users\student\Desktop\Gitフォルダ\MiniGame\MiniGame\MiniGame.pdb (Full PDB)

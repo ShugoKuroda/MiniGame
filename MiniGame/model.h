@@ -42,6 +42,10 @@ public:
 	D3DXVECTOR3 GetPosition() { return m_pos; }
 	// 角度取得
 	D3DXVECTOR3 GetRotation() { return m_rot; }
+	// 最大サイズ取得
+	D3DXVECTOR3 GetSizeMax() { return m_vtxMax; }
+	// 最小サイズ取得
+	D3DXVECTOR3 GetSizeMin() { return m_vtxMin; }
 	// テクスチャの設定
 	void BindXFile(CXFile::SModelInfo XFile) { m_aXFile = XFile; }
 

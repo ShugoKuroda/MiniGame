@@ -380,7 +380,7 @@ void CGame::CreateEnemy()
 	// É{ÉXÇèoåªÇ≥ÇπÇÈ
 	if (m_EnemyInfo.nCreatenCount == 5260)
 	{
-		CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
+		//CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
 		// åxçêâπ
 		CSound::Play(CSound::SOUND_LABEL_BOSS);
 	}

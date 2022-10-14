@@ -116,6 +116,25 @@ bool LibrarySpace::SphereCollision2D(const D3DXVECTOR3& posIn, const D3DXVECTOR3
 }
 
 //-----------------------------------------------------------------------------------------------
+// 円柱の当たり判定
+//-----------------------------------------------------------------------------------------------
+bool LibrarySpace::CylinderCollision3D(const D3DXVECTOR2 & posIn, const D3DXVECTOR2 & posOut, const float & fsizeIn, const float & fsizeOut)
+{
+	//2つの座標差分を求める
+	D3DXVECTOR2 Length = posIn - posOut;
+
+	//座標差分から距離を求める
+	float fLength = D3DXVec2Length(&Length);
+
+	if (fsizeIn + fsizeOut > fLength)
+	{//お互いのサイズの合計より距離が小さかったら
+		return true;	//当たった
+	}
+
+	return false;		//当たってない
+}
+
+//-----------------------------------------------------------------------------------------------
 // 乱数の取得
 //-----------------------------------------------------------------------------------------------
 int LibrarySpace::GetRandNum(int nMax, int nMin)

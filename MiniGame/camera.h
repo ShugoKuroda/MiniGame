@@ -12,7 +12,7 @@
 //======================================================
 //	マクロ定義
 //======================================================
-#define CAMERA_POS_MOVE		(1.7f)		//視点の移動量
+#define CAMERA_POS_MOVE		(0.05f)		//視点の移動量
 #define CAMERA_ROT_MOVE		(0.03f)		//回転の移動量
 
 //======================================================
@@ -32,6 +32,7 @@ public:
 	void Draw() override;
 
 private:
+	D3DXVECTOR3 m_move;			//移動量
 	D3DXVECTOR3 m_posV;			//視点
 	D3DXVECTOR3 m_posR;			//注視点
 	D3DXVECTOR3 m_vecU;			//上方向ベクトル

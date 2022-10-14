@@ -27,10 +27,12 @@
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
-#define PLAYER_UI_SIZE		(D3DXVECTOR2(200.0f, 50.0f))
-#define LIFE_UI_SIZE		(D3DXVECTOR2(120.0f, 30.0f))
-#define LEVEL_UI_SIZE		(D3DXVECTOR2(50.0f, 50.0f))
-#define ATTACK_INTERVAL		(7)
+#define PLAYER_UI_SIZE			(D3DXVECTOR2(200.0f, 50.0f))
+#define LIFE_UI_SIZE			(D3DXVECTOR2(120.0f, 30.0f))
+#define LEVEL_UI_SIZE			(D3DXVECTOR2(50.0f, 50.0f))
+#define ATTACK_INTERVAL			(7)
+#define JOYKEY_LEFT_STICK_UP	(-0.2f)
+#define JOYKEY_LEFT_STICK_DOWN	(0.2f)
 
 //-----------------------------------------------------------------------------
 // using宣言
@@ -44,7 +46,7 @@ const float CPlayer::SIZE_X = 90.0f;
 const float CPlayer::SIZE_Y = 40.0f;
 const float CPlayer::ENTRY_SIZE_X = 630.0f;
 const float CPlayer::ENTRY_SIZE_Y = 280.0f;
-const float CPlayer::MOVE_DEFAULT = 1.0f;
+const float CPlayer::MOVE_DEFAULT = 2.0f;
 // アニメーション間隔
 const int CPlayer::ANIM_INTERVAL = 5;
 // アニメーション最大数
@@ -173,18 +175,18 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).x <= -0.2f)
 	{//左キー押下
 		if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true ||
-			pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).z <= -0.2f)
+			pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
 		{//上キー押下
-		 //移動量加算
+			//移動量加算
 			pos.x += GetSinVec(-0.75f, MOVE_DEFAULT);
 			pos.z += GetCosVec(-0.75f, MOVE_DEFAULT);
 			//アニメーション変更
-			m_nCntAnimMove++;
+			m_nCntAnimMove++; 
 		}
 		else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true ||
-			pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).z >= 0.2f)
+			pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
 		{//下キー押下
 			pos.x += GetSinVec(-0.25f, MOVE_DEFAULT);
 			pos.z += GetCosVec(-0.25f, MOVE_DEFAULT);
@@ -203,16 +205,16 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).x >= 0.2f)
 	{//右キー押下
 		if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true ||
-			pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).z <= -0.2f)
+			pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
 		{//上キー押下
 			pos.x += GetSinVec(0.75f, MOVE_DEFAULT);
 			pos.z += GetCosVec(0.75f, MOVE_DEFAULT);
 			m_nCntAnimMove++;
 		}
 		else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true ||
-			pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).z >= 0.2f)
+			pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
 		{//下キー押下
 			pos.x += GetSinVec(0.25f, MOVE_DEFAULT);
 			pos.z += GetCosVec(0.25f, MOVE_DEFAULT);
@@ -226,17 +228,17 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 			m_nCntAnimMove = 0;
 		}
 	}
-	else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true ||
-		pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
-		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).z <= -0.2f)
+	else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true ||
+		pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
+		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
 	{//上キー押下
 		pos.x += GetSinVec(1.0f, MOVE_DEFAULT);
 		pos.z += GetCosVec(1.0f, MOVE_DEFAULT);
 		m_nCntAnimMove++;
 	}
-	else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true ||
-		pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
-		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).z >= 0.2f)
+	else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true ||
+		pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
+		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
 	{//下キー押下
 		pos.x += GetSinVec(0.0f, MOVE_DEFAULT);
 		pos.z += GetCosVec(0.0f, MOVE_DEFAULT);
@@ -363,118 +365,121 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 //-----------------------------------------------------------------------------
 // ダメージ処理
 //-----------------------------------------------------------------------------
-//void CPlayer::Damage()
-//{
-//	if (m_BarrierLevel == CBarrier::LEVEL_NONE)
-//	{
-//		// 死亡処理
-//		Die();
-//
-//		// プレイヤー死亡音
-//		CSound::Play(CSound::SOUND_LABEL_SE_DIE_PLAYER);
-//	}
-//	else
-//	{
-//		m_BarrierLevel = (CBarrier::LEVEL)(m_BarrierLevel - 1);
-//
-//		if (m_BarrierLevel == CBarrier::LEVEL_NONE)
-//		{
-//			if (m_pBarrier != nullptr)
-//			{
-//				m_pBarrier->Uninit();
-//				m_pBarrier = nullptr;
-//			}
-//		}
-//		else
-//		{
-//			m_pBarrier->SetBarrier(m_BarrierLevel);
-//		}
-//		m_state = STATE_RESPAWN;
-//		m_nCntState = 150;
-//	}
-//}
-//
-////-----------------------------------------------------------------------------
-//// 死亡処理
-////-----------------------------------------------------------------------------
-//void CPlayer::Die()
-//{
-//	// ライフが破棄されていなければ
-//	if (m_pLife != nullptr)
-//	{
-//		// ライフを減らす
-//		m_pLife->Add(-1);
-//
-//		// ライフが0未満
-//		if (m_pLife->GetLife() < 0)
-//		{
-//			// スコアの破棄
-//			if (m_pScore != nullptr)
-//			{
-//				m_pScore->Uninit();
-//				m_pScore = nullptr;
-//			}
-//
-//			// ライフの破棄
-//			m_pLife->Uninit();
-//			m_pLife = nullptr;
-//
-//			// プレイヤーを死亡状態にする
-//			m_bDie = true;
-//
-//			// サイズの取得
-//			D3DXVECTOR2 size = GetSize();
-//			// 爆発の生成
-//			CExplosion::Create(CObject2D::GetPosition(), D3DXVECTOR2(size.x, size.y * 2));
-//
-//			return;
-//		}
-//
-//		// 操作不能にする
-//		m_bControl = false;
-//		// リスポーン状態にする
-//		m_state = STATE_DIE;
-//		m_nCntState = 60;
-//
-//		// 変数のリセット
-//		m_nTexRotType = TYPE_NEUTRAL;		//アニメーション番号をリセットする
-//
-//											// バリアの破棄
-//		if (m_pBarrier != nullptr)
-//		{
-//			m_pBarrier->Uninit();
-//			m_pBarrier = nullptr;
-//		}
-//
-//		// オプションの破棄
-//		for (int nCnt = 0; nCnt < MAX_OPTION; nCnt++)
-//		{
-//			if (m_pOption[nCnt] != nullptr)
-//			{
-//				m_pOption[nCnt]->Uninit();
-//				m_pOption[nCnt] = nullptr;
-//			}
-//		}
-//
-//		// 各強化状態を初期化する
-//		m_OptionLevel = CBulletOption::LEVEL_NONE;
-//		m_BarrierLevel = CBarrier::LEVEL_NONE;
-//		m_BulletLevel = CPlayer::LEVEL_1;
-//
-//		// サイズの取得
-//		D3DXVECTOR2 size = GetSize();
-//		// 爆発の生成
-//		CExplosion::Create(CObject2D::GetPosition(), D3DXVECTOR2(size.x, size.y * 2));
-//
-//		//プレイヤーの位置を左端に設定する
-//		if (m_nPlayerNum == PLAYER_1)
-//		{// 1Pの場合
-//			CObject2D::SetPosition(D3DXVECTOR3(-SIZE_X, CRenderer::SCREEN_HEIGHT / 2, 0.0f));
-//		}
-//		else
-//		{// 2Pの場合
-//			CObject2D::SetPosition(D3DXVECTOR3(-SIZE_X, CRenderer::SCREEN_HEIGHT / 2 + SIZE_Y, 0.0f));
-//		}
-//
-//	}
-//}
+void CPlayer::Damage()
+{
+	//if (m_BarrierLevel == CBarrier::LEVEL_NONE)
+	//{
+
+	// 死亡処理
+	Die();
+
+	// プレイヤー死亡音
+	//CSound::Play(CSound::SOUND_LABEL_SE_DIE_PLAYER);
+
+	//}
+	//else
+	//{
+	//	m_BarrierLevel = (CBarrier::LEVEL)(m_BarrierLevel - 1);
+
+	//	if (m_BarrierLevel == CBarrier::LEVEL_NONE)
+	//	{
+	//		if (m_pBarrier != nullptr)
+	//		{
+	//			m_pBarrier->Uninit();
+	//			m_pBarrier = nullptr;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		m_pBarrier->SetBarrier(m_BarrierLevel);
+	//	}
+	//	m_state = STATE_RESPAWN;
+	//	m_nCntState = 150;
+	//}
+}
+
+//-----------------------------------------------------------------------------
+// 死亡処理
+//-----------------------------------------------------------------------------
+void CPlayer::Die()
+{
+	CModel::Uninit();
+	//// ライフが破棄されていなければ
+	//if (m_pLife != nullptr)
+	//{
+	//	// ライフを減らす
+	//	m_pLife->Add(-1);
+
+	//	// ライフが0未満
+	//	if (m_pLife->GetLife() < 0)
+	//	{
+	//		// スコアの破棄
+	//		if (m_pScore != nullptr)
+	//		{
+	//			m_pScore->Uninit();
+	//			m_pScore = nullptr;
+	//		}
+
+	//		// ライフの破棄
+	//		m_pLife->Uninit();
+	//		m_pLife = nullptr;
+
+	//		// プレイヤーを死亡状態にする
+	//		m_bDie = true;
+
+	//		// サイズの取得
+	//		D3DXVECTOR2 size = GetSize();
+	//		// 爆発の生成
+	//		CExplosion::Create(CObject2D::GetPosition(), D3DXVECTOR2(size.x, size.y * 2));
+
+	//		return;
+	//	}
+
+	//	// 操作不能にする
+	//	m_bControl = false;
+	//	// リスポーン状態にする
+	//	m_state = STATE_DIE;
+	//	m_nCntState = 60;
+
+	//	// 変数のリセット
+	//	m_nTexRotType = TYPE_NEUTRAL;		//アニメーション番号をリセットする
+
+	//										// バリアの破棄
+	//	if (m_pBarrier != nullptr)
+	//	{
+	//		m_pBarrier->Uninit();
+	//		m_pBarrier = nullptr;
+	//	}
+
+	//	// オプションの破棄
+	//	for (int nCnt = 0; nCnt < MAX_OPTION; nCnt++)
+	//	{
+	//		if (m_pOption[nCnt] != nullptr)
+	//		{
+	//			m_pOption[nCnt]->Uninit();
+	//			m_pOption[nCnt] = nullptr;
+	//		}
+	//	}
+
+	//	// 各強化状態を初期化する
+	//	m_OptionLevel = CBulletOption::LEVEL_NONE;
+	//	m_BarrierLevel = CBarrier::LEVEL_NONE;
+	//	m_BulletLevel = CPlayer::LEVEL_1;
+
+	//	// サイズの取得
+	//	D3DXVECTOR2 size = GetSize();
+	//	// 爆発の生成
+	//	CExplosion::Create(CObject2D::GetPosition(), D3DXVECTOR2(size.x, size.y * 2));
+
+	//	//プレイヤーの位置を左端に設定する
+	//	if (m_nPlayerNum == PLAYER_1)
+	//	{// 1Pの場合
+	//		CObject2D::SetPosition(D3DXVECTOR3(-SIZE_X, CRenderer::SCREEN_HEIGHT / 2, 0.0f));
+	//	}
+	//	else
+	//	{// 2Pの場合
+	//		CObject2D::SetPosition(D3DXVECTOR3(-SIZE_X, CRenderer::SCREEN_HEIGHT / 2 + SIZE_Y, 0.0f));
+	//	}
+
+	//}
+}

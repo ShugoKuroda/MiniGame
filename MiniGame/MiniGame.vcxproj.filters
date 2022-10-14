@@ -304,6 +304,8 @@
     <ClInclude Include="texture.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="x_file.h" />
+    <ClInclude Include="x_file.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

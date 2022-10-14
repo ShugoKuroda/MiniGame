@@ -11,10 +11,14 @@
 #include "input_mouse.h"
 #include "camera.h"
 
+// 追加
+#include "title.h"
+#include "enemy_boss.h"
+
 //======================================================
 //	コンストラクタ
 //======================================================
-CCamera::CCamera() :m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
+CCamera::CCamera() :m_move(0.0f, 0.0f, 0.0f), m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
 					m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f)
 {
 }
@@ -166,12 +170,32 @@ void CCamera::Update()
 	//}
 	//if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true)
 	//{//後移動
-	//	m_posV.x -= sinf(m_rot.y) * CAMERA_POS_MOVE;
-	//	m_posV.z -= cosf(m_rot.y) * CAMERA_POS_MOVE;
 
-	//	m_posR.x = m_posV.x - sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
-	//	m_posR.z = m_posV.z - sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
-	//	m_posR.y = m_posV.y - cosf(m_rot.x) * m_fDistance;
+	//カメラ位置の更新
+	m_posR.x = m_posV.x - sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
+	m_posR.z = m_posV.z - sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+	m_posR.y = m_posV.y - cosf(m_rot.x) * m_fDistance;
+
+	// 位置の取得
+	D3DXVECTOR3 pos = CTitle::GetEnemyBoss()->GetPosition();
+	D3DXVECTOR3 rot = CTitle::GetEnemyBoss()->GetRotation();
+
+	//敵ボス追従
+	m_posRDest.x = pos.x + sinf(rot.x) * sinf(rot.y);
+	m_posRDest.z = (pos.z - 80.0f) + sinf(rot.x) * cosf(rot.y);
+	m_posRDest.y = (pos.y - 50.0f) + cosf(rot.x);
+	m_posVDest.x = pos.x + sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
+	m_posVDest.z = (pos.z - 80.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+	m_posVDest.y = (pos.y - 50.0f) + cosf(m_rot.x) * m_fDistance;
+
+	//カメラ位置の更新
+	m_posR.x += (m_posRDest.x - m_posR.x) * 0.3f;
+	m_posR.z += (m_posRDest.z - m_posR.z) * 0.3f;
+	m_posR.y += (m_posRDest.y - m_posR.y) * 0.3f;
+	m_posV.x += (m_posVDest.x - m_posV.x) * 0.3f;
+	m_posV.z += (m_posVDest.z - m_posV.z) * 0.3f;
+	m_posV.y += (m_posVDest.y - m_posV.y) * 0.3f;
+
 	//}
 	//if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_RIGHT) == true)
 	//{//右移動

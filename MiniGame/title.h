@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// ゲーム画面処理 [game.h]
+// タイトル画面処理 [title.h]
 // Author : SHUGO KURODA
 //
 //=============================================================================
@@ -14,6 +14,8 @@
 // 前方宣言
 //*****************************************************************************
 class CObject2D;
+class CPlayer;
+class CEnemyBoss;
 
 //-----------------------------------------------------------------------------
 // ベースクラス(派生クラス)
@@ -46,9 +48,17 @@ public:
 	void Update() override;
 	void CreateCloud();
 
+	// プレイヤー情報
+	static CPlayer* GetPlayer() { return m_pPlayer; }
+	// 敵ボス情報
+	static CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
+
 private:
 	//メンバ変数
-	static LPDIRECT3DTEXTURE9 m_apTexture[OBJ_MAX];	//テクスチャのポインタ
+	static LPDIRECT3DTEXTURE9 m_apTexture[OBJ_MAX];		//テクスチャのポインタ
+	static CPlayer* m_pPlayer;
+	static CEnemyBoss* m_pEnemyBoss;
+
 	CObject2D *m_apObject2D[OBJ_MAX - 1];
 	CloudInfo m_CloudInfo;
 	int m_nCountMoveBg;

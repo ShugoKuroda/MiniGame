@@ -262,34 +262,34 @@ bool CBullet::Collision(D3DXVECTOR3 posStart)
 				}
 			}
 
-			//プレイヤーの弾と敵ボスの判定
-			else if (objType == OBJ_ENEMYBOSS && m_parent == PARENT_PLAYER1 ||
-					objType == OBJ_ENEMYBOSS && m_parent == PARENT_PLAYER2)
-			{
-				//オブジェクトポインタを敵にキャスト
-				CEnemyBoss *pEnemyBoss = (CEnemyBoss*)pObject;
-				CEnemyBoss::PATTERN pat = pEnemyBoss->GetPattern();
+			////プレイヤーの弾と敵ボスの判定
+			//else if (objType == OBJ_ENEMYBOSS && m_parent == PARENT_PLAYER1 ||
+			//		objType == OBJ_ENEMYBOSS && m_parent == PARENT_PLAYER2)
+			//{
+			//	//オブジェクトポインタを敵にキャスト
+			//	CEnemyBoss *pEnemyBoss = (CEnemyBoss*)pObject;
+			//	CEnemyBoss::PATTERN pat = pEnemyBoss->GetPattern();
 
-				// ボスが登場中または死亡中以外
-				if (pat != CEnemyBoss::PATTERN_ENTRY && pat != CEnemyBoss::PATTERN_DIE)
-				{
-					if (LibrarySpace::SphereCollision2D(posStart, pEnemyBoss->GetPosition(), fStartLength - 60.0f, pEnemyBoss->GetLength()))
-					{//弾と当たったら(球体の当たり判定)
+			//	// ボスが登場中または死亡中以外
+			//	if (pat != CEnemyBoss::PATTERN_ENTRY && pat != CEnemyBoss::PATTERN_DIE)
+			//	{
+			//		if (LibrarySpace::SphereCollision2D(posStart, pEnemyBoss->GetPosition(), fStartLength - 60.0f, pEnemyBoss->GetLength()))
+			//		{//弾と当たったら(球体の当たり判定)
 
-						// プレイヤー情報の取得
-						CPlayer *pPlayer = CGame::GetPlayer(m_parent);
+			//			// プレイヤー情報の取得
+			//			CPlayer *pPlayer = CGame::GetPlayer(m_parent);
 
-						// 被弾音
-						CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+			//			// 被弾音
+			//			CSound::Play(CSound::SOUND_LABEL_SE_HIT);
 
-						//ダメージ処理
-						pEnemyBoss->Damage(m_nDamage, pPlayer);
-						// 弾の破棄
-						Uninit();
-						return true;	//当たった
-					}
-				}
-			}
+			//			//ダメージ処理
+			//			pEnemyBoss->Damage(m_nDamage, pPlayer);
+			//			// 弾の破棄
+			//			Uninit();
+			//			return true;	//当たった
+			//		}
+			//	}
+			//}
 
 			//敵の弾とプレイヤーの判定
 			if (objType == OBJ_PLAYER && m_parent == PARENT_ENEMY)
