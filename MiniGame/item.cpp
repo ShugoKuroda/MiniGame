@@ -18,7 +18,7 @@
 
 #include "player.h"
 #include "score.h"
-
+#include "title.h"
 #include "x_file.h"
 //-----------------------------------------------------------------------------------------------
 // 定数定義
@@ -64,7 +64,7 @@ CItem::~CItem()
 //-----------------------------------------------------------------------------------------------
 // 生成
 //-----------------------------------------------------------------------------------------------
-CItem* CItem::Create(const D3DXVECTOR3& pos, const EType type, const char* name)
+CItem* CItem::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const EType type, const char* name)
 {
 	// ポインタクラスを宣言
 	CItem* pItem = new CItem;
@@ -74,7 +74,8 @@ CItem* CItem::Create(const D3DXVECTOR3& pos, const EType type, const char* name)
 
 		// 位置の設定
 		pItem->SetPosition(pos);
-
+		// 角度設定
+		pItem->SetRotation(rot);
 		//テクスチャ種類の設定
 		pItem->m_type = type;
 
@@ -189,12 +190,12 @@ void CItem::Update()
 	//	return;
 	//}
 
-	////当たり判定
-	//if (Collision(pos))
-	//{// 当たったら終了	
-	//	Uninit();
-	//	return;
-	//}
+	//当たり判定
+	if (Collision(pos))
+	{// 当たったら終了	
+		Uninit();
+		return;
+	}
 
 	//// 位置の更新
 	//CObject2D::SetPosition(pos);
@@ -239,6 +240,34 @@ void CItem::Draw()
 //-----------------------------------------------------------------------------------------------
 bool CItem::Collision(D3DXVECTOR3 posStart)
 {
+	//サイズ取得
+	float fLength = GetSizeMax().x;
+
+	// プレイヤー生成
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		//プレイヤー情報の取得
+		CPlayer *pPlayer = CTitle::GetPlayer();
+
+		if (pPlayer != nullptr)
+		{
+			// プレイヤーが通常状態だったら
+			if (pPlayer->GetState() == CPlayer::STATE_NORMAL)
+			{
+				// プレイヤー座標
+				D3DXVECTOR3 posPlayer = D3DXVECTOR2(pPlayer->GetPosition().x, pPlayer->GetPosition().z);
+
+				//敵と当たったら(球体の当たり判定)
+				if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
+				{//ダメージ処理
+					pPlayer->Uninit();
+					return true;	//当たった
+				}
+			}
+		}
+	}
+
+	return false;	//当たってない
 	////アイテムのサイズ取得
 	//float fStartLength = GetLength();
 
@@ -270,5 +299,5 @@ bool CItem::Collision(D3DXVECTOR3 posStart)
 	//	}
 	//}
 
-	return false;		//当たってない
+	//return false;		//当たってない
 }

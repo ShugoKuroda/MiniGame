@@ -98,7 +98,7 @@ HRESULT CTitle::Init()
 	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
 
 	//Item生成
-	m_pItem = CItem::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f),CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
+	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f),CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
 	//// テクスチャのロード
 	//CTitle::Load();
