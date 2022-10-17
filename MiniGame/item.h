@@ -45,7 +45,7 @@ public:
 	~CItem() override;
 
 	//メンバ関数
-	static CItem *Create(const D3DXVECTOR3& pos, const EType type, const char* name);		//インスタンス生成処理
+	static CItem *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const EType type, const char* name);		//インスタンス生成処理
 	//テクスチャの読み込み
 	static HRESULT Load();
 	//テクスチャの削除

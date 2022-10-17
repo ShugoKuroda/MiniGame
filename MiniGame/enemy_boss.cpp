@@ -148,7 +148,7 @@ void CEnemyBoss::Update()
 	pos.z -= 1.0f;
 
 	//当たり判定
-	Collision(D3DXVECTOR2(pos.x,pos.z));
+	Collision(D3DXVECTOR3(pos.x,pos.y,pos.z));
 
 	//位置情報更新
 	CModel::SetPosition(pos);
@@ -181,7 +181,7 @@ void CEnemyBoss::Draw()
 //-----------------------------------------------------------------------------------------------
 // 当たり判定
 //-----------------------------------------------------------------------------------------------
-bool CEnemyBoss::Collision(D3DXVECTOR2 posStart)
+bool CEnemyBoss::Collision(D3DXVECTOR3 posStart)
 {
 	//サイズ取得
 	float fLength = GetSizeMax().x;
@@ -198,7 +198,7 @@ bool CEnemyBoss::Collision(D3DXVECTOR2 posStart)
 			if (pPlayer->GetState() == CPlayer::STATE_NORMAL)
 			{
 				// プレイヤー座標
-				D3DXVECTOR2 posPlayer = D3DXVECTOR2(pPlayer->GetPosition().x, pPlayer->GetPosition().z);
+				D3DXVECTOR3 posPlayer = D3DXVECTOR2(pPlayer->GetPosition().x, pPlayer->GetPosition().z);
 
 				//敵と当たったら(球体の当たり判定)
 				if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
