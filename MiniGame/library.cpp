@@ -194,7 +194,7 @@ bool LibrarySpace::SphereCollision2D(const D3DXVECTOR3& posIn, const D3DXVECTOR3
 bool LibrarySpace::CylinderCollision3D(const D3DXVECTOR3 & posIn, const D3DXVECTOR3 & posOut, const float & fsizeIn, const float & fsizeOut)
 {
 	//2‚Â‚ÌÀ•W·•ª‚ğ‹‚ß‚é
-	D3DXVECTOR2 Length = posIn - posOut;
+	D3DXVECTOR2 Length = D3DXVECTOR2(posIn.x,posIn.z) - D3DXVECTOR2(posOut.x, posOut.z);
 
 	//À•W·•ª‚©‚ç‹——£‚ğ‹‚ß‚é
 	float fLength = D3DXVec2Length(&Length);

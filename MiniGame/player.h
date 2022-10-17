@@ -85,7 +85,7 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	D3DXVECTOR3 Move(D3DXVECTOR3 pos);
+	void Move();
 
 	STATE GetState() { return m_state; }
 	// スコア情報の取得
@@ -130,6 +130,8 @@ private:	//メンバ変数
 	int m_nPlayerNum;
 	//弾の発射位置
 	D3DXVECTOR2 posBullet;
+	// ジャンプしているかどうか
+	bool m_bIsJumping;
 	//プレイヤーが操作できるかどうか
 	bool m_bControl;
 	//海に入ったかどうか

@@ -43,6 +43,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_apTexture[OBJ_MAX] = { nullptr };
 CPlayer* CTitle::m_pPlayer = nullptr;
 CEnemyBoss* CTitle::m_pEnemyBoss = nullptr;
 CItem* CTitle::m_pItem = nullptr;
+CCamera* CTitle::m_pCamera = nullptr;
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -83,7 +84,7 @@ HRESULT CTitle::Init()
 	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
 
 	// カメラ生成
-	CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	// ライト生成
 	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

@@ -17,6 +17,7 @@ class CObject2D;
 class CPlayer;
 class CEnemyBoss;
 class CItem;
+class CCamera;
 
 //-----------------------------------------------------------------------------
 // ベースクラス(派生クラス)
@@ -49,8 +50,10 @@ public:
 	static CPlayer* GetPlayer() { return m_pPlayer; }
 	// 敵ボス情報
 	static CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
-	//Iteam 情報
+	//Item 情報
 	static CItem* GetItem() { return m_pItem; }
+	//カメラ情報
+	static CCamera* GetCamera() { return m_pCamera; }
 
 private:
 	//メンバ変数
@@ -58,6 +61,7 @@ private:
 	static CPlayer* m_pPlayer;
 	static CEnemyBoss* m_pEnemyBoss;
 	static CItem* m_pItem;
+	static CCamera* m_pCamera;
 	CObject2D *m_apObject2D[OBJ_MAX - 1];
 	bool m_bTitleDraw;
 	bool m_bPush;
