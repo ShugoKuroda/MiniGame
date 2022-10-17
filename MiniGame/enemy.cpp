@@ -211,7 +211,7 @@ void CEnemy::Update()
 		// 色が通常以外なら
 		if (m_col != COLOR_NONE)
 		{//死亡時にアイテムドロップ
-			CItem::Create(pos, (CItem::EType)m_col);
+			//CItem::Create(pos, (CItem::EType)m_col);
 		}
 
 		// 爆発の生成
