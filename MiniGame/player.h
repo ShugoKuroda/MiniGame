@@ -108,6 +108,8 @@ private:	//メンバ変数
 
 	//移動量
 	D3DXVECTOR3 m_move;
+	//前回の位置
+	D3DXVECTOR3 m_posOld;
 	//状態
 	STATE m_state;
 	//状態カウンター

@@ -24,6 +24,9 @@
 
 #include "rank.h"
 
+// 追加
+#include "model_obstacle.h"
+
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
@@ -70,7 +73,7 @@ LPDIRECT3DTEXTURE9 CPlayer::m_apTexture[2] = { nullptr };
 // コンストラクタ
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
-	m_move(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0),
+	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0),
 	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
 {
 	//オブジェクトの種類設定
@@ -134,8 +137,13 @@ void CPlayer::Uninit()
 //-----------------------------------------------------------------------------
 void CPlayer::Update()
 {
+	//前回の位置を保存
+	m_posOld = GetPosition();
+
 	// 位置情報を取得
 	D3DXVECTOR3 pos = CModel::GetPosition();
+	// サイズの取得
+	D3DXVECTOR3 size = GetSizeMax();
 
 	//操作できる状態なら
 	if (m_bControl == true)
@@ -143,6 +151,9 @@ void CPlayer::Update()
 		//移動処理
 		pos = Move(pos);
 	}
+
+	// 障害物の当たり判定
+	CObstacle::CollisionAll(&pos, &m_posOld, &size);
 
 	//位置情報更新
 	CModel::SetPosition(pos);

@@ -79,7 +79,7 @@ CObstacle *CObstacle::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, con
 HRESULT CObstacle::Init()
 {
 	// 種類を設定
-	SetObjType(EObject::OBJ_ENEMYBOSS);
+	SetObjType(EObject::OBJ_OBSTACLE);
 	// 初期化
 	CModel::Init();
 
@@ -99,11 +99,6 @@ void CObstacle::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CObstacle::Update()
 {
-	//当たり判定
-	//Collision(D3DXVECTOR2(pos.x, pos.z));
-
-	//位置情報更新
-	//CModel::SetPosition(pos);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -116,38 +111,47 @@ void CObstacle::Draw()
 }
 
 //-----------------------------------------------------------------------------------------------
+// 全ての障害物の当たり判定
+//-----------------------------------------------------------------------------------------------
+void CObstacle::CollisionAll(D3DXVECTOR3* pPosPlayer, D3DXVECTOR3* pPosPlayerOld, D3DXVECTOR3* pSizePlayer)
+{
+	for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
+	{
+		// オブジェクトのポインタ取得
+		CObject *pObject = CObject::GetObject(nCntObject);
+
+		if (pObject != nullptr)
+		{
+			// オブジェクトの種類取得
+			CObject::EObject objType = pObject->GetObjType();
+
+			//プレイヤーの弾と敵の判定
+			if (objType == OBJ_OBSTACLE)
+			{
+				//オブジェクトポインタをキャスト
+				CObstacle *pObstacle = (CObstacle*)pObject;
+
+				// 当たり判定
+				pObstacle->Collision(pPosPlayer, pPosPlayerOld, pSizePlayer);
+			}
+		}
+	}
+}
+
+//-----------------------------------------------------------------------------------------------
 // 当たり判定
 //-----------------------------------------------------------------------------------------------
-bool CObstacle::Collision()
+bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer, D3DXVECTOR3* pPosPlayerOld, D3DXVECTOR3* pSizePlayer)
 {
 	// 位置取得
 	D3DXVECTOR3 pos = GetPosition();
-
 	//サイズ取得
-	float fLength = GetSizeMax().x;
+	D3DXVECTOR3 size = GetSizeMax();
 
-	// プレイヤー生成
-	for (int nCntPlayer = 0; nCntPlayer < 1/*CPlayer::PLAYER_MAX*/; nCntPlayer++)
-	{
-		//プレイヤー情報の取得
-		CPlayer *pPlayer = CTitle::GetPlayer();
-
-		if (pPlayer != nullptr)
-		{
-			// プレイヤーが通常状態だったら
-			if (pPlayer->GetState() == CPlayer::STATE_NORMAL)
-			{
-				// プレイヤー座標
-				D3DXVECTOR2 posPlayer = D3DXVECTOR2(pPlayer->GetPosition().x, pPlayer->GetPosition().z);
-
-				////敵と当たったら(球体の当たり判定)
-				//if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
-				//{//ダメージ処理
-				//	pPlayer->Damage();
-				//	return true;	//当たった
-				//}
-			}
-		}
+	// 矩形の当たり判定3D
+	if (LibrarySpace::BoxCollision3D(pPosPlayer, pPosPlayerOld, &pos, pSizePlayer, &size))
+	{//ダメージ処理
+		return true;	//当たった
 	}
 
 	return false;	//当たってない
