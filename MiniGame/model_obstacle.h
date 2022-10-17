@@ -31,7 +31,7 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	bool Collision(D3DXVECTOR2 posStart);
+	bool Collision();
 
 private:
 	D3DXVECTOR3 m_PosOld;	//‘O‰ñ‚ÌˆÊ’u
