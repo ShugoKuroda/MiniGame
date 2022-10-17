@@ -100,10 +100,10 @@ void CObstacle::Uninit()
 void CObstacle::Update()
 {
 	//当たり判定
-	Collision(D3DXVECTOR2(pos.x, pos.z));
+	//Collision(D3DXVECTOR2(pos.x, pos.z));
 
 	//位置情報更新
-	CModel::SetPosition(pos);
+	//CModel::SetPosition(pos);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -140,12 +140,12 @@ bool CObstacle::Collision()
 				// プレイヤー座標
 				D3DXVECTOR2 posPlayer = D3DXVECTOR2(pPlayer->GetPosition().x, pPlayer->GetPosition().z);
 
-				//敵と当たったら(球体の当たり判定)
-				if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
-				{//ダメージ処理
-					pPlayer->Damage();
-					return true;	//当たった
-				}
+				////敵と当たったら(球体の当たり判定)
+				//if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
+				//{//ダメージ処理
+				//	pPlayer->Damage();
+				//	return true;	//当たった
+				//}
 			}
 		}
 	}
