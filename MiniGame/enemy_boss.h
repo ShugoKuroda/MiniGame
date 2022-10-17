@@ -65,7 +65,7 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	bool Collision(D3DXVECTOR2 posStart);
+	bool Collision(D3DXVECTOR3 posStart);
 	void Damage(int nDamage, CPlayer* pPlayer);
 	void State();
 	void SetAnim();

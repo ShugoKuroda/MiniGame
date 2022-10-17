@@ -41,21 +41,16 @@ public:
 	~CTitle() override;
 
 	//メンバ関数
-	static HRESULT Load();		//テクスチャの読み込み
-	static void Unload();		//テクスチャの削除
-
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
-	void CreateCloud();
 
 	// プレイヤー情報
 	static CPlayer* GetPlayer() { return m_pPlayer; }
 	// 敵ボス情報
 	static CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
 	//Iteam 情報
-	static CItem* GetIte
-		m() { return m_pItem; }
+	static CItem* GetItem() { return m_pItem; }
 
 private:
 	//メンバ変数
@@ -64,11 +59,8 @@ private:
 	static CEnemyBoss* m_pEnemyBoss;
 	static CItem* m_pItem;
 	CObject2D *m_apObject2D[OBJ_MAX - 1];
-	CloudInfo m_CloudInfo;
-	int m_nCountMoveBg;
 	bool m_bTitleDraw;
-	bool m_bPressFade;
-	int m_nCntLoop;		// タイトル演出をループさせるまでの時間
+	bool m_bPush;
 	bool m_bEntry[2];
 	bool m_bTutorial;
 	D3DXVECTOR3 m_move;		// 移動量

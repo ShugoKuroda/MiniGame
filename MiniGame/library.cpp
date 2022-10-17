@@ -118,7 +118,7 @@ bool LibrarySpace::SphereCollision2D(const D3DXVECTOR3& posIn, const D3DXVECTOR3
 //-----------------------------------------------------------------------------------------------
 // â~íåÇÃìñÇΩÇËîªíË
 //-----------------------------------------------------------------------------------------------
-bool LibrarySpace::CylinderCollision3D(const D3DXVECTOR2 & posIn, const D3DXVECTOR2 & posOut, const float & fsizeIn, const float & fsizeOut)
+bool LibrarySpace::CylinderCollision3D(const D3DXVECTOR3 & posIn, const D3DXVECTOR3 & posOut, const float & fsizeIn, const float & fsizeOut)
 {
 	//2Ç¬ÇÃç¿ïWç∑ï™ÇãÅÇﬂÇÈ
 	D3DXVECTOR2 Length = posIn - posOut;
