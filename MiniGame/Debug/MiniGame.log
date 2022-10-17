@@ -1,0 +1,8 @@
+﻿cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
+  camera.cpp
+  enemy_boss.cpp
+  manager.cpp
+  title.cpp
+  コードを生成中...
+  MiniGame.vcxproj -> C:\Users\student\Desktop\MiniGame\MiniGame\MiniGame.exe
+  MiniGame.vcxproj -> C:\Users\student\Desktop\MiniGame\MiniGame\MiniGame.pdb (Full PDB)

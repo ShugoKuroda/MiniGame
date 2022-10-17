@@ -19,6 +19,7 @@
 #include "player.h"
 #include "score.h"
 
+#include "x_file.h"
 //-----------------------------------------------------------------------------------------------
 // 定数定義
 //-----------------------------------------------------------------------------------------------
@@ -63,7 +64,7 @@ CItem::~CItem()
 //-----------------------------------------------------------------------------------------------
 // 生成
 //-----------------------------------------------------------------------------------------------
-CItem* CItem::Create(const D3DXVECTOR3& pos, const EType type)
+CItem* CItem::Create(const D3DXVECTOR3& pos, const EType type, const char* name)
 {
 	// ポインタクラスを宣言
 	CItem* pItem = new CItem;
@@ -77,11 +78,13 @@ CItem* CItem::Create(const D3DXVECTOR3& pos, const EType type)
 		//テクスチャ種類の設定
 		pItem->m_type = type;
 
+		// テクスチャの設定
+		pItem->BindXFile(CManager::GetXFile()->GetXFile(name));
+
 		// 初期化
 		pItem->Init();
 
-		// テクスチャの設定
-		pItem->BindTexture(m_apTexture[pItem->m_type]);
+		
 	}
 
 	return pItem;
@@ -133,10 +136,13 @@ void CItem::Unload()
 //-----------------------------------------------------------------------------------------------
 HRESULT CItem::Init()
 {
-	// サイズ
-	CObject2D::SetSize(D3DXVECTOR2(SIZE_WIDTH, SIZE_HEIGHT));
+	//// サイズ
+	//CObject2D::SetSize(D3DXVECTOR2(SIZE_WIDTH, SIZE_HEIGHT));
+	//// 初期化
+	//CObject2D::Init();
+
 	// 初期化
-	CObject2D::Init();
+	CModel::Init();
 
 	return S_OK;
 }
@@ -146,7 +152,9 @@ HRESULT CItem::Init()
 //-----------------------------------------------------------------------------------------------
 void CItem::Uninit()
 {
-	CObject2D::Uninit();
+	//CObject2D::Uninit();
+
+	CModel::Uninit();
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -163,55 +171,58 @@ void CItem::Update()
 	{
 		m_fRot = 0.0f;
 	}
+	// 位置情報を取得
 
-	// 移動点を中心に回転させる
-	pos += D3DXVECTOR3(sinf(m_fRot) * MOVE_DEFAULT - 2.5f,
-		-cosf(m_fRot) * MOVE_DEFAULT,
-		0.0f);
+	//位置情報更新
+	CModel::SetPosition(pos);
+	//// 移動点を中心に回転させる
+	//pos += D3DXVECTOR3(sinf(m_fRot) * MOVE_DEFAULT - 2.5f,
+	//	-cosf(m_fRot) * MOVE_DEFAULT,
+	//	0.0f);
 
-	// サイズの取得
-	D3DXVECTOR2 size = CObject2D::GetSize();
+	//// サイズの取得
+	//D3DXVECTOR2 size = CObject2D::GetSize();
 
-	if (pos.x + (size.x / 2) <= 0.0f)
-	{//左画面端に出たら終了
-		Uninit();
-		return;
-	}
+	//if (pos.x + (size.x / 2) <= 0.0f)
+	//{//左画面端に出たら終了
+	//	Uninit();
+	//	return;
+	//}
 
-	//当たり判定
-	if (Collision(pos))
-	{// 当たったら終了	
-		Uninit();
-		return;
-	}
+	////当たり判定
+	//if (Collision(pos))
+	//{// 当たったら終了	
+	//	Uninit();
+	//	return;
+	//}
 
-	// 位置の更新
-	CObject2D::SetPosition(pos);
+	//// 位置の更新
+	//CObject2D::SetPosition(pos);
 
-	// カウントを増やす
-	m_nCntAnim++;
+	//// カウントを増やす
+	//m_nCntAnim++;
 
-	// 一定フレーム数経ったら
-	if (m_nCntAnim % ANIM_INTERVAL == 0)
-	{
-		// アニメーション枚数を1つ進める
-		m_nPatternAnim++;
-	}
+	//// 一定フレーム数経ったら
+	//if (m_nCntAnim % ANIM_INTERVAL == 0)
+	//{
+	//	// アニメーション枚数を1つ進める
+	//	m_nPatternAnim++;
+	//}
 
-	// アニメーションが終わったら
-	if (m_nPatternAnim == MAX_ANIM)
-	{
-		// アニメーション枚数を初期化
-		m_nPatternAnim = 0;
-	}
-	else
-	{
-		//頂点座標の設定
-		CObject2D::SetVertex();
+	//// アニメーションが終わったら
+	//if (m_nPatternAnim == MAX_ANIM)
+	//{
+	//	// アニメーション枚数を初期化
+	//	m_nPatternAnim = 0;
+	//}
+	//else
+	//{
+	//	//頂点座標の設定
+	//	CObject2D::SetVertex();
 
-		//テクスチャアニメーション
-		CObject2D::SetAnimation(m_nPatternAnim, 1, DIVISION_U, DIVISION_V);
-	}
+	//	//テクスチャアニメーション
+	//	CObject2D::SetAnimation(m_nPatternAnim, 1, DIVISION_U, DIVISION_V);
+	//}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -219,7 +230,8 @@ void CItem::Update()
 //-----------------------------------------------------------------------------------------------
 void CItem::Draw()
 {
-	CObject2D::Draw();
+	//CObject2D::Draw();
+	CModel::Draw();
 }
 
 //-----------------------------------------------------------------------------------------------

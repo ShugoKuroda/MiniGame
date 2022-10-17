@@ -8,7 +8,7 @@
 //==================================================
 // Xファイル最大数
 //==================================================
-XFILE_NUM = 3
+XFILE_NUM = 4
 
 //==================================================
 // Xファイル読み込み情報
@@ -24,5 +24,8 @@ NAME = XFILE_TYPE_STAR
 //鷲巣
 PAS = data/MODEL/model/wasizu.x
 NAME = XFILE_TYPE_WASIZU
+
+PAS = data/MODEL/model/shoe.x
+NAME = XFILE_TYPE_SHOE
 
 END_SCRIPT		# この行は消さないこと！
