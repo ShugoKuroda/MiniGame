@@ -54,8 +54,7 @@ public:
 	// “Gƒ{ƒXî•ñ
 	static CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
 	//Iteam î•ñ
-	static CItem* GetIte
-		m() { return m_pItem; }
+	static CItem* GetItem() { return m_pItem; }
 
 private:
 	//ƒƒ“ƒo•Ï”
