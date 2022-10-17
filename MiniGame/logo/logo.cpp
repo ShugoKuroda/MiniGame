@@ -46,7 +46,7 @@ CLogo::~CLogo()
 // const D3DXVECTOR2& size → 生成するサイズ
 // const float& fRot → 生成する角度
 // const D3DXCOLOR& col → 生成する色
-// const int& nCount → 破棄するまでの時間
+// const char *aLogoname → 生成したいテクスチャの名前
 //-----------------------------------------------------------------------------------------------
 CLogo* CLogo::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const D3DXCOLOR& col, const char *aLogoname)
 {
