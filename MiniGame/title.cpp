@@ -27,6 +27,7 @@
 #include "light.h"
 #include "player.h"
 #include "enemy_boss.h"
+#include "item.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -40,6 +41,7 @@ using namespace LibrarySpace;
 LPDIRECT3DTEXTURE9 CTitle::m_apTexture[OBJ_MAX] = { nullptr };
 CPlayer* CTitle::m_pPlayer = nullptr;
 CEnemyBoss* CTitle::m_pEnemyBoss = nullptr;
+CItem* CTitle::m_pItem = nullptr;
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -138,6 +140,9 @@ HRESULT CTitle::Init()
 
 	// 敵ボス生成
 	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+
+	//Item生成
+	m_pItem = CItem::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f),CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
 	//// テクスチャのロード
 	//CTitle::Load();
