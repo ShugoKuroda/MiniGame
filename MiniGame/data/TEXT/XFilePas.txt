@@ -31,6 +31,10 @@ NAME = XFILE_TYPE_SHOE
 
 //è·äQï®
 PAS = data/MODEL/model/RockIce.x
-NAME = XFILE_TYPE_ROCKICE
+NAME = XFILE_TYPE_ROCKICE_SMALL
+
+//è·äQï®
+PAS = data/MODEL/model/RockIce2.x
+NAME = XFILE_TYPE_ROCKICE_NORMAL
 
 END_SCRIPT		# Ç±ÇÃçsÇÕè¡Ç≥Ç»Ç¢Ç±Ç∆ÅI
