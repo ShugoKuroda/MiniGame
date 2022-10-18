@@ -93,7 +93,7 @@ void CModelManager::Update()
 		D3DXVECTOR3 posCamera = CTitle::GetCamera()->GetPosV();
 		
 		// è·äQï®ê∂ê¨
-		CObstacle::Create(D3DXVECTOR3(),);
+		//CObstacle::Create(D3DXVECTOR3(),);
 	}
 }
 
