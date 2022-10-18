@@ -24,6 +24,11 @@
 
 #include "rank.h"
 
+// 追加
+#include "model_obstacle.h"
+#include "title.h"
+#include "camera.h"
+
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
@@ -33,6 +38,9 @@
 #define ATTACK_INTERVAL			(7)
 #define JOYKEY_LEFT_STICK_UP	(-0.2f)
 #define JOYKEY_LEFT_STICK_DOWN	(0.2f)
+
+#define FIELD_SIZE_WIDTH		(130.0f)
+#define FIELD_SIZE_HEIGHT		(70.0f)
 
 //-----------------------------------------------------------------------------
 // using宣言
@@ -46,7 +54,7 @@ const float CPlayer::SIZE_X = 90.0f;
 const float CPlayer::SIZE_Y = 40.0f;
 const float CPlayer::ENTRY_SIZE_X = 630.0f;
 const float CPlayer::ENTRY_SIZE_Y = 280.0f;
-const float CPlayer::MOVE_DEFAULT = 2.0f;
+const float CPlayer::MOVE_DEFAULT = 0.5f;
 // アニメーション間隔
 const int CPlayer::ANIM_INTERVAL = 5;
 // アニメーション最大数
@@ -70,8 +78,8 @@ LPDIRECT3DTEXTURE9 CPlayer::m_apTexture[2] = { nullptr };
 // コンストラクタ
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
-	m_move(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0),
-	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
+	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0),
+	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false),m_bInAvalanche(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
 {
 	//オブジェクトの種類設定
 	SetObjType(EObject::OBJ_PLAYER);
@@ -134,14 +142,81 @@ void CPlayer::Uninit()
 //-----------------------------------------------------------------------------
 void CPlayer::Update()
 {
+	//前回の位置を保存
+	m_posOld = GetPosition();
+
 	// 位置情報を取得
 	D3DXVECTOR3 pos = CModel::GetPosition();
+	// サイズの取得
+	D3DXVECTOR3 size = GetSizeMax();
 
 	//操作できる状態なら
 	if (m_bControl == true)
 	{
 		//移動処理
-		pos = Move(pos);
+		Move();
+
+		// 重力負荷をかける
+		m_move.y -= 1.0f;
+
+		// 移動量の加算
+		pos += m_move;
+	}
+	
+	//プレイヤーが雪崩に巻き込まれていたら
+	if (m_bInAvalanche == true)
+	{
+		// キーボード情報の取得
+		CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+		// ジョイパッド情報の取得
+		CInputJoypad *pJoypad = CManager::GetInputJoypad();
+
+		//プレイヤーを後退させる
+		m_move.z -= 1.0f;
+
+		if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_OK))
+		{
+			m_nPushButton++;
+			if (m_nPushButton >= 1/*何回押したら雪崩を抜けるか*/)
+			{
+				m_bInAvalanche = false;
+			}
+		}
+	}
+
+	// 障害物の当たり判定
+	CObstacle::CollisionAll(&pos, &m_posOld, &size);
+
+	// 移動量の減衰
+	m_move.x -= m_move.x * 0.2f;
+	m_move.z -= m_move.z * 0.2f;
+
+	//壁・床の当たり判定処理
+	if (pos.x - (size.x / 2) <= -FIELD_SIZE_WIDTH / 2)
+	{//左壁
+		pos.x = (-FIELD_SIZE_WIDTH / 2) + (size.x / 2);
+	}
+	else if (pos.x + (size.x / 2) >= FIELD_SIZE_WIDTH / 2)
+	{//右壁
+		pos.x = (FIELD_SIZE_WIDTH / 2) - (size.x / 2);
+	}
+	//if (g_Player.pos.z + (PLAYER_WIDTH / 2) >= 400.0f / 2)
+	//{//奥壁
+	//	g_Player.pos.z = (400.0f / 2) - (PLAYER_WIDTH / 2);
+	//}
+
+	// カメラ位置の取得
+	D3DXVECTOR3 posCamera = CTitle::GetCamera()->GetPosV();
+
+	if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT)
+	{//手前壁
+		pos.z = (posCamera.z + FIELD_SIZE_HEIGHT) + (size.z / 2);
+	}
+	if (pos.y - (size.y / 2) <= 0.0f)
+	{//床
+		pos.y = (size.y / 2);
+		m_bIsJumping = false;
+		m_move.y = 0.0f;			//移動量Yの初期化
 	}
 
 	//位置情報更新
@@ -163,7 +238,7 @@ void CPlayer::Draw()
 //-----------------------------------------------------------------------------
 // 移動処理
 //-----------------------------------------------------------------------------
-D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
+void CPlayer::Move()
 {
 	// キーボード情報の取得
 	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
@@ -179,8 +254,8 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
 		{//上キー押下
 			//移動量加算
-			pos.x += GetSinVec(-0.75f, MOVE_DEFAULT);
-			pos.z += GetCosVec(-0.75f, MOVE_DEFAULT);
+			m_move.x += GetSinVec(-0.75f, MOVE_DEFAULT);
+			m_move.z += GetCosVec(-0.75f, MOVE_DEFAULT);
 			//アニメーション変更
 			m_nCntAnimMove++; 
 		}
@@ -188,14 +263,14 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 			pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
 			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
 		{//下キー押下
-			pos.x += GetSinVec(-0.25f, MOVE_DEFAULT);
-			pos.z += GetCosVec(-0.25f, MOVE_DEFAULT);
+			m_move.x += GetSinVec(-0.25f, MOVE_DEFAULT);
+			m_move.z += GetCosVec(-0.25f, MOVE_DEFAULT);
 			m_nCntAnimMove++;
 		}
 		else
 		{
-			pos.x += GetSinVec(-0.5f, MOVE_DEFAULT);
-			pos.z += GetCosVec(-0.5f, MOVE_DEFAULT);
+			m_move.x += GetSinVec(-0.5f, MOVE_DEFAULT);
+			m_move.z += GetCosVec(-0.5f, MOVE_DEFAULT);
 			m_nTexRotType = TYPE_NEUTRAL;
 			m_nCntAnimMove = 0;
 		}
@@ -208,22 +283,22 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 			pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
 			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
 		{//上キー押下
-			pos.x += GetSinVec(0.75f, MOVE_DEFAULT);
-			pos.z += GetCosVec(0.75f, MOVE_DEFAULT);
+			m_move.x += GetSinVec(0.75f, MOVE_DEFAULT);
+			m_move.z += GetCosVec(0.75f, MOVE_DEFAULT);
 			m_nCntAnimMove++;
 		}
 		else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true ||
 			pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
 			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
 		{//下キー押下
-			pos.x += GetSinVec(0.25f, MOVE_DEFAULT);
-			pos.z += GetCosVec(0.25f, MOVE_DEFAULT);
+			m_move.x += GetSinVec(0.25f, MOVE_DEFAULT);
+			m_move.z += GetCosVec(0.25f, MOVE_DEFAULT);
 			m_nCntAnimMove++;
 		}
 		else
 		{
-			pos.x += GetSinVec(0.5f, MOVE_DEFAULT);
-			pos.z += GetCosVec(0.5f, MOVE_DEFAULT);
+			m_move.x += GetSinVec(0.5f, MOVE_DEFAULT);
+			m_move.z += GetCosVec(0.5f, MOVE_DEFAULT);
 			m_nTexRotType = TYPE_NEUTRAL;
 			m_nCntAnimMove = 0;
 		}
@@ -232,16 +307,16 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 		pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
 		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
 	{//上キー押下
-		pos.x += GetSinVec(1.0f, MOVE_DEFAULT);
-		pos.z += GetCosVec(1.0f, MOVE_DEFAULT);
+		m_move.x += GetSinVec(1.0f, MOVE_DEFAULT);
+		m_move.z += GetCosVec(1.0f, MOVE_DEFAULT);
 		m_nCntAnimMove++;
 	}
 	else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true ||
 		pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
 		pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
 	{//下キー押下
-		pos.x += GetSinVec(0.0f, MOVE_DEFAULT);
-		pos.z += GetCosVec(0.0f, MOVE_DEFAULT);
+		m_move.x += GetSinVec(0.0f, MOVE_DEFAULT);
+		m_move.z += GetCosVec(0.0f, MOVE_DEFAULT);
 		m_nCntAnimMove++;
 	}
 	else
@@ -250,8 +325,14 @@ D3DXVECTOR3 CPlayer::Move(D3DXVECTOR3 pos)
 		m_nCntAnimMove = 0;
 		m_nTexRotType = TYPE_NEUTRAL;
 	}
+}
 
-	return pos;
+//-----------------------------------------------------------------------------
+// 雪崩発生時の押し戻し処理
+//-----------------------------------------------------------------------------
+void CPlayer::PushBack()
+{
+	m_bInAvalanche = true;
 }
 
 //-----------------------------------------------------------------------------

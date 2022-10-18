@@ -85,7 +85,8 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	D3DXVECTOR3 Move(D3DXVECTOR3 pos);
+	void Move();
+	void PushBack();	//雪崩発生時の処理(プレイヤーが下がる量)
 
 	STATE GetState() { return m_state; }
 	// スコア情報の取得
@@ -108,6 +109,8 @@ private:	//メンバ変数
 
 	//移動量
 	D3DXVECTOR3 m_move;
+	//前回の位置
+	D3DXVECTOR3 m_posOld;
 	//状態
 	STATE m_state;
 	//状態カウンター
@@ -128,10 +131,16 @@ private:	//メンバ変数
 	int m_nPlayerNum;
 	//弾の発射位置
 	D3DXVECTOR2 posBullet;
+	// ジャンプしているかどうか
+	bool m_bIsJumping;
 	//プレイヤーが操作できるかどうか
 	bool m_bControl;
 	//海に入ったかどうか
 	bool m_bInSea;
+	//プレイヤーが雪崩に巻き込まれているかどうか
+	bool m_bInAvalanche;
+	//雪崩を抜けるためのキー(ボタン)入力回数
+	int m_nPushButton;
 
 	// 死亡したかどうか
 	bool m_bDie;

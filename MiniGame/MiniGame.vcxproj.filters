@@ -158,6 +158,9 @@
     <ClCompile Include="model_obstacle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="avalanche.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="barrier.h">
@@ -313,5 +316,6 @@
     <ClInclude Include="model_obstacle.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="avalanche.h" />
   </ItemGroup>
 </Project>

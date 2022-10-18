@@ -10,12 +10,6 @@
 #include "object.h"
 
 //======================================================
-//	マクロ定義
-//======================================================
-#define CAMERA_POS_MOVE		(0.05f)		//視点の移動量
-#define CAMERA_ROT_MOVE		(0.03f)		//回転の移動量
-
-//======================================================
 //	カメラの構造体
 //======================================================
 class CCamera : public CObject
@@ -30,6 +24,11 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
+
+	// 視点位置の取得
+	D3DXVECTOR3 GetPosV() { return m_posV; }
+	// 注視点位置の取得
+	D3DXVECTOR3 GetPosR() { return m_posR; }
 
 private:
 	D3DXVECTOR3 m_move;			//移動量
