@@ -79,7 +79,7 @@ LPDIRECT3DTEXTURE9 CPlayer::m_apTexture[2] = { nullptr };
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
 	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0),
-	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
+	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false),m_bInAvalanche(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
 {
 	//オブジェクトの種類設定
 	SetObjType(EObject::OBJ_PLAYER);
@@ -161,6 +161,27 @@ void CPlayer::Update()
 
 		// 移動量の加算
 		pos += m_move;
+	}
+	
+	//プレイヤーが雪崩に巻き込まれていたら
+	if (m_bInAvalanche == true)
+	{
+		// キーボード情報の取得
+		CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+		// ジョイパッド情報の取得
+		CInputJoypad *pJoypad = CManager::GetInputJoypad();
+
+		//プレイヤーを後退させる
+		m_move.z -= 1.0f;
+
+		if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_OK))
+		{
+			m_nPushButton++;
+			if (m_nPushButton >= 1/*何回押したら雪崩を抜けるか*/)
+			{
+				m_bInAvalanche = false;
+			}
+		}
 	}
 
 	// 障害物の当たり判定
@@ -304,6 +325,14 @@ void CPlayer::Move()
 		m_nCntAnimMove = 0;
 		m_nTexRotType = TYPE_NEUTRAL;
 	}
+}
+
+//-----------------------------------------------------------------------------
+// 雪崩発生時の押し戻し処理
+//-----------------------------------------------------------------------------
+void CPlayer::PushBack()
+{
+	m_bInAvalanche = true;
 }
 
 //-----------------------------------------------------------------------------

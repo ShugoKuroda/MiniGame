@@ -86,6 +86,7 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Move();
+	void PushBack();	//雪崩発生時の処理(プレイヤーが下がる量)
 
 	STATE GetState() { return m_state; }
 	// スコア情報の取得
@@ -136,6 +137,10 @@ private:	//メンバ変数
 	bool m_bControl;
 	//海に入ったかどうか
 	bool m_bInSea;
+	//プレイヤーが雪崩に巻き込まれているかどうか
+	bool m_bInAvalanche;
+	//雪崩を抜けるためのキー(ボタン)入力回数
+	int m_nPushButton;
 
 	// 死亡したかどうか
 	bool m_bDie;
