@@ -123,6 +123,9 @@ HRESULT CPlayer::Init()
 	// 初期化
 	CModel::Init();
 
+	// スコアの生成
+	CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+
 	// 操作可能状態にする
 	m_bControl = true;
 

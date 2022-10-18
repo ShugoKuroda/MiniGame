@@ -7,10 +7,12 @@
 #ifndef _MODEL_MANAGER_H_
 #define _MODEL_MANAGER_H_
 
+#include "object.h"
+
 //*******************************************************************
 //	モデルのマネージャークラスの定義
 //*******************************************************************
-class CModelManager
+class CModelManager :public CObject
 {
 public:
 	//メンバ関数
@@ -19,10 +21,10 @@ public:
 
 	static CModelManager *Create();		//インスタンス生成処理
 
-	HRESULT Init();
-	void Uninit();
-	void Update();
-	void Draw();
+	HRESULT Init() override;
+	void Uninit() override;
+	void Update() override;
+	void Draw() override;
 
 private:
 	int m_nCounter;		// カウンター

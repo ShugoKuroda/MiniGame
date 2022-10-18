@@ -21,6 +21,11 @@
 #include "model_obstacle.h"
 
 //-----------------------------------------------------------------------------------------------
+// using宣言
+//-----------------------------------------------------------------------------------------------
+using namespace LibrarySpace;
+
+//-----------------------------------------------------------------------------------------------
 // 定数宣言
 //-----------------------------------------------------------------------------------------------
 
@@ -61,7 +66,7 @@ CModelManager *CModelManager::Create()
 HRESULT CModelManager::Init()
 {
 	// モデル生成までの数値取得
-	m_nNumCreate = LibrarySpace::GetRandNum(300, 60);
+	m_nNumCreate = GetRandNum(300, 60);
 
 	return S_OK;
 }
@@ -71,6 +76,8 @@ HRESULT CModelManager::Init()
 //-----------------------------------------------------------------------------------------------
 void CModelManager::Uninit()
 {
+	// 破棄
+	Release();
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -87,13 +94,28 @@ void CModelManager::Update()
 		// カウンターリセット
 		m_nCounter = 0;
 		// モデル生成までの数値取得
-		m_nNumCreate = LibrarySpace::GetRandNum(300, 60);
+		m_nNumCreate = GetRandNum(300, 60);
 
 		// カメラ情報の取得
 		D3DXVECTOR3 posCamera = CTitle::GetCamera()->GetPosV();
 		
+		// 生成位置の取得
+		float fRand = (float)GetRandNum(80, -80);
+
 		// 障害物生成
-		//CObstacle::Create(D3DXVECTOR3(),);
+		switch (GetRandNum(1, 0))
+		{
+		case 0:
+			CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_SMALL");
+			break;
+
+		case 1:
+			CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_NORMAL");
+			break;
+
+		default:
+			break;
+		}
 	}
 }
 

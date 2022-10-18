@@ -24,7 +24,7 @@ bool CObject::m_bShake = false;
 //=============================================================================
 // デフォルトコンストラクタ
 //=============================================================================
-CObject::CObject()
+CObject::CObject() :m_nType(OBJ_NONE), m_nID(0)
 {
 	for (int nCntObject = 0; nCntObject < MAX_OBJECT; nCntObject++)
 	{

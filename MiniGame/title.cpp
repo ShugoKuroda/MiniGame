@@ -29,6 +29,7 @@
 #include "enemy_boss.h"
 #include "item.h"
 #include "model_obstacle.h"
+#include "model_manager.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -102,8 +103,8 @@ HRESULT CTitle::Init()
 	//Item生成
 	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f),CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
-	// 障害物
-	CObstacle::Create(D3DXVECTOR3(0.0f, 0.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE");
+	// モデルマネージャー生成
+	CModelManager::Create();
 
 	//// テクスチャのロード
 	//CTitle::Load();

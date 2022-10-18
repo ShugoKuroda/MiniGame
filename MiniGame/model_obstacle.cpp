@@ -41,6 +41,8 @@
 //-----------------------------------------------------------------------------------------------
 CObstacle::CObstacle() :m_PosOld(0.0f, 0.0f, 0.0f)
 {
+	//オブジェクトの種類設定
+	SetObjType(EObject::OBJ_OBSTACLE);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -78,8 +80,6 @@ CObstacle *CObstacle::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, con
 //-----------------------------------------------------------------------------------------------
 HRESULT CObstacle::Init()
 {
-	// 種類を設定
-	SetObjType(EObject::OBJ_OBSTACLE);
 	// 初期化
 	CModel::Init();
 

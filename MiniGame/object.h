@@ -21,7 +21,8 @@ public:		// 定数
 public:
 	enum EObject
 	{// オブジェクトの種類(下から描画を優先)
-		OBJ_BG = 0,
+		OBJ_NONE = 0,
+		OBJ_BG,
 		OBJ_CLOUD,
 		OBJ_BG_MOVE,
 		OBJ_TITLE_LOGO,
