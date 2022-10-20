@@ -67,6 +67,7 @@ private:
 	bool m_bPush;
 	bool m_bEntry[2];
 	bool m_bTutorial;
+	int m_nCounter;
 	D3DXVECTOR3 m_move;		// ˆÚ“®—Ê
 };
 

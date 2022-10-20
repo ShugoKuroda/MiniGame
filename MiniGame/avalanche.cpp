@@ -83,7 +83,7 @@ void CAvalanche::Update()
 	//雪崩のエフェクトの生成
 	if (m_nDuration % 2 == 0)
 	{
-		m_pEffect[m_nEffectIdx] = CEffect::Create(D3DXVECTOR3(0.0f,0.0f,0.0f),D3DXVECTOR2(10.0f,10.0f),CEffect::TYPE_SPHERE,CEffect::TEX_SPHERE);
+		m_pEffect[m_nEffectIdx] = CEffect::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(10.0f, 10.0f), CEffect::TYPE_SPHERE, CEffect::TEX_SPHERE);
 		m_nEffectIdx++;
 	}
 
@@ -106,7 +106,7 @@ void CAvalanche::Update()
 
 				if (objType == OBJ_PLAYER)
 				{
-					if (pPlayer->GetPosition.z <= m_pEffect[0]->GetPosition().z)
+					if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
 					{//最初に生成したエフェクトがプレイヤーに接触した場合
 						//プレイヤーを押し戻す
 						pPlayer->SetBadState(true);

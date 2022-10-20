@@ -30,6 +30,7 @@
 #include "item.h"
 #include "model_obstacle.h"
 #include "model_manager.h"
+//#include "avalanche.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -49,7 +50,7 @@ CCamera* CTitle::m_pCamera = nullptr;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CTitle::CTitle() :m_bTitleDraw(false), m_bPush(false), m_bEntry{ false }, m_bTutorial(false), m_move(0.0f,0.0f,0.0f)
+CTitle::CTitle() :m_bTitleDraw(false), m_bPush(false), m_bEntry{ false }, m_bTutorial(false), m_move(0.0f,0.0f,0.0f), m_nCounter(0)
 {
 	for (int nCnt = 0; nCnt < OBJ_MAX - 1; nCnt++)
 	{
@@ -100,7 +101,7 @@ HRESULT CTitle::Init()
 	// 敵ボス生成
 	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
 
-	//Item生成
+	// Item生成
 	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f),CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
 	// モデルマネージャー生成
@@ -239,6 +240,8 @@ void CTitle::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CTitle::Update()
 {
+	m_nCounter++;
+
 	// ゲーム開始の繰り返し防止
 	if (m_bPush == false)
 	{
@@ -257,4 +260,9 @@ void CTitle::Update()
 			return;
 		}
 	}
+
+	//if (m_nCounter == 300)
+	//{// 雪崩
+	//	CAvalanche::Create();
+	//}
 }
