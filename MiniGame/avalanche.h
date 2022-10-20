@@ -7,16 +7,15 @@
 #ifndef _AVALANCHE_H_
 #define _AVALANCHE_H_
 
-#include "object2D.h"
+#include "object.h"
 
 //*******************************************************************
 //	雪崩クラスの定義
 //*******************************************************************
-class CAvalanche : public CObject2D
+class CAvalanche : public CObject
 {
 private:
-	//定数定義
-	static const int amountPush;	//雪崩でプレイヤーが押し戻される量
+	static const int MAX_AVALANCHE = 256;	//雪崩に使用するエフェクトの最大数
 public:
 	CAvalanche();					//コンストラクタ
 	~CAvalanche() override;			//デストラクタ
@@ -29,9 +28,10 @@ public:
 	void Draw() override;			//描画
 
 private:
-	//メンバ変数
-	static D3DXVECTOR3 m_pushback;		//雪崩発生時にプレイヤーを押し戻す量
-	static int m_duration;				//雪崩の継続時間
+	static CEffect *m_pEffect[MAX_AVALANCHE];	//雪崩のエフェクト情報
+	int m_nDuration;				//雪崩の継続時間
+	int m_nEffectIdx;				//雪崩のエフェクトのインデックス
+	bool m_bEnd;					//雪崩が終わったかどうか
 };
 
 #endif		// _AVALANCHE_H_

@@ -63,6 +63,7 @@ public:
 		STATE_ENTRY,		//登場
 		STATE_RESPAWN,		//無敵(リスポーン)状態
 		STATE_DIE,			//死亡状態
+		STATE_INAVALANCHE,	//雪崩に巻き込まれている状態
 		STATE_MAX
 	};
 
@@ -86,13 +87,13 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Move();
-	void PushBack();	//雪崩発生時の処理(プレイヤーが下がる量)
 
 	STATE GetState() { return m_state; }
 	// スコア情報の取得
 	CScore *GetScore() { return m_pScore; }
 	// 死亡状態の取得
 	bool GetDie() { return m_bDie; }
+	void SetBadState(bool inState) { m_bInAvalanche = inState; }
 
 	void State();
 	void Damage();
