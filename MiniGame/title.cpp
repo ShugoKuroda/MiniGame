@@ -106,6 +106,9 @@ HRESULT CTitle::Init()
 	// モデルマネージャー生成
 	CModelManager::Create();
 
+	// モデル生成
+	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
+
 	//// テクスチャのロード
 	//CTitle::Load();
 	//// 雲

@@ -106,7 +106,6 @@ void CAvalanche::Update()
 
 				if (objType == OBJ_PLAYER)
 				{
-
 					if (pPlayer->GetPosition.z <= m_pEffect[0]->GetPosition().z)
 					{//最初に生成したエフェクトがプレイヤーに接触した場合
 						//プレイヤーを押し戻す

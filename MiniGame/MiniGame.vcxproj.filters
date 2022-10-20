@@ -154,6 +154,9 @@
     <ClCompile Include="x_file.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="model_crevasse.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -313,6 +316,9 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="x_file.h">
+      <Filter>ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="model_crevasse.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
   </ItemGroup>

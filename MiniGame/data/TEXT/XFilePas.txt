@@ -8,7 +8,7 @@
 //==================================================
 // Xファイル最大数
 //==================================================
-XFILE_NUM = 6
+XFILE_NUM = 7
 
 //==================================================
 // Xファイル読み込み情報
@@ -35,6 +35,10 @@ NAME = XFILE_TYPE_ROCKICE_SMALL
 
 //障害物(中)
 PAS = data/MODEL/model/RockIce2.x
-NAME = XFILE_TYPE_ROCKICE_NORMAL
+NAME = XFILE_TYPE_ROCKICE_NORMAL	
+
+//クレバス(落とし穴)
+PAS = data/MODEL/model/Crevasse.x
+NAME = XFILE_TYPE_CREVASSE
 
 END_SCRIPT		# この行は消さないこと！
