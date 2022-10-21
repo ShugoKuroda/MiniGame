@@ -80,10 +80,11 @@ void CAvalanche::Update()
 	//雪崩持続時間を減少させる
 	m_nDuration--;
 
-	//雪崩のエフェクトの生成
 	if (m_nDuration % 2 == 0)
 	{
+		//雪崩のエフェクトの生成
 		m_pEffect[m_nEffectIdx] = CEffect::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(10.0f, 10.0f), CEffect::TYPE_SPHERE, CEffect::TEX_SPHERE);
+		//雪崩のエフェクトのインデックスを1進める
 		m_nEffectIdx++;
 	}
 
@@ -92,6 +93,7 @@ void CAvalanche::Update()
 		m_bEnd = true;
 	}
 
+<<<<<<< HEAD
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		//プレイヤーのポインタを取得
@@ -126,6 +128,28 @@ void CAvalanche::Update()
 			}
 		}
 	}
+=======
+	//プレイヤーの情報を取得
+	CPlayer *pPlayer = CTitle::GetPlayer();
+
+	if (m_bEnd != true)
+	{
+		for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
+		{
+			if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
+			{//最初に生成したエフェクトがプレイヤーに接触した場合
+				//プレイヤーを押し戻す
+				pPlayer->SetBadState(true);
+			}
+		}
+	}
+	else
+	{
+		//プレイヤーの状態を変更する
+		pPlayer->SetBadState(false);
+		Uninit();
+	}
+>>>>>>> 212935dc8f940f827fa80f303ee408bacb8c7e9e
 }
 
 //-----------------------------------------------------------------------------------------------
