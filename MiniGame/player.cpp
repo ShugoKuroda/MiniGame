@@ -26,7 +26,7 @@
 
 // 追加
 #include "model_obstacle.h"
-#include "title.h"
+#include "game.h"
 #include "camera.h"
 
 //-----------------------------------------------------------------------------
@@ -73,8 +73,6 @@ const int CPlayer::DEFAULT_LIFE = 2;
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-// テクスチャのポインタ
-LPDIRECT3DTEXTURE9 CPlayer::m_apTexture[2] = { nullptr };
 
 //-----------------------------------------------------------------------------
 // コンストラクタ
@@ -224,12 +222,12 @@ void CPlayer::Update()
 	//}
 
 	// カメラ位置の取得
-	D3DXVECTOR3 posCamera = CTitle::GetCamera()->GetPosV();
+	//D3DXVECTOR3 posCamera = CGame::GetCamera()->GetPosV();
 
-	if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT)
-	{//手前壁
-		pos.z = (posCamera.z + FIELD_SIZE_HEIGHT) + (size.z / 2);
-	}
+	//if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT)
+	//{//手前壁
+	//	pos.z = (posCamera.z + FIELD_SIZE_HEIGHT) + (size.z / 2);
+	//}
 	if (pos.y <= 0.0f)
 	{//床
 		pos.y = 0.0f;

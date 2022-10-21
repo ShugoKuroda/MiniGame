@@ -41,6 +41,17 @@
 #include "gauge.h"
 #include "continue.h"
 
+// 追加
+#include "object3D.h"
+#include "camera.h"
+#include "light.h"
+#include "player.h"
+#include "enemy_boss.h"
+#include "item.h"
+#include "model_obstacle.h"
+#include "model_manager.h"
+//#include "avalanche.h"
+
 //-----------------------------------------------------------------------------------------------
 // using宣言
 //-----------------------------------------------------------------------------------------------
@@ -54,6 +65,9 @@ bool CGame::m_bCreateBubble = false;
 bool CGame::m_bDieBoss = false;
 CPlayer *CGame::m_pPlayer[CPlayer::PLAYER_MAX] = {};
 CMeshField *CGame::m_pMeshField = nullptr;
+CEnemyBoss* CGame::m_pEnemyBoss = nullptr;
+CItem* CGame::m_pItem = nullptr;
+CCamera* CGame::m_pCamera = nullptr;
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -78,6 +92,42 @@ CGame::~CGame()
 //-----------------------------------------------------------------------------------------------
 HRESULT CGame::Init()
 {
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -400.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -600.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
+
+	// カメラ生成
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+	// ライト生成
+	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	CLight::Create(D3DXVECTOR3(0.2f, -0.1f, -0.8f), D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f));
+
+	// モデル生成
+	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
+
+	// プレイヤー生成
+	m_pPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR");
+
+	// 敵ボス生成
+	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+
+	// Item生成
+	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
+
+	// モデルマネージャー生成
+	CModelManager::Create();
+
+	// モデル生成
+	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
+
 	////敵情報読み込み
 	//m_EnemyInfo.pCreate = LoadSpace::GetEnemy();
 	////ウェーブ数の読み込み

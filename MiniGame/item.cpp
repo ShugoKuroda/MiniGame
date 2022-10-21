@@ -18,8 +18,8 @@
 
 #include "player.h"
 #include "score.h"
-#include "title.h"
 #include "x_file.h"
+
 //-----------------------------------------------------------------------------------------------
 // 定数定義
 //-----------------------------------------------------------------------------------------------
@@ -58,7 +58,6 @@ CItem::CItem() :
 //-----------------------------------------------------------------------------------------------
 CItem::~CItem()
 {
-
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -247,7 +246,7 @@ bool CItem::Collision(D3DXVECTOR3 posStart)
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		//プレイヤー情報の取得
-		CPlayer *pPlayer = CTitle::GetPlayer();
+		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
 
 		if (pPlayer != nullptr)
 		{

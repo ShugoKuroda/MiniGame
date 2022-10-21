@@ -1,24 +1,23 @@
 //=============================================================================
 //
-// 背景
-// Author : 
+// 数字ポリゴン[number.cpp]
+// Author : SHUGO KURODA
 //
 //=============================================================================
 
 //*****************************************************************************
 // インクルード
 //*****************************************************************************
-#include "main.h"
-#include "object2D.h"
 #include "renderer.h"
 #include "manager.h"
 #include "number.h"
 #include "score.h"
 
+#include "texture.h"
+
 //*****************************************************************************
 // 静的メンバ変数
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CNumber::m_pTexture = nullptr;
 
 //=============================================================================
 // コンストラクタ
@@ -41,12 +40,6 @@ CNumber::~CNumber()
 //=============================================================================
 HRESULT CNumber::Load()
 {
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/number000.png", &m_pTexture);
-
 	return S_OK;
 }
 
@@ -55,11 +48,6 @@ HRESULT CNumber::Load()
 //=============================================================================
 void CNumber::Unload()
 {
-	if (m_pTexture != nullptr)
-	{
-		m_pTexture->Release();
-		m_pTexture = nullptr;
-	}
 }
 
 //=============================================================================
@@ -69,7 +57,7 @@ HRESULT CNumber::Init()
 {
 	//生成時に使用するサイズの設定
 	CObject2D::Init();
-	CObject2D::BindTexture(m_pTexture);
+	CObject2D::BindTexture(CTexture::GetTexture("TEX_TYPE_SCORE_UI"));
 	CObject2D::SetAnimation(0, 0, DIVISION_U, DIVISION_V);
 
 	return S_OK;

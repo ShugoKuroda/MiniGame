@@ -16,7 +16,7 @@
 // ’Ç‰Á
 #include "x_file.h"
 #include "model_manager.h"
-#include "title.h"
+#include "game.h"
 #include "camera.h"
 #include "model_obstacle.h"
 
@@ -97,7 +97,7 @@ void CModelManager::Update()
 		m_nNumCreate = GetRandNum(300, 60);
 
 		// ƒJƒƒ‰î•ñ‚Ìæ“¾
-		D3DXVECTOR3 posCamera = CTitle::GetCamera()->GetPosV();
+		D3DXVECTOR3 posCamera = CGame::GetCamera()->GetPosV();
 		
 		// ¶¬ˆÊ’u‚Ìæ“¾
 		float fRand = (float)GetRandNum(80, -80);

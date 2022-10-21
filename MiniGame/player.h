@@ -53,6 +53,8 @@ public:
 	{
 		PLAYER_1 = 0,	//1P
 		PLAYER_2,		//2P
+		PLAYER_3,		//3P
+		PLAYER_4,		//4P
 		PLAYER_MAX
 	};
 
@@ -107,8 +109,6 @@ public:
 	void Die();
 
 private:	//メンバ変数
-	// テクスチャのポインタ
-	static LPDIRECT3DTEXTURE9 m_apTexture[PLAYER_MAX];
 
 	// ライフのポインタ
 	CLife *m_pLife;

@@ -1,6 +1,6 @@
 //===================================================================
 //
-//	ポリゴン処理[polygon.cpp]
+//	3Dポリゴン処理 [object3D.cpp]
 //	Author:SHUGO KURODA
 //
 //===================================================================
@@ -27,7 +27,7 @@ CObject3D::~CObject3D()
 //======================================================
 //	生成処理
 //======================================================
-CObject3D *CObject3D::Create(const D3DXVECTOR3 & pos)
+CObject3D *CObject3D::Create(const D3DXVECTOR3& pos)
 {
 	//インスタンス生成
 	CObject3D *pObject3D = new CObject3D;
@@ -108,13 +108,6 @@ void CObject3D::Uninit()
 	{
 		m_pVtxBuff->Release();
 		m_pVtxBuff = nullptr;
-	}
-
-	//テクスチャの破棄
-	if (m_pTexture != nullptr)
-	{
-		m_pTexture->Release();
-		m_pTexture = nullptr;
 	}
 }
 

@@ -30,7 +30,6 @@
 
 // ’Ç‰Á
 #include "x_file.h"
-#include "title.h"
 
 //-----------------------------------------------------------------------------------------------
 // ’è”éŒ¾
@@ -190,7 +189,7 @@ bool CEnemyBoss::Collision(D3DXVECTOR3 posStart)
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		//ƒvƒŒƒCƒ„[î•ñ‚Ìæ“¾
-		CPlayer *pPlayer = CTitle::GetPlayer();
+		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
 
 		if (pPlayer != nullptr)
 		{

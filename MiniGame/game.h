@@ -18,6 +18,9 @@
 //*****************************************************************************
 class CScore;
 class CMeshField;
+class CEnemyBoss;
+class CItem;
+class CCamera;
 
 //-----------------------------------------------------------------------------
 // ベースクラス(派生クラス)
@@ -51,8 +54,16 @@ public:		//メンバ関数
 	static void SetCreateBubble(bool bCreate) { m_bCreateBubble = bCreate; }
 	// ボス死亡フラグを設定
 	static void SetDieBoss(bool bDie);
+
 	// プレイヤー情報の取得
 	static CPlayer *GetPlayer(int nNum) { return m_pPlayer[nNum]; }
+	// 敵ボス情報
+	static CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
+	//Item 情報
+	static CItem* GetItem() { return m_pItem; }
+	//カメラ情報
+	static CCamera* GetCamera() { return m_pCamera; }
+
 	// スコア情報の取得
 	static CMeshField *GetMeshField() { return m_pMeshField; }
 	// 泡の生成状態を取得
@@ -72,6 +83,9 @@ private:	//メンバ変数
 	// プレイヤー情報
 	static CPlayer *m_pPlayer[CPlayer::PLAYER_MAX];
 	static CMeshField *m_pMeshField;
+	static CEnemyBoss* m_pEnemyBoss;
+	static CItem* m_pItem;
+	static CCamera* m_pCamera;
 
 	// 雲を生成するかどうか
 	static bool m_bCreateCloud;

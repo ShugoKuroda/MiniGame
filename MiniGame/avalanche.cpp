@@ -92,33 +92,39 @@ void CAvalanche::Update()
 		m_bEnd = true;
 	}
 
-	//プレイヤーのポインタを取得
-	CPlayer *pPlayer = CTitle::GetPlayer();
-
-	if (m_bEnd != true)
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
-		for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
-		{
-			CObject *pObject = CObject::GetObject(nCntObject);
-			if (pObject != nullptr)
-			{
-				CObject::EObject objType = pObject->GetObjType();
+		//プレイヤーのポインタを取得
+		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
 
-				if (objType == OBJ_PLAYER)
-				{
-					if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
-					{//最初に生成したエフェクトがプレイヤーに接触した場合
-						//プレイヤーを押し戻す
-						pPlayer->SetBadState(true);
-					}
+		if (pPlayer != nullptr)
+		{
+			if (m_bEnd != true)
+			{
+				//for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
+				//{
+				//	CObject *pObject = CObject::GetObject(nCntObject);
+				//	if (pObject != nullptr)
+				//	{
+				//		CObject::EObject objType = pObject->GetObjType();
+
+				//		if (objType == OBJ_PLAYER)
+				//		{
+				if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
+				{//最初に生成したエフェクトがプレイヤーに接触した場合
+					//プレイヤーを押し戻す
+					pPlayer->SetBadState(true);
 				}
+				//		}
+				//	}
+				//}
+			}
+			else
+			{
+				pPlayer->SetBadState(false);
+				Uninit();
 			}
 		}
-	}
-	else
-	{
-		pPlayer->SetBadState(false);
-		Uninit();
 	}
 }
 
