@@ -87,13 +87,20 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Move();
+	void Jump();
 
 	STATE GetState() { return m_state; }
 	// ƒXƒRƒAî•ñ‚Ìæ“¾
 	CScore *GetScore() { return m_pScore; }
 	// €–Só‘Ô‚Ìæ“¾
 	bool GetDie() { return m_bDie; }
+	D3DXVECTOR3 GetPositionOld() { return m_posOld; }
+	void SetMove(D3DXVECTOR3 move) { m_move = move; }
+	void SetMoveX(float fmove) { m_move.x = fmove; }
+	void SetMoveZ(float fmove) { m_move.z = fmove; }
+	void SetMoveY(float fmove) { m_move.y = fmove; }
 	void SetBadState(bool inState) { m_bInAvalanche = inState; }
+	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
 
 	void State();
 	void Damage();

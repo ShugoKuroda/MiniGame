@@ -113,7 +113,7 @@ void CObstacle::Draw()
 //-----------------------------------------------------------------------------------------------
 // 全ての障害物の当たり判定
 //-----------------------------------------------------------------------------------------------
-void CObstacle::CollisionAll(D3DXVECTOR3* pPosPlayer, D3DXVECTOR3* pPosPlayerOld, D3DXVECTOR3* pSizePlayer)
+void CObstacle::CollisionAll(D3DXVECTOR3* pPosIn)
 {
 	for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
 	{
@@ -132,7 +132,7 @@ void CObstacle::CollisionAll(D3DXVECTOR3* pPosPlayer, D3DXVECTOR3* pPosPlayerOld
 				CObstacle *pObstacle = (CObstacle*)pObject;
 
 				// 当たり判定
-				pObstacle->Collision(pPosPlayer, pPosPlayerOld, pSizePlayer);
+				pObstacle->Collision(pPosIn);
 			}
 		}
 	}
@@ -141,17 +141,43 @@ void CObstacle::CollisionAll(D3DXVECTOR3* pPosPlayer, D3DXVECTOR3* pPosPlayerOld
 //-----------------------------------------------------------------------------------------------
 // 当たり判定
 //-----------------------------------------------------------------------------------------------
-bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer, D3DXVECTOR3* pPosPlayerOld, D3DXVECTOR3* pSizePlayer)
+bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer)
 {
+	// プレイヤー情報の取得
+	CPlayer *pPlayer = CTitle::GetPlayer();
+
+	// プレイヤーの過去の位置取得
+	D3DXVECTOR3 posPlayerOld = pPlayer->GetPositionOld();
+	// プレイヤーのサイズ取得
+	D3DXVECTOR3 sizePlayer = pPlayer->GetSizeMax();
+
 	// 位置取得
 	D3DXVECTOR3 pos = GetPosition();
 	//サイズ取得
 	D3DXVECTOR3 size = GetSizeMax();
 
-	// 矩形の当たり判定3D
-	if (LibrarySpace::BoxCollision3D(pPosPlayer, pPosPlayerOld, &pos, pSizePlayer, &size))
-	{//ダメージ処理
-		return true;	//当たった
+	// 押し出し判定
+	switch (LibrarySpace::BoxCollisionUnder3D(pPosPlayer, &posPlayerOld, &pos, &sizePlayer, &size))
+	{
+	case LibrarySpace::PUSH_X:
+		pPlayer->SetMoveX(0.0f);
+		break;
+
+	case LibrarySpace::PUSH_Z:
+		pPlayer->SetMoveZ(0.0f);
+		break;
+
+	case LibrarySpace::PUSH_Y:
+		pPlayer->SetMoveY(0.0f);
+		break;
+
+	case LibrarySpace::PUSH_JUMP:
+		pPlayer->SetMoveY(0.0f);
+		pPlayer->SetJumping(false);
+		break;
+
+	default:
+		break;
 	}
 
 	return false;	//当たってない

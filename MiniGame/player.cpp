@@ -42,6 +42,8 @@
 #define FIELD_SIZE_WIDTH		(130.0f)
 #define FIELD_SIZE_HEIGHT		(70.0f)
 
+#define PLAYER_SIZE				(16.0f)
+
 //-----------------------------------------------------------------------------
 // using宣言
 //-----------------------------------------------------------------------------
@@ -151,7 +153,7 @@ void CPlayer::Update()
 	// 位置情報を取得
 	D3DXVECTOR3 pos = CModel::GetPosition();
 	// サイズの取得
-	D3DXVECTOR3 size = GetSizeMax();
+ 	D3DXVECTOR3 size = GetSizeMax();
 
 	//操作できる状態なら
 	if (m_bControl == true)
@@ -159,8 +161,21 @@ void CPlayer::Update()
 		//移動処理
 		Move();
 
+		// キーボード情報の取得
+		CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+
+		if (m_bIsJumping == false)
+		{
+			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
+			{//スペースキーが押された
+				m_move.y = 3.0f;
+
+				m_bIsJumping = true;
+			}
+		}
+
 		// 重力負荷をかける
-		m_move.y -= 1.0f;
+		m_move.y -= 0.1f;
 
 		// 移動量の加算
 		pos += m_move;
@@ -188,7 +203,7 @@ void CPlayer::Update()
 	}
 
 	// 障害物の当たり判定
-	CObstacle::CollisionAll(&pos, &m_posOld, &size);
+	CObstacle::CollisionAll(&pos);
 
 	// 移動量の減衰
 	m_move.x -= m_move.x * 0.2f;
@@ -215,9 +230,9 @@ void CPlayer::Update()
 	{//手前壁
 		pos.z = (posCamera.z + FIELD_SIZE_HEIGHT) + (size.z / 2);
 	}
-	if (pos.y - (size.y / 2) <= 0.0f)
+	if (pos.y <= 0.0f)
 	{//床
-		pos.y = (size.y / 2);
+		pos.y = 0.0f;
 		m_bIsJumping = false;
 		m_move.y = 0.0f;			//移動量Yの初期化
 	}
@@ -328,6 +343,14 @@ void CPlayer::Move()
 		m_nCntAnimMove = 0;
 		m_nTexRotType = TYPE_NEUTRAL;
 	}
+}
+
+//-----------------------------------------------------------------------------
+// ジャンプ
+//-----------------------------------------------------------------------------
+void CPlayer::Jump()
+{
+
 }
 
 //-----------------------------------------------------------------------------

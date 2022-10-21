@@ -110,7 +110,7 @@ void CModelManager::Update()
 			break;
 
 		case 1:
-			CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_NORMAL");
+			CObstacle::Create(D3DXVECTOR3(fRand, -0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_NORMAL");
 			break;
 
 		default:
