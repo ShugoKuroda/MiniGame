@@ -859,7 +859,7 @@ MOTIONSET
  	COLLISION_PARTICLE = 40 3.0 20.0 20		# ヒット時のパーティクル
  	
 	KEYSET			# --- << KEY : 0 / 5 >> ---
-		FRAME = 30
+		FRAME = 20
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
@@ -892,7 +892,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 5 >> ---
-		FRAME = 15
+		FRAME = 8
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.63 1.10 0.41
@@ -925,7 +925,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 2 / 5 >> ---
-		FRAME = 30
+		FRAME = 25
 		KEY	# ----- [ 0 ] -----
 			POS = -5.80 4.80 -27.60
 			ROT = -0.47 -0.44 0.00
