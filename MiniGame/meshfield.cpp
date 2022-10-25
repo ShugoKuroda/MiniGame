@@ -32,7 +32,7 @@ LPDIRECT3DTEXTURE9 CMeshField::m_pTexture = {};
 CMeshField::CMeshField() :m_pos(0.0f, 0.0f, 0.0f), m_pVtxBuff(nullptr), m_pIdxBuff(nullptr),
 m_nCounterAnim(0), m_nPatternAnim(0), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_bCol(false), m_move(0.0f, 0.0f, 0.0f), m_bUninit(false)
 {
-	SetObjType(EObject::OBJ_BG_MOVE);
+	SetType(EObject::OBJ_BG_MOVE);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ CMeshField *CMeshField::Create()
 HRESULT CMeshField::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	HRESULT hr = D3DXCreateTextureFromFile(pDevice,
@@ -91,7 +91,7 @@ void CMeshField::Unload()
 HRESULT CMeshField::Init()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(CObject2D::VERTEX_2D) * MESHFIELD_VERTEX_NUM,
@@ -279,12 +279,12 @@ void CMeshField::Update()
 	//頂点バッファの解放
 	m_pVtxBuff->Unlock();
 
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
 #ifdef _DEBUG
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
+
 	// キーボード情報の取得
-	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 
 	if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_1) == true)
 	{//3キーが押された
@@ -303,7 +303,7 @@ void CMeshField::Update()
 void CMeshField::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(CObject2D::VERTEX_2D));

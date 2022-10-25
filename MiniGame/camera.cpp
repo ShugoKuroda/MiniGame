@@ -94,7 +94,7 @@ void CCamera::Uninit()
 void CCamera::Update()
 {
 	//マウスの移動量情報の取得
-	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 
 	//注視点の旋回
 	if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_E) == true)
@@ -267,7 +267,7 @@ void CCamera::Update()
 void CCamera::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//ビューマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxView);

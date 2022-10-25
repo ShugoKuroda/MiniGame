@@ -33,7 +33,7 @@ CCloud::CCloud() :
 	m_move(0.0f, 0.0f, 0.0f)
 {
 	//オブジェクトタイプの設定
-	SetObjType(EObject::OBJ_CLOUD);
+	SetType(EObject::OBJ_CLOUD);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ D3DXVECTOR2 CCloud::SetRandSize()
 HRESULT CCloud::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,

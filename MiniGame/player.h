@@ -82,7 +82,7 @@ public:
 	~CPlayer() override;
 
 	//メンバ関数
-	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name);	//インスタンス生成処理
+	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name, int nPlayryNum);	//インスタンス生成処理
 
 	HRESULT Init() override;
 	void Uninit() override;
@@ -103,6 +103,7 @@ public:
 	void SetMoveY(float fmove) { m_move.y = fmove; }
 	void SetBadState(bool inState) { m_bInAvalanche = inState; }
 	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
+	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
 
 	void State();
 	void Damage();
@@ -143,6 +144,8 @@ private:	//メンバ変数
 	bool m_bIsJumping;
 	//プレイヤーが操作できるかどうか
 	bool m_bControl;
+	// キーボードで操作しているかどうか
+	bool m_bControlKeyboard;
 	//海に入ったかどうか
 	bool m_bInSea;
 	//プレイヤーが雪崩に巻き込まれているかどうか

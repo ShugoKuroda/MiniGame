@@ -57,7 +57,7 @@ CFade* CFade::Create(CManager::MODE modeNext)
 HRESULT CFade::Init()
 {
 	// 変数宣言
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// 変数の初期化
 	m_fade = CFade::FADE_IN;
@@ -163,7 +163,7 @@ void CFade::Update()
 			m_fade = FADE_IN;
 
 			// モードの設定
-			CManager::SetMode(m_modeNext);
+			CManager::GetManager()->SetMode(m_modeNext);
 		}
 	}
 	else if (m_fade == FADE_NONE)
@@ -178,7 +178,7 @@ void CFade::Update()
 void CFade::Draw()
 {
 	// 変数宣言
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// 頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(CObject2D::VERTEX_2D));

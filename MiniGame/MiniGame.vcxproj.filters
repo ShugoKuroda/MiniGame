@@ -112,9 +112,6 @@
     <ClCompile Include="game.cpp">
       <Filter>ソースファイル\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="base.cpp">
-      <Filter>ソースファイル\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="input.cpp">
       <Filter>ソースファイル\inputs</Filter>
     </ClCompile>
@@ -128,9 +125,6 @@
       <Filter>ソースファイル\inputs</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>ソースファイル\main</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
       <Filter>ソースファイル\main</Filter>
     </ClCompile>
     <ClCompile Include="x_file.cpp">
@@ -156,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="object3D.cpp">
       <Filter>ソースファイル\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソースファイル\renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,9 +276,6 @@
     <ClInclude Include="game.h">
       <Filter>ソースファイル\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="base.h">
-      <Filter>ソースファイル\scenes</Filter>
-    </ClInclude>
     <ClInclude Include="input.h">
       <Filter>ソースファイル\inputs</Filter>
     </ClInclude>
@@ -295,9 +289,6 @@
       <Filter>ソースファイル\inputs</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
-      <Filter>ソースファイル\main</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
       <Filter>ソースファイル\main</Filter>
     </ClInclude>
     <ClInclude Include="x_file.h">
@@ -315,10 +306,13 @@
     <ClInclude Include="object.h">
       <Filter>ソースファイル\objects</Filter>
     </ClInclude>
-    <ClInclude Include="object2D.h">
+    <ClInclude Include="object3D.h">
       <Filter>ソースファイル\objects</Filter>
     </ClInclude>
-    <ClInclude Include="object3D.h">
+    <ClInclude Include="renderer.h">
+      <Filter>ソースファイル\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="object2D.h">
       <Filter>ソースファイル\objects</Filter>
     </ClInclude>
   </ItemGroup>
@@ -340,6 +334,9 @@
     </Filter>
     <Filter Include="ソースファイル\objects">
       <UniqueIdentifier>{c75fec94-b3ce-4f60-8092-78ad6d17d702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\renderer">
+      <UniqueIdentifier>{de874303-5a09-4f4c-8f10-b6e51684cad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

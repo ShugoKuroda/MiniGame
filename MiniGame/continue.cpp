@@ -60,7 +60,7 @@ CContinue *CContinue::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 			// 初期化
 			pContinue->m_apNumber[nCntScore]->Init();
 			// オブジェクトタイプの設定
-			pContinue->m_apNumber[nCntScore]->SetObjType(OBJ_PAUSE);
+			pContinue->m_apNumber[nCntScore]->SetType(OBJ_PAUSE);
 		}
 	}
 
@@ -79,26 +79,26 @@ HRESULT CContinue::Init()
 	m_bContinue = true;
 
 	// ポーズ状態にする
-	CManager::SetPause(true);
+	CManager::GetManager()->SetPause(true);
 
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_PAUSE);
+	SetType(EObject::OBJ_PAUSE);
 
 	// コンティニュー？のUI
 	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 300.0f, 0.0f), D3DXVECTOR2(300.0f, 50.0f),
 		CUi::TYPE_CONTINUE, CUi::ANIM_NONE, CUi::PLAYER_NONE);
-	m_pUi[0]->SetObjType(OBJ_PAUSE);
+	m_pUi[0]->SetType(OBJ_PAUSE);
 	// エントリー待ちUIを生成
 	m_pUi[1] = CUi::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(400.0f, 50.0f),
 		CUi::TYPE_PRESS_ANY_BUTTON, CUi::ANIM_FLASHING, CUi::PLAYER_NONE);
-	m_pUi[1]->SetObjType(OBJ_PAUSE);
+	m_pUi[1]->SetType(OBJ_PAUSE);
 
 	// フェード
 	m_pFade = new CObject2D;
 	m_pFade->SetPosition(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, CRenderer::SCREEN_HEIGHT / 2, 0.0f));
 	m_pFade->SetSize(D3DXVECTOR2((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT));
 	m_pFade->Init();
-	m_pFade->SetObjType(OBJ_CONTINUE_FADE);
+	m_pFade->SetType(OBJ_CONTINUE_FADE);
 	m_pFade->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.7f));
 
 	return S_OK;
@@ -155,38 +155,38 @@ void CContinue::Update()
 	}
 
 	// キーボード情報の取得
-	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 	// ジョイパッド情報の取得
-	CInputJoypad *pJoypad = CManager::GetInputJoypad();
+	CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
-	// プレイヤーのエントリー処理
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		// プレイヤーENTRY情報の取得
-		bool bEntry = CManager::GetEntry(nCntPlayer);
+	//// プレイヤーのエントリー処理
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	// プレイヤーENTRY情報の取得
+	//	bool bEntry = CManager::GetManager()->GetEntry(nCntPlayer);
 
-		if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, nCntPlayer) == true && bEntry == false)
-		{// カウントダウンを早める
-			m_nCountDown = 0;
-			Add(-1);
-			break;
-		}
-		else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true && bEntry == false)
-		{// カウントダウンを早める
-			m_nCountDown = 0;
-			Add(-1);
-			break;
-		}
-		// プレイヤーのどちらかが参加したら
-		else if (bEntry == true)
-		{// 破棄
-			Uninit();
-			SetContinue(false);
-			// ポーズ状態を解除
-			CManager::SetPause(false);
-			return;
-		}
-	}
+	//	if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, nCntPlayer) == true && bEntry == false)
+	//	{// カウントダウンを早める
+	//		m_nCountDown = 0;
+	//		Add(-1);
+	//		break;
+	//	}
+	//	else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true && bEntry == false)
+	//	{// カウントダウンを早める
+	//		m_nCountDown = 0;
+	//		Add(-1);
+	//		break;
+	//	}
+	//	// プレイヤーのどちらかが参加したら
+	//	else if (bEntry == true)
+	//	{// 破棄
+	//		Uninit();
+	//		SetContinue(false);
+	//		// ポーズ状態を解除
+	//		CManager::GetManager()->SetPause(false);
+	//		return;
+	//	}
+	//}
 
 	// カウントダウン終了
 	if (m_nContinue < 0)
@@ -195,7 +195,7 @@ void CContinue::Update()
 		
 		// ゲームオーバーロゴの生成
 		CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, CRenderer::SCREEN_HEIGHT / 2, 0.0f), D3DXVECTOR2(300.0f, 50.0f),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_GAMEOVER, CLogo::ANIM_LENGTHWISE, 300)->SetObjType(OBJ_PAUSE);
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_GAMEOVER, CLogo::ANIM_LENGTHWISE, 300)->SetType(OBJ_PAUSE);
 	}
 }
 

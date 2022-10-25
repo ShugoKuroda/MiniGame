@@ -51,7 +51,7 @@ LPDIRECT3DTEXTURE9 CBullet::m_apTexture[TYPE_MAX] = { nullptr };
 CBullet::CBullet() :
 	m_move(0.0f, 0.0f, 0.0f), m_nDamage(0), m_nCntAnim(0), m_nPatternAnim(0)
 {
-	SetObjType(EObject::OBJ_BULLET);
+	SetType(EObject::OBJ_BULLET);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ CBullet* CBullet::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& move, const 
 HRESULT CBullet::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -249,7 +249,7 @@ bool CBullet::Collision(D3DXVECTOR3 posStart)
 				{//弾と当たったら(球体の当たり判定)
 
 					// プレイヤー情報の取得
-					CPlayer *pPlayer = CGame::GetPlayer(m_parent);
+					CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(m_parent);
 
 					// 被弾音
 					CSound::Play(CSound::SOUND_LABEL_SE_HIT);

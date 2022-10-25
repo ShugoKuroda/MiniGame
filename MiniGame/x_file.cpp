@@ -98,7 +98,7 @@ void CXFile::Init()
 	fclose(pFile);
 
 	//デバイスを取得する
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	for (int nCntXFile = 0; nCntXFile < m_nNumXFile; nCntXFile++)
 	{
@@ -151,7 +151,7 @@ void CXFile::Uninit()
 void CXFile::LoadXFileTexture(SModelInfo& XFile)
 {
 	//デバイスを取得する
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 	//マテリアルデータへのポインタ
 	D3DXMATERIAL *pMat;
 

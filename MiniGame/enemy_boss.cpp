@@ -77,7 +77,7 @@ CEnemyBoss *CEnemyBoss::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, c
 		// 角度設定
 		pEnemy->SetRotation(rot);
 		// Xファイルの設定
-		pEnemy->BindXFile(CManager::GetXFile()->GetXFile(name));
+		pEnemy->BindXFile(CManager::GetManager()->GetXFile()->GetXFile(name));
 		// 初期化
 		pEnemy->Init();
 	}
@@ -91,7 +91,7 @@ CEnemyBoss *CEnemyBoss::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, c
 HRESULT CEnemyBoss::Init()
 {
 	// 種類を設定
-	SetObjType(EObject::OBJ_ENEMYBOSS);
+	SetType(EObject::OBJ_ENEMYBOSS);
 	// 初期化
 	CModel::Init();
 
@@ -189,7 +189,7 @@ bool CEnemyBoss::Collision(D3DXVECTOR3 posStart)
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		//プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
 
 		if (pPlayer != nullptr)
 		{
