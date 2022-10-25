@@ -27,7 +27,7 @@ LPDIRECT3DTEXTURE9 CBgMove::m_pTexture = {};
 //-----------------------------------------------------------------------------------------------
 CBgMove::CBgMove() :m_nCntAnim(0), m_nPatternAnim(0)
 {
-	SetObjType(EObject::OBJ_BG);
+	SetType(EObject::OBJ_BG);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ CBgMove* CBgMove::Create()
 HRESULT CBgMove::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,

@@ -11,21 +11,22 @@
 #include "avalanche.h"
 #include "logo.h"
 #include "player.h"
-#include "manager.h"
-#include "renderer.h"
+#include "effect.h"
 #include "library.h"
 #include "game.h"
+#include "title.h"
+
+#include "manager.h"
 
 //-----------------------------------------------------------------------------------------------
-// 定数定義
+// 静的メンバ変数
 //-----------------------------------------------------------------------------------------------
-//雪崩でプレイヤーが押し戻される量
-const int CAvalanche::amountPush = 1;
+CEffect *CAvalanche::m_pEffect[CAvalanche::MAX_AVALANCHE] = {};
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CAvalanche::CAvalanche()
+CAvalanche::CAvalanche() : m_nDuration(300), m_nEffectIdx(0), m_bEnd(false)
 {
 }
 
@@ -61,8 +62,6 @@ HRESULT CAvalanche::Init()
 {
 	//ロゴのcreate関数からテクスチャを表示
 	//CLogo::Create(テクスチャの名前);
-	// 初期化
-	CObject2D::Init();
 
 	return S_OK;
 }
@@ -72,7 +71,7 @@ HRESULT CAvalanche::Init()
 //-----------------------------------------------------------------------------------------------
 void CAvalanche::Uninit()
 {
-	CObject2D::Uninit();
+	Release();
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -80,23 +79,76 @@ void CAvalanche::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CAvalanche::Update()
 {
-	for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
+	//雪崩持続時間を減少させる
+	m_nDuration--;
+
+	if (m_nDuration % 2 == 0)
 	{
-		CObject *pObject = CObject::GetObject(nCntObject);
-		if (pObject != nullptr)
+		//雪崩のエフェクトの生成
+		m_pEffect[m_nEffectIdx] = CEffect::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(10.0f, 10.0f), CEffect::TYPE_SPHERE, CEffect::TEX_SPHERE);
+		//雪崩のエフェクトのインデックスを1進める
+		m_nEffectIdx++;
+	}
+
+	if (m_nDuration <= 0)
+	{//持続時間が０以下になったら
+		m_bEnd = true;
+	}
+
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		//プレイヤーのポインタを取得
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
+
+		if (pPlayer != nullptr)
 		{
-			CObject::EObject objType = pObject->GetObjType();
-
-			//プレイヤーを押し戻す
-			if (objType == OBJ_PLAYER)
+			if (m_bEnd != true)
 			{
-				//オブジェクトポインタをプレイヤーにダウンキャスト
-				CPlayer *pPlayer = (CPlayer*)pObject;
+				//for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
+				//{
+				//	CObject *pObject = CObject::GetObject(nCntObject);
+				//	if (pObject != nullptr)
+				//	{
+				//		CObject::EObject objType = pObject->GetObjType();
 
-				pPlayer->PushBack();
+				//		if (objType == OBJ_PLAYER)
+				//		{
+				if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
+				{//最初に生成したエフェクトがプレイヤーに接触した場合
+					//プレイヤーを押し戻す
+					pPlayer->SetBadState(true);
+				}
+				//		}
+				//	}
+				//}
+			}
+			else
+			{
+				pPlayer->SetBadState(false);
 				Uninit();
 			}
 		}
+	}
+
+	//プレイヤーの情報を取得
+	CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(0);
+
+	if (m_bEnd != true)
+	{
+		for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
+		{
+			if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
+			{//最初に生成したエフェクトがプレイヤーに接触した場合
+				//プレイヤーを押し戻す
+				pPlayer->SetBadState(true);
+			}
+		}
+	}
+	else
+	{
+		//プレイヤーの状態を変更する
+		pPlayer->SetBadState(false);
+		Uninit();
 	}
 }
 
@@ -105,5 +157,4 @@ void CAvalanche::Update()
 //-----------------------------------------------------------------------------------------------
 void CAvalanche::Draw()
 {
-	CObject2D::Draw();
 }

@@ -34,7 +34,7 @@ LPDIRECT3DTEXTURE9 CGauge::m_pTexture = {};
 //-----------------------------------------------------------------------------------------------
 CGauge::CGauge() :m_type(TYPE_NONE), m_parent(PLAYER_1)
 {
-	SetObjType(EObject::OBJ_UI);
+	SetType(EObject::OBJ_UI);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ CGauge* CGauge::Create(const D3DXVECTOR3& pos, const TYPE& type, const PARENT& p
 HRESULT CGauge::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,

@@ -25,7 +25,7 @@
 class CInputJoypad
 {
 private:
-	static const int MAX_CONTROLLER = 2;
+	static const int MAX_CONTROLLER = 5;
 
 public:
 	enum JOYKEY

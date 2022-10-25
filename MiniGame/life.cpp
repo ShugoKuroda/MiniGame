@@ -63,7 +63,7 @@ CLife *CLife::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 HRESULT CLife::Init()
 {
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_PAUSE);
+	SetType(EObject::OBJ_PAUSE);
 
 	return S_OK;
 }

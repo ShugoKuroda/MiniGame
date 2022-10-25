@@ -92,6 +92,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 
 	// マネージャークラスのインスタンス生成
 	CManager *pManager = new CManager;
+	// マネージャー情報の設定
+	CManager::SetManager(pManager);
 
 	// 初期化処理
 	if (FAILED(pManager->Init(hInstance, hWnd, TRUE)))
@@ -155,6 +157,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 
 				// 描画処理
 				pManager->Draw();
+
+				// マネージャー情報の設定
+				CManager::SetManager(pManager);
 #ifdef _DEBUG
 				dwFrameCount++;
 #endif // _DEBUG

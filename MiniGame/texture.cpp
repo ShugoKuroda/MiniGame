@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// テクスチャ処理 [texture.cpp]
+// テクスチャマネージャー [texture.cpp]
 // Author : SHUGO KURODA
 //
 //=============================================================================
@@ -98,7 +98,7 @@ void CTexture::Init()
 	fclose(pFile);
 
 	//デバイスを取得する
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	for (int nCntTex = 0; nCntTex < m_nNumTex; nCntTex++)
 	{

@@ -47,7 +47,7 @@ LPDIRECT3DTEXTURE9 CBarrier::m_apTexture[LEVEL_MAX] = { nullptr };
 //-----------------------------------------------------------------------------------------------
 CBarrier::CBarrier() :m_fRad(0.0f), m_nDamage(0), m_col(LEVEL_GREEN), m_nCntAnim(0), m_nPatternAnim(0), m_nPatterAnimV(0)
 {
-	SetObjType(EObject::OBJ_BARRIER);
+	SetType(EObject::OBJ_BARRIER);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -83,28 +83,6 @@ CBarrier* CBarrier::Create(const D3DXVECTOR3& pos, const PARENT& parent)
 	}
 
 	return pBarrier;
-}
-
-//-----------------------------------------------------------------------------------------------
-// テクスチャの読み込み
-//-----------------------------------------------------------------------------------------------
-HRESULT CBarrier::Load()
-{
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	// テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		"data/TEXTURE/barrier000.png",
-		&m_apTexture[LEVEL_GREEN]);
-	D3DXCreateTextureFromFile(pDevice,
-		"data/TEXTURE/barrier001.png",
-		&m_apTexture[LEVEL_SILVER]);
-	D3DXCreateTextureFromFile(pDevice,
-		"data/TEXTURE/barrier002.png",
-		&m_apTexture[LEVEL_GOLD]);
-
-	return S_OK;
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -173,7 +151,7 @@ void CBarrier::Update()
 	}
 
 	// 位置の取得
-	D3DXVECTOR3 pos = CGame::GetPlayer(m_parent)->GetPosition();
+	D3DXVECTOR3 pos = CManager::GetManager()->GetGame()->GetPlayer(m_parent)->GetPosition();
 
 	// 位置の更新(常に親プレイヤーの位置に設定)
 	CObject2D::SetPosition(D3DXVECTOR3(pos.x - 10.0f, pos.y, pos.z));

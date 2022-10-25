@@ -53,6 +53,8 @@ public:
 	{
 		PLAYER_1 = 0,	//1P
 		PLAYER_2,		//2P
+		PLAYER_3,		//3P
+		PLAYER_4,		//4P
 		PLAYER_MAX
 	};
 
@@ -63,6 +65,7 @@ public:
 		STATE_ENTRY,		//登場
 		STATE_RESPAWN,		//無敵(リスポーン)状態
 		STATE_DIE,			//死亡状態
+		STATE_INAVALANCHE,	//雪崩に巻き込まれている状態
 		STATE_MAX
 	};
 
@@ -79,28 +82,34 @@ public:
 	~CPlayer() override;
 
 	//メンバ関数
-	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name);	//インスタンス生成処理
+	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name, int nPlayryNum);	//インスタンス生成処理
 
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
 	void Move();
-	void PushBack();	//雪崩発生時の処理(プレイヤーが下がる量)
+	void Jump();
 
 	STATE GetState() { return m_state; }
 	// スコア情報の取得
 	CScore *GetScore() { return m_pScore; }
 	// 死亡状態の取得
 	bool GetDie() { return m_bDie; }
+	D3DXVECTOR3 GetPositionOld() { return m_posOld; }
+	void SetMove(D3DXVECTOR3 move) { m_move = move; }
+	void SetMoveX(float fmove) { m_move.x = fmove; }
+	void SetMoveZ(float fmove) { m_move.z = fmove; }
+	void SetMoveY(float fmove) { m_move.y = fmove; }
+	void SetBadState(bool inState) { m_bInAvalanche = inState; }
+	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
+	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
 
 	void State();
 	void Damage();
 	void Die();
 
 private:	//メンバ変数
-	// テクスチャのポインタ
-	static LPDIRECT3DTEXTURE9 m_apTexture[PLAYER_MAX];
 
 	// ライフのポインタ
 	CLife *m_pLife;
@@ -135,6 +144,8 @@ private:	//メンバ変数
 	bool m_bIsJumping;
 	//プレイヤーが操作できるかどうか
 	bool m_bControl;
+	// キーボードで操作しているかどうか
+	bool m_bControlKeyboard;
 	//海に入ったかどうか
 	bool m_bInSea;
 	//プレイヤーが雪崩に巻き込まれているかどうか

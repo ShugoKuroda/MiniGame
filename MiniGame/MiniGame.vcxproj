@@ -160,7 +160,6 @@
   <ItemGroup>
     <ClCompile Include="avalanche.cpp" />
     <ClCompile Include="barrier.cpp" />
-    <ClCompile Include="base.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="bg_move.cpp" />
     <ClCompile Include="bubble.cpp" />
@@ -191,6 +190,8 @@
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="model_crevasse.cpp" />
+    <ClCompile Include="model_manager.cpp" />
     <ClCompile Include="model_obstacle.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
@@ -212,7 +213,6 @@
   <ItemGroup>
     <ClInclude Include="avalanche.h" />
     <ClInclude Include="barrier.h" />
-    <ClInclude Include="base.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="bg_move.h" />
     <ClInclude Include="bubble.h" />
@@ -245,6 +245,8 @@
     <ClInclude Include="manager.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="model_crevasse.h" />
+    <ClInclude Include="model_manager.h" />
     <ClInclude Include="model_obstacle.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />

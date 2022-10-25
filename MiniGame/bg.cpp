@@ -41,7 +41,7 @@ CObject2D *CBg::m_apObject2D[BG_A_MAX] = {};
 CBg::CBg() :m_set(SET_NONE), m_nCntBgChange(0)
 {
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_BG_MOVE);
+	SetType(EObject::OBJ_BG_MOVE);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ CBg::~CBg()
 HRESULT CBg::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_00.jpg", &m_apTexture[BG_A_SKY]);		// 空
@@ -129,13 +129,13 @@ HRESULT CBg::Init()
 		{// 生成
 			m_apObject2D[nCnt] = new CObject2D;
 			//オブジェクトの種類設定
-			m_apObject2D[nCnt]->SetObjType(EObject::OBJ_BG);
+			m_apObject2D[nCnt]->SetType(EObject::OBJ_BG);
 		}
 		
 		//波の背景のみ前で描画する
-		m_apObject2D[BG_A_WAVE1]->SetObjType(CObject::OBJ_WAVE1);
-		m_apObject2D[BG_A_WAVE2]->SetObjType(CObject::OBJ_WAVE2);
-		m_apObject2D[BG_A_WAVE3]->SetObjType(CObject::OBJ_WAVE3);
+		m_apObject2D[BG_A_WAVE1]->SetType(CObject::OBJ_WAVE1);
+		m_apObject2D[BG_A_WAVE2]->SetType(CObject::OBJ_WAVE2);
+		m_apObject2D[BG_A_WAVE3]->SetType(CObject::OBJ_WAVE3);
 
 		//空
 		m_apObject2D[BG_A_SKY]->SetPosition(D3DXVECTOR3(ScreenSize.x / 2, (ScreenSize.y / 2) - 100.0f, 0.0f));
@@ -267,7 +267,7 @@ void CBg::Update()
 		if (m_nCntBgChange >= BG_INTERVAL_BUBBLE)
 		{
 			//泡エフェクトの生成を開始する
-			CGame::SetCreateBubble(true);
+			CManager::GetManager()->GetGame()->SetCreateBubble(true);
 
 			fMul = 0.75f;
 			sizeSea.y += 0.5f;
@@ -285,7 +285,7 @@ void CBg::Update()
 			m_apObject2D[BG_A_SETWEED2]->SetAnimBg(1, 1000, true);
 
 			//雲の生成を止める
-			CGame::SetCreateCloud(false);
+			CManager::GetManager()->GetGame()->SetCreateCloud(false);
 		}
 		else if (m_nCntBgChange >= BG_INTERVAL_SEA_WEED)
 		{

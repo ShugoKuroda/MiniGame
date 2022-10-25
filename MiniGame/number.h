@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 数字ポリゴン[number.h]
-// Author : 
+// Author : SHUGO KURODA
 //
 //=============================================================================
 #ifndef _NUMBER_H_
@@ -32,10 +32,6 @@ public:
 	void Uninit() override;					//終了
 	void Update() override;					//更新
 	void Draw() override;					//描画
-
-// メンバ変数 //
-private:
-	static LPDIRECT3DTEXTURE9 m_pTexture;			//テクスチャのポインタ
 };
 
-#endif // _BULLET_H_
+#endif // _NUMBER_H_
