@@ -42,7 +42,7 @@
 CCrevasse::CCrevasse() :m_PosOld(0.0f, 0.0f, 0.0f)
 {
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_OBSTACLE);
+	SetType(EObject::OBJ_OBSTACLE);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ CCrevasse *CCrevasse::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, con
 		// 角度設定
 		pCrevasse->SetRotation(rot);
 		// Xファイルの設定
-		pCrevasse->BindXFile(CManager::GetXFile()->GetXFile(name));
+		pCrevasse->BindXFile(CManager::GetManager()->GetXFile()->GetXFile(name));
 		// 初期化
 		pCrevasse->Init();
 	}

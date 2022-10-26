@@ -7,22 +7,21 @@
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
-#include "base.h"
 #include "cloud_data.h"
+#include "renderer.h"
+#include "player.h"
 
 //*****************************************************************************
 // 前方宣言
 //*****************************************************************************
 class CObject2D;
 class CPlayer;
-class CEnemyBoss;
-class CItem;
 class CCamera;
 
 //-----------------------------------------------------------------------------
 // ベースクラス(派生クラス)
 //-----------------------------------------------------------------------------
-class CTitle : public CBase
+class CTitle
 {
 public:
 	enum TITLE_OBJ
@@ -39,34 +38,39 @@ public:
 
 public:
 	CTitle();
-	~CTitle() override;
+	~CTitle();
 
 	//メンバ関数
-	HRESULT Init() override;
-	void Uninit() override;
-	void Update() override;
+	HRESULT Init();
+	void Uninit();
+	void Update();
 
 	// プレイヤー情報
-	static CPlayer* GetPlayer() { return m_pPlayer; }
-	// 敵ボス情報
-	static CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
-	//Item 情報
-	static CItem* GetItem() { return m_pItem; }
+	CPlayer* GetPlayer() { return m_pPlayer[0]; }
 	//カメラ情報
-	static CCamera* GetCamera() { return m_pCamera; }
+	CCamera* GetCamera() { return m_pCamera; }
+
+	// 全てのプレイヤーが参加しているかどうか
+	bool GetEntryAll();
+
+	// プレイヤー参加情報の取得
+	bool GetEntry(int nNum) { return m_bEntry[nNum]; }
+	// プレイヤー参加情報の設定
+	void SetEntry(int nNum) { m_bEntry[nNum] = m_bEntry[nNum] ? false : true; }
 
 private:
 	//メンバ変数
 	static LPDIRECT3DTEXTURE9 m_apTexture[OBJ_MAX];		//テクスチャのポインタ
-	static CPlayer* m_pPlayer;
-	static CEnemyBoss* m_pEnemyBoss;
-	static CItem* m_pItem;
-	static CCamera* m_pCamera;
+	CPlayer* m_pPlayer[CPlayer::PLAYER_MAX];
+	CCamera* m_pCamera;
 	CObject2D *m_apObject2D[OBJ_MAX - 1];
-	bool m_bTitleDraw;
 	bool m_bPush;
-	bool m_bEntry[2];
-	bool m_bTutorial;
+	// 参加しているかどうか
+	bool m_bEntry[CPlayer::PLAYER_MAX];
+	// キーボードで参加したかどうか
+	bool m_bEntryKeyboard;
+	// 参加番号
+	int m_nEntryNum;
 	int m_nCounter;
 	D3DXVECTOR3 m_move;		// 移動量
 };

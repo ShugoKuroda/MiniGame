@@ -53,7 +53,7 @@ CModel* CModel::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 	pModel->SetRotation(rot);
 
 	// Xファイルの割り当て
-	pModel->BindXFile(CManager::GetXFile()->GetXFile(name));
+	pModel->BindXFile(CManager::GetManager()->GetXFile()->GetXFile(name));
 
 	// 初期化
 	pModel->Init();
@@ -156,7 +156,7 @@ void CModel::Update()
 void CModel::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
 	D3DMATERIAL9 matDef;			//現在のマテリアル保存用

@@ -39,7 +39,7 @@ CObject3D *CObject3D::Create(const D3DXVECTOR3& pos)
 	pObject3D->Init();
 
 	// テクスチャの割り当て
-	pObject3D->BindTexture(CManager::GetTexture()->GetTexture("TEX_TYPE_TITLE_FLOOR"));
+	pObject3D->BindTexture(CManager::GetManager()->GetTexture()->GetTexture("TEX_TYPE_TITLE_FLOOR"));
 
 	return pObject3D;
 }
@@ -50,7 +50,7 @@ CObject3D *CObject3D::Create(const D3DXVECTOR3& pos)
 HRESULT CObject3D::Init()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * MAX_VERTEX,
@@ -124,7 +124,7 @@ void CObject3D::Update()
 void CObject3D::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
 
 	//ワールドマトリックスの初期化

@@ -29,25 +29,13 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CBase *CManager::m_pBase = nullptr;
-CRenderer *CManager::m_pRenderer = nullptr;
-CInputKeyboard *CManager::m_pInputKeyboard = nullptr;
-CInputJoypad *CManager::m_pInputJoypad = nullptr;
-CInputMouse *CManager::m_pInputMouse = nullptr;
-CSound *CManager::m_pSound = nullptr;	
-CTexture *CManager::m_pTexture = nullptr;
-CXFile *CManager::m_pXFile = nullptr;
-// フェードクラス
-CFade* CManager::m_pFade = nullptr;// サウンド情報のポインタ
-bool CManager::m_bPause = false;
-bool CManager::m_bEntry[CPlayer::PLAYER_MAX] = { false };
-
-CManager::MODE CManager::m_mode = MODE_TITLE;
+CManager *CManager::m_pManager = nullptr;		// マネージャーのポインタ
 
 //-----------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------
-CManager::CManager()
+CManager::CManager() :m_pTitle(), m_pGame(), m_pResult(), m_pRenderer(), m_pInputKeyboard(), m_pInputJoypad(), m_pInputMouse(), m_pSound(), m_pTexture(),
+					m_pXFile(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
 {
 }
 
@@ -129,7 +117,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	}
 
 	//敵配置情報のロード
-	LoadSpace::LoadEnemy(hWnd);
+	//LoadSpace::LoadEnemy(hWnd);
 
 	// モードの設定
 	SetMode(MODE_TITLE);
@@ -168,13 +156,8 @@ void CManager::Uninit()
 	// オブジェクトの終了処理
 	CObject::ReleaseAll();
 
-	// ベースの破棄
-	if (m_pBase != nullptr)
-	{
-		m_pBase->Uninit();
-		delete m_pBase;
-		m_pBase = nullptr;
-	}
+	// 全てのシーンを破棄
+	UninitSceneAll();
 
 	//テクスチャの破棄
 	if (m_pTexture != nullptr)
@@ -249,10 +232,22 @@ void CManager::Update()
 	//ポーズ中でないなら
 	if (m_bPause == false)
 	{
-		// ベースの更新処理
-		if (m_pBase != nullptr)
+		// タイトルの更新処理
+		if (m_pTitle != nullptr)
 		{
-			m_pBase->Update();
+			m_pTitle->Update();
+		}
+
+		// ゲームの更新処理
+		if (m_pGame != nullptr)
+		{
+			m_pGame->Update();
+		}
+
+		// リザルトの更新処理
+		if (m_pResult != nullptr)
+		{
+			m_pResult->Update();
 		}
 	}
 
@@ -282,16 +277,42 @@ void CManager::Draw()
 }
 
 //-----------------------------------------------------------------------------
+// 全てのシーンを破棄
+//-----------------------------------------------------------------------------
+void CManager::UninitSceneAll()
+{
+	// タイトルの破棄
+	if (m_pTitle != nullptr)
+	{
+		m_pTitle->Uninit();
+		delete m_pTitle;
+		m_pTitle = nullptr;
+	}
+
+	// ゲームの破棄
+	if (m_pGame != nullptr)
+	{
+		m_pGame->Uninit();
+		delete m_pGame;
+		m_pGame = nullptr;
+	}
+
+	// リザルトの破棄
+	if (m_pResult != nullptr)
+	{
+		m_pResult->Uninit();
+		delete m_pResult;
+		m_pResult = nullptr;
+	}
+}
+
+//-----------------------------------------------------------------------------
 // モードの設定
 //-----------------------------------------------------------------------------
 void CManager::SetMode(MODE mode)
 {
-	if (m_pBase != nullptr)
-	{// 現在の画面を破棄
-		m_pBase->Uninit();
-		delete m_pBase;
-		m_pBase = nullptr;
-	}
+	// 全てのシーンを破棄
+	UninitSceneAll();
 
 	// オブジェクトの削除
 	CObject::ReleaseAll();
@@ -303,20 +324,24 @@ void CManager::SetMode(MODE mode)
 	switch (m_mode)
 	{
 	case MODE_TITLE:
-		m_pBase = new CTitle;
+		// タイトル情報の生成
+		m_pTitle = new CTitle;
+		// 初期化処理
+		m_pTitle->Init();
 		break;
 
 	case MODE_GAME:
-		m_pBase = new CGame;
+		// ゲーム情報の生成
+		m_pGame = new CGame;
+		// 初期化処理
+		m_pGame->Init();
 		break;
 
 	case MODE_RESULT:
-		m_pBase = new CResult;
+		// リザルト情報の生成
+		m_pResult = new CResult;
+		// 初期化処理
+		m_pResult->Init();
 		break;
-	}
-
-	if (m_pBase != nullptr)
-	{//初期化処理
-		m_pBase->Init();
 	}
 }

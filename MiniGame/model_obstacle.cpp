@@ -41,7 +41,7 @@
 CObstacle::CObstacle() :m_PosOld(0.0f, 0.0f, 0.0f)
 {
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_OBSTACLE);
+	SetType(EObject::OBJ_OBSTACLE);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ CObstacle *CObstacle::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, con
 		// 角度設定
 		pObstacle->SetRotation(rot);
 		// Xファイルの設定
-		pObstacle->BindXFile(CManager::GetXFile()->GetXFile(name));
+		pObstacle->BindXFile(CManager::GetManager()->GetXFile()->GetXFile(name));
 		// 初期化
 		pObstacle->Init();
 	}
@@ -147,7 +147,7 @@ bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer)
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		// プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
 
 		if (pPlayer != nullptr)
 		{

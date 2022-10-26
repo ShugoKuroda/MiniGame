@@ -30,7 +30,7 @@ LPDIRECT3DTEXTURE9 CLogo::m_pTexture[TYPE_MAX] = {};
 CLogo::CLogo()
 	:m_nCountUninit(0), m_AnimType(ANIM_NONE), m_type(TYPE_NONE)
 {
-	SetObjType(EObject::OBJ_LOGO);
+	SetType(EObject::OBJ_LOGO);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ CLogo* CLogo::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const D3DX
 HRESULT CLogo::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -183,10 +183,10 @@ void CLogo::Update()
 		if (m_type == TYPE_CLEAR || m_type == TYPE_GAMEOVER)
 		{
 			// モードの設定
-			CManager::GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_RESULT);
+			CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_RESULT);
 
 			// プレイヤーのスコアをランキングに設定
-			CGame::SetPlayerScore();
+			CManager::GetManager()->GetGame()->SetPlayerScore();
 		}
 
 		// 破棄

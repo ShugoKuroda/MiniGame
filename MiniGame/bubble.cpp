@@ -21,7 +21,7 @@ int CBubble::m_nReverseCount = 0;
 CBubble::CBubble() :m_move(0.0f, 0.0f, 0.0f),m_nReverse(0)
 {
 	//タイプの設定
-	SetObjType(EObject::OBJ_BUBBLE);
+	SetType(EObject::OBJ_BUBBLE);
 	m_nReverseCount++;
 }
 
@@ -63,7 +63,7 @@ CBubble *CBubble::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 HRESULT CBubble::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -158,7 +158,7 @@ void CBubble::Update()
 void CBubble::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// レンダーステート(加算合成にする)
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);

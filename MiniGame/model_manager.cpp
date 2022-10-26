@@ -97,7 +97,7 @@ void CModelManager::Update()
 		m_nNumCreate = GetRandNum(300, 60);
 
 		// ƒJƒƒ‰î•ñ‚Ìæ“¾
-		D3DXVECTOR3 posCamera = CGame::GetCamera()->GetPosV();
+		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 		
 		// ¶¬ˆÊ’u‚Ìæ“¾
 		float fRand = (float)GetRandNum(80, -80);

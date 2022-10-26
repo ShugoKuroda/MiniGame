@@ -25,7 +25,7 @@
 CNumber::CNumber()
 {
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_SCORE);
+	SetType(EObject::OBJ_SCORE);
 }
 
 //=============================================================================

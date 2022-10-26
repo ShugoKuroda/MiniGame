@@ -7,20 +7,18 @@
 #ifndef _RESULT_H_
 #define _RESULT_H_
 
-#include "base.h"
-
 //*****************************************************************************
 // リザルト画面クラス(派生クラス)
 //*****************************************************************************
-class CResult : public CBase
+class CResult
 {
 public:
 	CResult();
 	~CResult();
 
-	HRESULT Init() override;
-	void Uninit() override;
-	void Update() override;
+	HRESULT Init();
+	void Uninit();
+	void Update();
 
 private:
 	// テクスチャ読み込み

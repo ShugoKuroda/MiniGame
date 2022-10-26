@@ -30,7 +30,7 @@ LPDIRECT3DTEXTURE9 CEffect::m_apTexture[TEX_MAX] = {};
 //========================================
 CEffect::CEffect() :m_move(0.0f, 0.0f, 0.0f), m_nLife(0), m_type(TYPE_SPHERE)
 {
-	CObject2D::SetObjType(EObject::OBJ_EFFECT);
+	CObject2D::SetType(EObject::OBJ_EFFECT);
 }
 
 //========================================
@@ -77,7 +77,7 @@ CEffect *CEffect::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const 
 HRESULT CEffect::Load()
 {
 	// レンダラーからデバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/particle000.jpg", &m_apTexture[TEX_SPHERE]);		// 球体パーティクル
@@ -158,7 +158,7 @@ void CEffect::Update()
 void CEffect::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//テクスチャブレンディングを加算合成にする
 	pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);

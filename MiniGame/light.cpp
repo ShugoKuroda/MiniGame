@@ -54,7 +54,7 @@ CLight *CLight::Create(const D3DXVECTOR3& vecDir, const D3DXCOLOR& diffuse)
 HRESULT CLight::Init()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//ライト情報の初期化
 	ZeroMemory(&m_aLight, sizeof(D3DLIGHT9));

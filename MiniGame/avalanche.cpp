@@ -16,6 +16,8 @@
 #include "game.h"
 #include "title.h"
 
+#include "manager.h"
+
 //-----------------------------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------------------------
@@ -93,11 +95,10 @@ void CAvalanche::Update()
 		m_bEnd = true;
 	}
 
-<<<<<<< HEAD
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		//プレイヤーのポインタを取得
-		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
 
 		if (pPlayer != nullptr)
 		{
@@ -128,9 +129,9 @@ void CAvalanche::Update()
 			}
 		}
 	}
-=======
+
 	//プレイヤーの情報を取得
-	CPlayer *pPlayer = CTitle::GetPlayer();
+	CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(0);
 
 	if (m_bEnd != true)
 	{
@@ -149,7 +150,6 @@ void CAvalanche::Update()
 		pPlayer->SetBadState(false);
 		Uninit();
 	}
->>>>>>> 212935dc8f940f827fa80f303ee408bacb8c7e9e
 }
 
 //-----------------------------------------------------------------------------------------------

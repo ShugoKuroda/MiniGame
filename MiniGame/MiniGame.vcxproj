@@ -160,7 +160,6 @@
   <ItemGroup>
     <ClCompile Include="avalanche.cpp" />
     <ClCompile Include="barrier.cpp" />
-    <ClCompile Include="base.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="bg_move.cpp" />
     <ClCompile Include="bubble.cpp" />
@@ -214,7 +213,6 @@
   <ItemGroup>
     <ClInclude Include="avalanche.h" />
     <ClInclude Include="barrier.h" />
-    <ClInclude Include="base.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="bg_move.h" />
     <ClInclude Include="bubble.h" />

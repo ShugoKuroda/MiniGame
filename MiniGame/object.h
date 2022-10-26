@@ -66,7 +66,7 @@ public:
 	static void ShakeAll();
 
 	static CObject* GetObject(int nCnt) { return m_apObject[nCnt]; }
-	void SetObjType(EObject type) { m_nType = type; }
+	void SetType(EObject type) { m_nType = type; }
 	static void SetShake(int nShakeNum);
 	static bool GetShake() { return m_bShake; }
 	EObject GetObjType() { return m_nType; }

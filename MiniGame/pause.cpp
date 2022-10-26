@@ -32,7 +32,7 @@ CPause::CPause() :m_bPause(false), m_nPauseSelect(0), m_bWait(false), m_nNumPlay
 	}
 
 	// オブジェクトタイプの設定
-	SetObjType(OBJ_PAUSE);
+	SetType(OBJ_PAUSE);
 }
 
 //=============================================================================
@@ -49,7 +49,7 @@ CPause::~CPause()
 HRESULT CPause::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/pause000.jpg", &m_apTexture[TYPE_FRAME]);		// ポーズ画面枠
@@ -109,9 +109,9 @@ HRESULT CPause::Init()
 	{// 生成
 		m_apObject2D[nCnt] = new CObject2D;
 		// オブジェクトタイプの設定
-		m_apObject2D[nCnt]->SetObjType(OBJ_PAUSE_MENU);
+		m_apObject2D[nCnt]->SetType(OBJ_PAUSE_MENU);
 	}
-	m_apObject2D[TYPE_FRAME]->SetObjType(OBJ_PAUSE);
+	m_apObject2D[TYPE_FRAME]->SetType(OBJ_PAUSE);
 
 	// スクリーンサイズの保存
 	D3DXVECTOR2 ScreenSize = D3DXVECTOR2((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT);
@@ -150,7 +150,7 @@ HRESULT CPause::Init()
 void CPause::Uninit()
 {
 	// ポーズ状態をfalseにする
-	CManager::SetPause(false);
+	CManager::GetManager()->SetPause(false);
 
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
 	{
@@ -180,9 +180,9 @@ void CPause::Update()
 	if (m_bPause == true)
 	{
 		// キーボード情報の取得
-		CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 		// ゲームパッド情報の取得
-		CInputJoypad *pJoypad = CManager::GetInputJoypad();
+		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
 		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_UP) == true || pJoypad->GetTrigger(CInputJoypad::JOYKEY_UP, m_nNumPlayer) == true)
 		{
@@ -301,5 +301,5 @@ void CPause::SetPause()
 		CSound::Play(CSound::SOUND_LABEL_SE_MENU_OUT);
 	}
 
-	CManager::SetPause(m_bPause);
+	CManager::GetManager()->SetPause(m_bPause);
 }

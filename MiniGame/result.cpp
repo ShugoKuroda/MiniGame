@@ -58,11 +58,6 @@ void CResult::Uninit()
 
 	// BGMストップ
 	CSound::Stop();
-
-	// ボタンを押したコントローラーをENTRY状態にする
-	CManager::SetEntry(0, false);
-	// ボタンを押したコントローラーをENTRY状態にする
-	CManager::SetEntry(1, false);
 }
 
 //=============================================================================

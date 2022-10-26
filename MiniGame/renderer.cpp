@@ -31,7 +31,7 @@ CRenderer::CRenderer() :m_pD3D(nullptr), m_pD3DDevice(nullptr)
 //=============================================================================
 CRenderer::~CRenderer()
 {
-	assert(CManager::GetRenderer() != nullptr);
+	assert(CManager::GetManager()->GetRenderer() != nullptr);
 }
 
 //=============================================================================
@@ -153,7 +153,7 @@ void CRenderer::Update()
 void CRenderer::Draw()
 {
 	// フェード情報の取得
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CManager::GetManager()->GetFade();
 
 	// バックバッファ＆Ｚバッファのクリア
 	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);

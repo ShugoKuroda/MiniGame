@@ -60,19 +60,12 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------------------------
-bool CGame::m_bCreateCloud = true; 
-bool CGame::m_bCreateBubble = false;
-bool CGame::m_bDieBoss = false;
-CPlayer *CGame::m_pPlayer[CPlayer::PLAYER_MAX] = {};
-CMeshField *CGame::m_pMeshField = nullptr;
-CEnemyBoss* CGame::m_pEnemyBoss = nullptr;
-CItem* CGame::m_pItem = nullptr;
-CCamera* CGame::m_pCamera = nullptr;
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_nCntBubble(0), m_nRandBubble(0)
+CGame::CGame() :m_nCntBubble(0), m_nRandBubble(0), m_bCreateCloud(true), m_bCreateBubble(false), m_bDieBoss(false),
+				m_pPlayer{}, m_pMeshField(), m_pEnemyBoss(), m_pItem(), m_pCamera()
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
@@ -114,7 +107,7 @@ HRESULT CGame::Init()
 	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
 
 	// プレイヤー生成
-	m_pPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR");
+	//m_pPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR");
 
 	// 敵ボス生成
 	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
@@ -202,7 +195,7 @@ void CGame::Uninit()
 	//UnloadAll();
 
 	// ポーズ状態を解除
-	CManager::SetPause(false);
+	CManager::GetManager()->SetPause(false);
 
 	// 決定音
 	CSound::Stop();
@@ -485,7 +478,7 @@ void CGame::SetDieBoss(bool bDie)
 	// ボスの死亡状態を設定
 	m_bDieBoss = bDie;
 	// 画面を止める
-	CManager::SetPause(true);
+	CManager::GetManager()->SetPause(true);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -493,27 +486,27 @@ void CGame::SetDieBoss(bool bDie)
 //-----------------------------------------------------------------------------------------------
 void CGame::SetPlayerScore()
 {
-	// プレイヤーのスコアを保存
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		if (m_pPlayer[nCntPlayer] != nullptr)
-		{
-			// プレイヤーENTRY情報の取得
-			bool bEntry = CManager::GetEntry(nCntPlayer);
+	//// プレイヤーのスコアを保存
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	if (m_pPlayer[nCntPlayer] != nullptr)
+	//	{
+	//		// プレイヤーENTRY情報の取得
+	//		bool bEntry = CManager::GetManager()->GetEntry(nCntPlayer);
 
-			// エントリーしていれば
-			if (bEntry == true)
-			{// プレイヤー生成
-				// プレイヤースコアの初期化
-				CRank::SetScore(0, nCntPlayer);
+	//		// エントリーしていれば
+	//		if (bEntry == true)
+	//		{// プレイヤー生成
+	//			// プレイヤースコアの初期化
+	//			CRank::SetScore(0, nCntPlayer);
 
-				CScore* pScore = m_pPlayer[nCntPlayer]->GetScore();
-				if (pScore != nullptr)
-				{
-					int nSocre = pScore->GetScore();
-					CRank::SetScore(nSocre, nCntPlayer);
-				}
-			}
-		}
-	}
+	//			CScore* pScore = m_pPlayer[nCntPlayer]->GetScore();
+	//			if (pScore != nullptr)
+	//			{
+	//				int nSocre = pScore->GetScore();
+	//				CRank::SetScore(nSocre, nCntPlayer);
+	//			}
+	//		}
+	//	}
+	//}
 }

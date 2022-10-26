@@ -17,7 +17,7 @@
 CFadeScene::CFadeScene() :m_type(TYPE_NONE), m_nCounter(0)
 {
 	//É^ÉCÉvÇÃê›íË
-	CObject::SetObjType(CObject::OBJ_FADE);
+	CObject::SetType(CObject::OBJ_FADE);
 }
 
 //-----------------------------------------------------------------------------------------------
