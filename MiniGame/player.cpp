@@ -198,7 +198,7 @@ void CPlayer::Update()
 	}
 	
 	//プレイヤーが雪崩に巻き込まれていたら
-	if (m_bInAvalanche == true)
+	if (m_state == STATE_INAVALANCHE)
 	{
 		// キーボード情報の取得
 		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
@@ -213,7 +213,7 @@ void CPlayer::Update()
 			m_nPushButton++;
 			if (m_nPushButton >= 1/*何回押したら雪崩を抜けるか*/)
 			{
-				m_bInAvalanche = false;
+				m_state = STATE_NORMAL;
 			}
 		}
 	}
