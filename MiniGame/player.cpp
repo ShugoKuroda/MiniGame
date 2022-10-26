@@ -78,7 +78,7 @@ const int CPlayer::DEFAULT_LIFE = 2;
 // コンストラクタ
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
-	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false),
+	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0),
 	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false),m_bInAvalanche(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
 {
 	//オブジェクトの種類設定
@@ -95,7 +95,7 @@ CPlayer::~CPlayer()
 //-----------------------------------------------------------------------------
 // インスタンス生成処理
 //-----------------------------------------------------------------------------
-CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name,int nPlayryNum)
+CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name,int nPlayerNum)
 {
 	//インスタンス生成
 	CPlayer *pPlayer = new CPlayer;
@@ -111,7 +111,7 @@ CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 		// 生成処理
 		pPlayer->Init();
 		// プレイヤー番号の設定
-		pPlayer->m_nPlayerNum = nPlayryNum;
+		pPlayer->m_nPlayerNum = nPlayerNum;
 	}
 
 	return pPlayer;
@@ -163,14 +163,30 @@ void CPlayer::Update()
 
 		// キーボード情報の取得
 		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
+		// ジョイパッド情報の取得
+		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
 		if (m_bIsJumping == false)
 		{
-			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
-			{//スペースキーが押された
-				m_move.y = 3.0f;
+			// キーボード操作の場合
+			if (m_bControlKeyboard == true)
+			{
+				if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
+				{//スペースキーが押された
+					m_move.y = 3.0f;
 
-				m_bIsJumping = true;
+					m_bIsJumping = true;
+				}
+			}
+			// ゲームパッド操作の場合
+			else
+			{
+				if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
+				{//スペースキーが押された
+					m_move.y = 3.0f;
+
+					m_bIsJumping = true;
+				}
 			}
 		}
 
@@ -328,11 +344,11 @@ void CPlayer::Move()
 	// ゲームパッド操作なら
 	else
 	{
-		if (pJoypad->GetPress(CInputJoypad::JOYKEY_LEFT, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).x <= -0.2f)
+		if (pJoypad->GetPress(CInputJoypad::JOYKEY_LEFT, m_nGamePadNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).x <= -0.2f)
 		{//左キー押下
-			if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
-				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
+			if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nGamePadNum) == true ||
+				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 			{//上キー押下
 			 //移動量加算
 				m_move.x += GetSinVec(-0.75f, MOVE_DEFAULT);
@@ -340,8 +356,8 @@ void CPlayer::Move()
 				//アニメーション変更
 				m_nCntAnimMove++;
 			}
-			else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
-				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
+			else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nGamePadNum) == true ||
+				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y <= JOYKEY_LEFT_STICK_UP)
 			{//下キー押下
 				m_move.x += GetSinVec(-0.25f, MOVE_DEFAULT);
 				m_move.z += GetCosVec(-0.25f, MOVE_DEFAULT);
@@ -355,18 +371,18 @@ void CPlayer::Move()
 				m_nCntAnimMove = 0;
 			}
 		}
-		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_RIGHT, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).x >= 0.2f)
+		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_RIGHT, m_nGamePadNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).x >= 0.2f)
 		{//右キー押下
-			if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
-				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
+			if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nGamePadNum) == true ||
+				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 			{//上キー押下
 				m_move.x += GetSinVec(0.75f, MOVE_DEFAULT);
 				m_move.z += GetCosVec(0.75f, MOVE_DEFAULT);
 				m_nCntAnimMove++;
 			}
-			else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
-				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
+			else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nGamePadNum) == true ||
+				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y <= JOYKEY_LEFT_STICK_UP)
 			{//下キー押下
 				m_move.x += GetSinVec(0.25f, MOVE_DEFAULT);
 				m_move.z += GetCosVec(0.25f, MOVE_DEFAULT);
@@ -380,15 +396,15 @@ void CPlayer::Move()
 				m_nCntAnimMove = 0;
 			}
 		}
-		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y >= JOYKEY_LEFT_STICK_DOWN)
+		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nGamePadNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 		{//上キー押下
 			m_move.x += GetSinVec(1.0f, MOVE_DEFAULT);
 			m_move.z += GetCosVec(1.0f, MOVE_DEFAULT);
 			m_nCntAnimMove++;
 		}
-		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nPlayerNum) == true ||
-			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nPlayerNum).y <= JOYKEY_LEFT_STICK_UP)
+		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nGamePadNum) == true ||
+			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y <= JOYKEY_LEFT_STICK_UP)
 		{//下キー押下
 			m_move.x += GetSinVec(0.0f, MOVE_DEFAULT);
 			m_move.z += GetCosVec(0.0f, MOVE_DEFAULT);

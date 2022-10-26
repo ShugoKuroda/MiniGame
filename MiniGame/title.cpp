@@ -177,6 +177,7 @@ void CTitle::Update()
 	//{
 
 	//}
+
 	// キーボード情報の取得
 	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 	// ジョイパッド情報の取得
@@ -185,46 +186,58 @@ void CTitle::Update()
 	// プレイヤー生成
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
-		if (m_bEntry[nCntPlayer] == false)
+		// 現在の番号が参加していないなら
+		if (m_bEntry[m_nEntryNum] == false)
 		{
 			if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_START, nCntPlayer) == true)
 			{// スタートボタン押下
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
-				m_bEntry[nCntPlayer] = true;
-				m_nEntryNum++;
+				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", m_nEntryNum);
+				m_pPlayer[m_nEntryNum]->SetGamePadNum(nCntPlayer);
+				m_bEntry[m_nEntryNum] = true;
+
+				// エントリー可能数が上限を超えるまで
+				if (m_nEntryNum < CPlayer::PLAYER_MAX)
+				{// エントリー番号の加算
+					m_nEntryNum++;
+				}
+				break;
 			}
 			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) == true && m_bEntryKeyboard == false)
-			{
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+			{// エンターキー押下 && キーボードで参加していなければ
+				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetKeyboard(true);
 				m_bEntryKeyboard = true;
-				m_bEntry[nCntPlayer] = true;
-				m_nEntryNum++;
+				m_bEntry[m_nEntryNum] = true;
+				
+				// エントリー可能数が上限を超えるまで
+				if (m_nEntryNum < CPlayer::PLAYER_MAX)
+				{// エントリー番号の加算
+					m_nEntryNum++;
+				}
+				break;
+			}
+		}
+
+		// ゲーム開始の繰り返し防止
+		if (m_bPush == false)
+		{
+			//キーを押されたら
+			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_1) == true)
+			{
+				// 決定音
+				CSound::Play(CSound::SOUND_LABEL_SE_MENU_OK);
+
+				// モードの設定
+				CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_GAME);
+				m_bPush = true;
+
+				return;
 			}
 		}
 	}
 
 	//m_nCounter++;
 
-	//// ゲーム開始の繰り返し防止
-	//if (m_bPush == false)
-	//{
-	//	// キーボード情報の取得
-	//	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
-
-	//	//キーを押されたら
-	//	if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) == true)
-	//	{
-	//		// 決定音
-	//		CSound::Play(CSound::SOUND_LABEL_SE_MENU_OK);
-
-	//		// モードの設定
-	//		CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_GAME);
-	//		m_bPush = true;
-
-	//		return;
-	//	}
-	//}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -234,12 +247,12 @@ bool CTitle::GetEntryAll()
 {
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
-		// エントリーしていれば
-		if (CManager::GetManager()->GetTitle()->GetEntry(nCntPlayer) == true)
+		// 1人でもエントリーしていれば
+		if (m_bEntry[nCntPlayer] == true)
 		{
-			return false;
+			return true;
 		}
 	}
 
-	return true;
+	return false;
 }

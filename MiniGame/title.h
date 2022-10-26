@@ -54,7 +54,7 @@ public:
 	bool GetEntryAll();
 
 	// プレイヤー参加情報の取得
-	bool GetEntry(int nNum) { return m_bEntry[nNum]; }
+	bool *GetEntry() { return &m_bEntry[0]; }
 	// プレイヤー参加情報の設定
 	void SetEntry(int nNum) { m_bEntry[nNum] = m_bEntry[nNum] ? false : true; }
 

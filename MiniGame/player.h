@@ -104,6 +104,7 @@ public:
 	void SetBadState(bool inState) { m_bInAvalanche = inState; }
 	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
 	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
+	void SetGamePadNum(int nNum) { m_nGamePadNum = nNum; }
 
 	void State();
 	void Damage();
@@ -136,8 +137,12 @@ private:	//メンバ変数
 	int m_nPatterAnimV;
 	//テクスチャアニメーションの種類
 	ANIMTYPE m_nTexRotType;
-	//プレイヤーの番号
+
+	// プレイヤーの番号
 	int m_nPlayerNum;
+	// 使うゲームパッドの番号
+	int m_nGamePadNum;
+
 	//弾の発射位置
 	D3DXVECTOR2 posBullet;
 	// ジャンプしているかどうか
