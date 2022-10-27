@@ -101,7 +101,7 @@ public:
 	void SetMoveX(float fmove) { m_move.x = fmove; }
 	void SetMoveZ(float fmove) { m_move.z = fmove; }
 	void SetMoveY(float fmove) { m_move.y = fmove; }
-	void SetBadState(bool inState) { m_bInAvalanche = inState; }
+	void SetState(STATE inState) { m_state = inState; }
 	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
 	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
 	void SetGamePadNum(int nNum) { m_nGamePadNum = nNum; }
@@ -153,8 +153,6 @@ private:	//メンバ変数
 	bool m_bControlKeyboard;
 	//海に入ったかどうか
 	bool m_bInSea;
-	//プレイヤーが雪崩に巻き込まれているかどうか
-	bool m_bInAvalanche;
 	//雪崩を抜けるためのキー(ボタン)入力回数
 	int m_nPushButton;
 

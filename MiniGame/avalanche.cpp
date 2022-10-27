@@ -95,41 +95,6 @@ void CAvalanche::Update()
 		m_bEnd = true;
 	}
 
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		//プレイヤーのポインタを取得
-		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
-
-		if (pPlayer != nullptr)
-		{
-			if (m_bEnd != true)
-			{
-				//for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
-				//{
-				//	CObject *pObject = CObject::GetObject(nCntObject);
-				//	if (pObject != nullptr)
-				//	{
-				//		CObject::EObject objType = pObject->GetObjType();
-
-				//		if (objType == OBJ_PLAYER)
-				//		{
-				if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
-				{//最初に生成したエフェクトがプレイヤーに接触した場合
-					//プレイヤーを押し戻す
-					pPlayer->SetBadState(true);
-				}
-				//		}
-				//	}
-				//}
-			}
-			else
-			{
-				pPlayer->SetBadState(false);
-				Uninit();
-			}
-		}
-	}
-
 	//プレイヤーの情報を取得
 	CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(0);
 
@@ -140,14 +105,14 @@ void CAvalanche::Update()
 			if (pPlayer->GetPosition().z <= m_pEffect[0]->GetPosition().z)
 			{//最初に生成したエフェクトがプレイヤーに接触した場合
 				//プレイヤーを押し戻す
-				pPlayer->SetBadState(true);
+				pPlayer->SetState(CPlayer::STATE_INAVALANCHE);
 			}
 		}
 	}
 	else
 	{
 		//プレイヤーの状態を変更する
-		pPlayer->SetBadState(false);
+		pPlayer->SetState(CPlayer::STATE_NORMAL);
 		Uninit();
 	}
 }
