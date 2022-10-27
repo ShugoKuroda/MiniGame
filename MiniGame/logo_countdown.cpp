@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// スコア処理[score.cpp]
+// カウントダウンロゴ処理[logo_countdown.cpp]
 // Author : SHUGO KURODA
 //
 //=============================================================================
@@ -8,62 +8,67 @@
 //*****************************************************************************
 // インクルード
 //*****************************************************************************
-#include "object2D.h"
-#include "life.h"
+#include "logo_countdown.h"
 #include "number.h"
-
-//*****************************************************************************
-// 静的メンバ変数
-//*****************************************************************************
-LPDIRECT3DTEXTURE9 CLife::m_pTexture = nullptr;
+#include "renderer.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CLife::CLife() :m_nLife(0), m_pVtxBuff(nullptr), m_apNumber{ nullptr }
+CLogoCountDown::CLogoCountDown() :m_nNum(0)
 {
 }
 
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CLife::~CLife()
+CLogoCountDown::~CLogoCountDown()
 {
 }
 
 //=============================================================================
 // 生成
 //=============================================================================
-CLife *CLife::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
+CLogoCountDown *CLogoCountDown::Create(const int &nCountStart)
 {
-	CLife *pLife = new CLife;
+	CLogoCountDown *pLogo = new CLogoCountDown;
 
-	for (int nCntScore = 0; nCntScore < MAX_LIFE; nCntScore++)
+	if (pLogo != nullptr)
 	{
-		// 数字ポリゴン生成
-		pLife->m_apNumber[nCntScore] = new CNumber("TEX_TYPE_SCORE_UI");
+		// 数字の設定
+		pLogo->m_nNum = nCountStart;
 
-		if (pLife->m_apNumber[nCntScore] != nullptr)
+		// 数字ポリゴン生成
+		pLogo->m_apNumber = new CNumber("TEX_TYPE_SCORE_UI");
+
+		if (pLogo->m_apNumber != nullptr)
 		{
 			// 位置設定
-			pLife->m_apNumber[nCntScore]->SetPosition(D3DXVECTOR3(pos.x + (nCntScore * 20.0f), pos.y, pos.z));
+			pLogo->m_apNumber->SetPosition(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, CRenderer::SCREEN_HEIGHT / 2, 0.0f));
 			// サイズ設定
-			pLife->m_apNumber[nCntScore]->SetSize(size);
+			pLogo->m_apNumber->SetSize(D3DXVECTOR2(COUNT_SIZE, COUNT_SIZE));
 			// 初期化
-			pLife->m_apNumber[nCntScore]->Init();
+			pLogo->m_apNumber->Init();
 		}
+
+		// 初期化
+		pLogo->Init();
 	}
 
-	return pLife;
+	return pLogo;
 }
 
 //=============================================================================
-// ポリゴンの初期化
+// 初期化
 //=============================================================================
-HRESULT CLife::Init()
+HRESULT CLogoCountDown::Init()
 {
-	//オブジェクトの種類設定
-	SetType(EObject::OBJ_PAUSE);
+	// 色の設定
+	//m_apNumber->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	// 破棄までのカウンター設定
+	SetCountUninit(COUNT_UNINIT);
+	// 数値の設定
+	Set();
 
 	return S_OK;
 }
@@ -71,17 +76,14 @@ HRESULT CLife::Init()
 //=============================================================================
 // 終了
 //=============================================================================
-void CLife::Uninit()
+void CLogoCountDown::Uninit()
 {
-	for (int nCntNumber = 0; nCntNumber < MAX_LIFE; nCntNumber++)
+	// 中身があるなら
+	if (m_apNumber != nullptr)
 	{
-		// 中身があるなら
-		if (m_apNumber[nCntNumber] != nullptr)
-		{
-			// 数字情報の終了処理
-			m_apNumber[nCntNumber]->Uninit();
-			m_apNumber[nCntNumber] = nullptr;
-		}
+		// 数字情報の終了処理
+		m_apNumber->Uninit();
+		m_apNumber = nullptr;
 	}
 
 	// オブジェクトの破棄
@@ -91,42 +93,49 @@ void CLife::Uninit()
 //=============================================================================
 // 更新
 //=============================================================================
-void CLife::Update()
+void CLogoCountDown::Update()
 {
+	int nCounter = GetCountUninit();
+
+	nCounter--;
+
+	if (nCounter <= 0)
+	{
+		if (m_nNum > 1)
+		{
+			Create(m_nNum - 1);
+		}
+		Uninit();
+		return;
+	}
+
+	SetCountUninit(nCounter);
+
+	D3DXVECTOR2 size = m_apNumber->GetSize();
+
+	size.x -= 1.0f;
+	size.y -= 1.0f;
+
+	m_apNumber->SetSize(size);
+
+	m_apNumber->SetVertex();
 }
 
 //=============================================================================
 // 描画
 //=============================================================================
-void CLife::Draw()
+void CLogoCountDown::Draw()
 {
-}
-
-//=============================================================================
-// スコアの加算
-//=============================================================================
-void CLife::Add(const int& nScore)
-{
-	m_nLife += nScore;
-	Set();
 }
 
 //=============================================================================
 // スコアの設定
 //=============================================================================
-void CLife::Set()
+void CLogoCountDown::Set()
 {
-	//各桁の数値を格納(pPostexU[桁ごとの数値])
-	int aPosTexU[MAX_LIFE];
+	//数値を格納
+	int nPosTexU = m_nNum % 10;
 
-	aPosTexU[0] = m_nLife % 10;
-
-	//テクスチャを更新する
-	for (int nCntScore = 0; nCntScore < MAX_LIFE; nCntScore++)
-	{
-		if (m_apNumber[nCntScore] != nullptr)
-		{
-			m_apNumber[nCntScore]->SetAnimation(aPosTexU[nCntScore], 0, CNumber::DIVISION_U, CNumber::DIVISION_V);
-		}
-	}
+	// テクスチャ座標の更新
+	m_apNumber->SetAnimation(nPosTexU, 0, CNumber::DIVISION_U, CNumber::DIVISION_V);
 }

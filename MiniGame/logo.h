@@ -59,6 +59,10 @@ public:
 	void Update() override;
 	// 描画
 	void Draw() override;
+	// 破棄カウンターの設定
+	void SetCountUninit(int nCounter) { m_nCountUninit = nCounter; }
+	// 破棄カウンターの取得
+	int GetCountUninit() { return m_nCountUninit; }
 
 private:
 	// テクスチャのポインタ

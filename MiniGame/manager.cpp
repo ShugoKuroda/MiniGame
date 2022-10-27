@@ -37,6 +37,8 @@ CManager *CManager::m_pManager = nullptr;		// マネージャーのポインタ
 CManager::CManager() :m_pTitle(), m_pGame(), m_pResult(), m_pRenderer(), m_pInputKeyboard(), m_pInputJoypad(), m_pInputMouse(), m_pSound(), m_pTexture(),
 					m_pXFile(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
 {
+	// 初期化
+	ZeroMemory(&m_EntryInfo, sizeof(m_EntryInfo));
 }
 
 //-----------------------------------------------------------------------------
@@ -343,5 +345,33 @@ void CManager::SetMode(MODE mode)
 		// 初期化処理
 		m_pResult->Init();
 		break;
+	}
+}
+
+//-----------------------------------------------------------------------------------------------
+// 全てのプレイヤーの参加情報を確認
+//-----------------------------------------------------------------------------------------------
+bool CManager::GetEntryAll()
+{
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		// 1人でもエントリーしていれば
+		if (m_EntryInfo[nCntPlayer].bEntry == true)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+//-----------------------------------------------------------------------------------------------
+// 参加情報の設定
+//-----------------------------------------------------------------------------------------------
+void CManager::SetEntryAll(SEntryInfo *pEntry)
+{
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		m_EntryInfo[nCntPlayer] = pEntry[nCntPlayer];
 	}
 }

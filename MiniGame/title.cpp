@@ -46,7 +46,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_apTexture[OBJ_MAX] = { nullptr };
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CTitle::CTitle() :m_bPush(false), m_bEntry{ false }, m_move(0.0f,0.0f,0.0f), m_nCounter(0),
+CTitle::CTitle() :m_bPush(false), m_move(0.0f,0.0f,0.0f), m_nCounter(0),
 				m_pPlayer{}, m_pCamera(), m_bEntryKeyboard(false), m_nEntryNum(0)
 {
 	for (int nCnt = 0; nCnt < OBJ_MAX - 1; nCnt++)
@@ -183,17 +183,20 @@ void CTitle::Update()
 	// ジョイパッド情報の取得
 	CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
+	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
+
 	// プレイヤー生成
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		// 現在の番号が参加していないなら
-		if (m_bEntry[m_nEntryNum] == false)
+		if (pEntry[m_nEntryNum].bEntry == false)
 		{
 			if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_START, nCntPlayer) == true)
 			{// スタートボタン押下
 				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetGamePadNum(nCntPlayer);
-				m_bEntry[m_nEntryNum] = true;
+				pEntry[m_nEntryNum].nGamePadNum = nCntPlayer;
+				pEntry[m_nEntryNum].bEntry = true;
 
 				// エントリー可能数が上限を超えるまで
 				if (m_nEntryNum < CPlayer::PLAYER_MAX)
@@ -207,7 +210,8 @@ void CTitle::Update()
 				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetKeyboard(true);
 				m_bEntryKeyboard = true;
-				m_bEntry[m_nEntryNum] = true;
+				pEntry[m_nEntryNum].bEntryKeyboard = true;
+				pEntry[m_nEntryNum].bEntry = true;
 				
 				// エントリー可能数が上限を超えるまで
 				if (m_nEntryNum < CPlayer::PLAYER_MAX)
@@ -238,21 +242,4 @@ void CTitle::Update()
 
 	//m_nCounter++;
 
-}
-
-//-----------------------------------------------------------------------------------------------
-// 全てのプレイヤーの参加情報を確認
-//-----------------------------------------------------------------------------------------------
-bool CTitle::GetEntryAll()
-{
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		// 1人でもエントリーしていれば
-		if (m_bEntry[nCntPlayer] == true)
-		{
-			return true;
-		}
-	}
-
-	return false;
 }

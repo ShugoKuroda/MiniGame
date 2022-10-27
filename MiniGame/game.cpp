@@ -50,6 +50,8 @@
 #include "item.h"
 #include "model_obstacle.h"
 #include "model_manager.h"
+#include "logo_countdown.h"
+#include "title.h"
 //#include "avalanche.h"
 
 //-----------------------------------------------------------------------------------------------
@@ -96,9 +98,6 @@ HRESULT CGame::Init()
 	// 板ポリ生成
 	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
 
-	// カメラ生成
-	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
 	// ライト生成
 	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	CLight::Create(D3DXVECTOR3(0.2f, -0.1f, -0.8f), D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f));
@@ -106,11 +105,13 @@ HRESULT CGame::Init()
 	// モデル生成
 	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
 
-	// プレイヤー生成
-	//m_pPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR");
-
 	// 敵ボス生成
 	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+
+	// カメラ生成
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pCamera->SetTracking(true);
+	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());
 
 	// Item生成
 	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
@@ -120,6 +121,34 @@ HRESULT CGame::Init()
 
 	// モデル生成
 	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
+
+	// カウントダウンの開始
+	CLogoCountDown::Create(5);
+
+	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
+
+	// プレイヤー生成
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		// 現在の番号が参加しているなら
+		if (pEntry[nCntPlayer].bEntry == true)
+		{
+			// キーボードで参加しているなら
+			if (pEntry[nCntPlayer].bEntryKeyboard == true)
+			{
+				// プレイヤー生成
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
+
+			}
+			else
+			{
+				// プレイヤー生成
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
+			}
+		}
+	}
 
 	////敵情報読み込み
 	//m_EnemyInfo.pCreate = LoadSpace::GetEnemy();

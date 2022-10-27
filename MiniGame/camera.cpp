@@ -25,7 +25,7 @@
 //	コンストラクタ
 //======================================================
 CCamera::CCamera() :m_move(0.0f, 0.0f, 0.0f), m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
-					m_posTracking(0.0f, 0.0f, 0.0f), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_bTracking(false)
+					m_pPosTracking(nullptr), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_bTracking(false)
 {
 }
 
@@ -192,15 +192,15 @@ void CCamera::Update()
 	// カメラが追従中の場合
 	if (m_bTracking == true)
 	{
-		//敵ボス追従
-		m_posRDest.x = m_posTracking.x + sinf(m_rot.x) * sinf(m_rot.y);
-		m_posRDest.z = (m_posTracking.z - 80.0f) + sinf(m_rot.x) * cosf(m_rot.y);
-		m_posRDest.y = (m_posTracking.y - 50.0f) + cosf(m_rot.x);
-		m_posVDest.x = m_posTracking.x + sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
-		m_posVDest.z = (m_posTracking.z - 80.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
-		m_posVDest.y = (m_posTracking.y - 50.0f) + cosf(m_rot.x) * m_fDistance;
+		// 追従
+		m_posRDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y);
+		m_posRDest.z = (m_pPosTracking->z - 80.0f) + sinf(m_rot.x) * cosf(m_rot.y);
+		m_posRDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x);
+		m_posVDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
+		m_posVDest.z = (m_pPosTracking->z - 80.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+		m_posVDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x) * m_fDistance;
 
-		//カメラ位置の更新
+		// カメラ位置の更新
 		m_posR.x += (m_posRDest.x - m_posR.x) * 0.3f;
 		m_posR.z += (m_posRDest.z - m_posR.z) * 0.3f;
 		m_posR.y += (m_posRDest.y - m_posR.y) * 0.3f;

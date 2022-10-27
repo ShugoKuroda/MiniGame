@@ -23,7 +23,7 @@ public:
 
 // メンバ関数 //
 public:
-	CNumber();								//コンストラクタ
+	CNumber(char *cName);					//コンストラクタ
 	~CNumber() override;					//デストラクタ
 
 	static HRESULT Load();					//テクスチャ読み込み

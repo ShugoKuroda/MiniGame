@@ -48,7 +48,7 @@ CScore *CScore::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size,const int
 		for (int nCntScore = 0; nCntScore < MAX_SCORE; nCntScore++)
 		{
 			// 数字ポリゴン生成
-			pScore->m_apNumber[nCntScore] = new CNumber;
+			pScore->m_apNumber[nCntScore] = new CNumber("TEX_TYPE_SCORE_UI");
 
 			if (pScore->m_apNumber[nCntScore] != nullptr)
 			{
@@ -121,7 +121,7 @@ void CScore::Add(const int& nScore)
 //=============================================================================
 // スコアの設定
 //=============================================================================
-void CScore::Set(const int & nScore)
+void CScore::Set(const int& nScore)
 {
 	m_nScore = nScore;
 	Set();

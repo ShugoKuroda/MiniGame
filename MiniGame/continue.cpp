@@ -49,7 +49,7 @@ CContinue *CContinue::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 	for (int nCntScore = 0; nCntScore < MAX_CONTINUE; nCntScore++)
 	{
 		// ”Žšƒ|ƒŠƒSƒ“¶¬
-		pContinue->m_apNumber[nCntScore] = new CNumber;
+		pContinue->m_apNumber[nCntScore] = new CNumber("TEX_TYPE_SCORE_UI");
 
 		if (pContinue->m_apNumber[nCntScore] != nullptr)
 		{
