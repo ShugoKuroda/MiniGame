@@ -50,14 +50,6 @@ public:
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
 
-	// 全てのプレイヤーが参加しているかどうか
-	bool GetEntryAll();
-
-	// プレイヤー参加情報の取得
-	bool GetEntry(int nNum) { return m_bEntry[nNum]; }
-	// プレイヤー参加情報の設定
-	void SetEntry(int nNum) { m_bEntry[nNum] = m_bEntry[nNum] ? false : true; }
-
 private:
 	//メンバ変数
 	static LPDIRECT3DTEXTURE9 m_apTexture[OBJ_MAX];		//テクスチャのポインタ
@@ -65,8 +57,6 @@ private:
 	CCamera* m_pCamera;
 	CObject2D *m_apObject2D[OBJ_MAX - 1];
 	bool m_bPush;
-	// 参加しているかどうか
-	bool m_bEntry[CPlayer::PLAYER_MAX];
 	// キーボードで参加したかどうか
 	bool m_bEntryKeyboard;
 	// 参加番号

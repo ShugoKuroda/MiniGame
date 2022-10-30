@@ -31,23 +31,23 @@ public:
 	D3DXVECTOR3 GetPosR() { return m_posR; }
 
 	// 追従対象の設定
-	void SetPosTracking(D3DXVECTOR3 posDest) { m_posTracking = posDest; }
+	void SetPosTracking(D3DXVECTOR3 *pPosDest) { m_pPosTracking = pPosDest; }
 	// 追従フラグの設定
 	void SetTracking(bool bTracking) { m_bTracking = bTracking; }
 
 private:
-	D3DXVECTOR3 m_move;			//移動量
-	D3DXVECTOR3 m_posV;			//視点
-	D3DXVECTOR3 m_posR;			//注視点
-	D3DXVECTOR3 m_vecU;			//上方向ベクトル
-	D3DXVECTOR3 m_rot;			//向き
-	D3DXVECTOR3 m_posTracking;	//追従対象の位置
-	D3DXVECTOR3 m_posVDest;		//目的の視点
-	D3DXVECTOR3 m_posRDest;		//目的の注視点
-	float m_fDistance;			//視点から注視点までの距離
-	D3DXMATRIX m_mtxProjection;	//プロジェクションマトリックス
-	D3DXMATRIX m_mtxView;		//ビューマトリックス
-	bool m_bTracking;			//カメラ追従中かどうか
+	D3DXVECTOR3 m_move;				//移動量
+	D3DXVECTOR3 m_posV;				//視点
+	D3DXVECTOR3 m_posR;				//注視点
+	D3DXVECTOR3 m_vecU;				//上方向ベクトル
+	D3DXVECTOR3 m_rot;				//向き
+	D3DXVECTOR3 *m_pPosTracking;	//追従対象の位置
+	D3DXVECTOR3 m_posVDest;			//目的の視点
+	D3DXVECTOR3 m_posRDest;			//目的の注視点
+	float m_fDistance;				//視点から注視点までの距離
+	D3DXMATRIX m_mtxProjection;		//プロジェクションマトリックス
+	D3DXMATRIX m_mtxView;			//ビューマトリックス
+	bool m_bTracking;				//カメラ追従中かどうか
 };
 
 #endif

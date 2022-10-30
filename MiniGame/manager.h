@@ -42,6 +42,13 @@ public:
 		MODE_MAX,
 	};
 
+	struct SEntryInfo
+	{// プレイヤーの参加情報
+		bool bEntry;
+		int nGamePadNum;
+		bool bEntryKeyboard;
+	};
+
 	CManager();
 	~CManager();
 
@@ -76,6 +83,14 @@ public:
 	static CManager *GetManager() { return m_pManager; }
 	static void SetManager(CManager *pManager) { m_pManager = pManager; }
 
+	// 全てのプレイヤーが参加しているかどうか
+	bool GetEntryAll();
+	// プレイヤー参加情報の設定
+	void SetEntryAll(SEntryInfo *pEntry);
+
+	// プレイヤー参加情報の取得
+	SEntryInfo *GetEntry() { return &m_EntryInfo[0]; }
+
 private:
 	static CManager *m_pManager;		// マネージャーのポインタ
 
@@ -93,6 +108,9 @@ private:
 	CXFile *m_pXFile;					// Xファイル情報のポインタ
 	MODE m_mode;						// モード情報
 	bool m_bPause;						// ポーズするかどうか
+
+	// 参加しているかどうか
+	SEntryInfo m_EntryInfo[CPlayer::PLAYER_MAX];
 };
 
 #endif // _MANAGER_

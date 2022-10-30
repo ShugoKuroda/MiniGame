@@ -22,10 +22,11 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CNumber::CNumber()
+CNumber::CNumber(char *cName)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_SCORE);
+	CObject2D::BindTexture(CTexture::GetTexture(cName));
 }
 
 //=============================================================================
@@ -57,7 +58,6 @@ HRESULT CNumber::Init()
 {
 	//生成時に使用するサイズの設定
 	CObject2D::Init();
-	CObject2D::BindTexture(CTexture::GetTexture("TEX_TYPE_SCORE_UI"));
 	CObject2D::SetAnimation(0, 0, DIVISION_U, DIVISION_V);
 
 	return S_OK;
@@ -76,7 +76,6 @@ void CNumber::Uninit()
 //=============================================================================
 void CNumber::Update()
 {
-
 }
 
 //=============================================================================

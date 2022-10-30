@@ -186,6 +186,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="load.cpp" />
     <ClCompile Include="logo.cpp" />
+    <ClCompile Include="logo_countdown.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="meshfield.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="load.h" />
     <ClInclude Include="logo.h" />
+    <ClInclude Include="logo_countdown.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="meshfield.h" />

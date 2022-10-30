@@ -101,9 +101,10 @@ public:
 	void SetMoveX(float fmove) { m_move.x = fmove; }
 	void SetMoveZ(float fmove) { m_move.z = fmove; }
 	void SetMoveY(float fmove) { m_move.y = fmove; }
-	void SetBadState(bool inState) { m_bInAvalanche = inState; }
+	void SetState(STATE inState) { m_state = inState; }
 	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
 	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
+	void SetGamePadNum(int nNum) { m_nGamePadNum = nNum; }
 
 	void State();
 	void Damage();
@@ -136,8 +137,12 @@ private:	//メンバ変数
 	int m_nPatterAnimV;
 	//テクスチャアニメーションの種類
 	ANIMTYPE m_nTexRotType;
-	//プレイヤーの番号
+
+	// プレイヤーの番号
 	int m_nPlayerNum;
+	// 使うゲームパッドの番号
+	int m_nGamePadNum;
+
 	//弾の発射位置
 	D3DXVECTOR2 posBullet;
 	// ジャンプしているかどうか
@@ -148,8 +153,6 @@ private:	//メンバ変数
 	bool m_bControlKeyboard;
 	//海に入ったかどうか
 	bool m_bInSea;
-	//プレイヤーが雪崩に巻き込まれているかどうか
-	bool m_bInAvalanche;
 	//雪崩を抜けるためのキー(ボタン)入力回数
 	int m_nPushButton;
 
