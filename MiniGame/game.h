@@ -53,6 +53,8 @@ public:		//メンバ関数
 	void SetCreateBubble(bool bCreate) { m_bCreateBubble = bCreate; }
 	// ボス死亡フラグを設定
 	void SetDieBoss(bool bDie);
+	// ゲーム開始フラグを取得
+	void SetStart(bool bStart) { m_bStart = bStart; }
 
 	// プレイヤー情報の取得
 	CPlayer *GetPlayer(int nNum) { return m_pPlayer[nNum]; }
@@ -69,6 +71,8 @@ public:		//メンバ関数
 	bool GetBubble() { return m_bCreateCloud; }
 	// ボス死亡フラグを取得
 	bool GetDieBoss() { return m_bDieBoss; }
+	// ゲーム開始フラグを取得
+	bool GetStart() { return m_bStart; }
 	// プレイヤーのスコアをランキングに設定
 	void SetPlayerScore();
 
@@ -99,6 +103,9 @@ private:	//メンバ変数
 	int m_nRandBubble;
 	// 雲が生成されるまでの時間カウンター
 	int m_nCntBubble;
+
+	// ゲームが始まったかどうか
+	bool m_bStart;
 
 	// 敵のセット情報
 	EnemySetInfo m_EnemyInfo;

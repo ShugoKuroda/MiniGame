@@ -219,7 +219,7 @@ void CPlayer::Update()
 	}
 
 	// áŠQ•¨‚Ì“–‚½‚è”»’è
-	CObstacle::CollisionAll(&pos);
+	CObstacle::CollisionAll(&pos, m_nPlayerNum);
 
 	// ˆÚ“®—Ê‚ÌŒ¸Š
 	m_move.x -= m_move.x * 0.2f;

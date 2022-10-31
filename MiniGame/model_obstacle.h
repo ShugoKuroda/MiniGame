@@ -31,8 +31,8 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	static void CollisionAll(D3DXVECTOR3* pPosIn);
-	bool Collision(D3DXVECTOR3* pPosIn);
+	static void CollisionAll(D3DXVECTOR3* pPosIn, int nNumPlayer);
+	bool Collision(D3DXVECTOR3* pPosIn, int nNumPlayer);
 
 private:
 	D3DXVECTOR3 m_PosOld;	//‘O‰ñ‚ÌˆÊ’u

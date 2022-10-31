@@ -105,6 +105,10 @@ void CLogoCountDown::Update()
 		{
 			Create(m_nNum - 1);
 		}
+		else if (m_nNum == 1)
+		{
+
+		}
 		Uninit();
 		return;
 	}
