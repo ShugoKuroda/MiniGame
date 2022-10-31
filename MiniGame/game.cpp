@@ -67,7 +67,7 @@ using namespace LibrarySpace;
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
 CGame::CGame() :m_nCntBubble(0), m_nRandBubble(0), m_bCreateCloud(true), m_bCreateBubble(false), m_bDieBoss(false),
-				m_pPlayer{}, m_pMeshField(), m_pEnemyBoss(), m_pItem(), m_pCamera()
+				m_pPlayer{}, m_pMeshField(), m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));

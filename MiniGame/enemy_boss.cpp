@@ -116,6 +116,7 @@ void CEnemyBoss::Update()
 {
 	// 位置の取得
 	D3DXVECTOR3 pos = CModel::GetPosition();
+	// 
 	//// サイズの取得
 	//D3DXVECTOR2 size = CEnemy::GetSize();
 	//// 移動量の取得
