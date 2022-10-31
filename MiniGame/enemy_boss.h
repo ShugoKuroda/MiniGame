@@ -74,6 +74,7 @@ public:
 	void StateReset();
 
 	PATTERN GetPattern() { return m_pattern; }
+	void SetPattern(PATTERN pattern) { m_pattern = pattern; }
 
 private:
 	D3DXVECTOR3 m_PosOld;	//‘O‰ñ‚ÌˆÊ’u

@@ -8,7 +8,7 @@
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 2
+TEX_NUM = 3
 
 //==================================================
 // テクスチャ読み込み情報
@@ -20,5 +20,9 @@ NAME = TEX_TYPE_TITLE_FLOOR
 // スコアUI
 PAS = data/TEXTURE/number000.png
 NAME = TEX_TYPE_SCORE_UI
+
+// ゲーム開始UI
+PAS = data/TEXTURE/Start000.png
+NAME = TEX_TYPE_START_UI
 
 END_SCRIPT		# この行は消さないこと！

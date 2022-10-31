@@ -32,17 +32,18 @@
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
-#define PLAYER_UI_SIZE			(D3DXVECTOR2(200.0f, 50.0f))
-#define LIFE_UI_SIZE			(D3DXVECTOR2(120.0f, 30.0f))
-#define LEVEL_UI_SIZE			(D3DXVECTOR2(50.0f, 50.0f))
-#define ATTACK_INTERVAL			(7)
-#define JOYKEY_LEFT_STICK_UP	(-0.2f)
-#define JOYKEY_LEFT_STICK_DOWN	(0.2f)
+#define PLAYER_UI_SIZE				(D3DXVECTOR2(200.0f, 50.0f))
+#define LIFE_UI_SIZE				(D3DXVECTOR2(120.0f, 30.0f))
+#define LEVEL_UI_SIZE				(D3DXVECTOR2(50.0f, 50.0f))
+#define ATTACK_INTERVAL				(7)
+#define JOYKEY_LEFT_STICK_UP		(-0.2f)
+#define JOYKEY_LEFT_STICK_DOWN		(0.2f)
 
-#define FIELD_SIZE_WIDTH		(130.0f)
-#define FIELD_SIZE_HEIGHT		(70.0f)
+#define FIELD_SIZE_WIDTH			(130.0f)
+#define FIELD_SIZE_HEIGHT			(250.0f)
+#define FIELD_SIZE_HEIGHT_CAMERA	(70.0f)
 
-#define PLAYER_SIZE				(16.0f)
+#define PLAYER_SIZE					(16.0f)
 
 //-----------------------------------------------------------------------------
 // using宣言
@@ -79,7 +80,7 @@ const int CPlayer::DEFAULT_LIFE = 2;
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
 	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0),
-	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
+	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_PLAYER);
@@ -239,13 +240,26 @@ void CPlayer::Update()
 	//	g_Player.pos.z = (400.0f / 2) - (PLAYER_WIDTH / 2);
 	//}
 
-	// カメラ位置の取得
-	//D3DXVECTOR3 posCamera = CGame::GetCamera()->GetPosV();
+	// ゲーム参加中であれば
+	if (m_bStart == true)
+	{
+		// カメラ位置の取得
+		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
-	//if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT)
-	//{//手前壁
-	//	pos.z = (posCamera.z + FIELD_SIZE_HEIGHT) + (size.z / 2);
-	//}
+		if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT_CAMERA)
+		{//手前壁
+			pos.z = (posCamera.z + FIELD_SIZE_HEIGHT_CAMERA) + (size.z / 2);
+		}
+	}
+	// ロビー待機中であれば
+	else
+	{
+		if (pos.z - (size.z / 2) <= -FIELD_SIZE_HEIGHT / 2)
+		{//手前壁
+			pos.z = (-FIELD_SIZE_HEIGHT / 2) + (size.z / 2);
+		}
+	}
+
 	if (pos.y <= 0.0f)
 	{//床
 		pos.y = 0.0f;

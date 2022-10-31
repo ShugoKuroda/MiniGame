@@ -8,6 +8,9 @@
 //*****************************************************************************
 // インクルード
 //*****************************************************************************
+#include "manager.h"
+#include "game.h"
+#include "enemy_boss.h"
 #include "logo_countdown.h"
 #include "number.h"
 #include "renderer.h"
@@ -107,7 +110,7 @@ void CLogoCountDown::Update()
 		}
 		else if (m_nNum == 1)
 		{
-
+			CManager::GetManager()->GetGame()->GetEnemyBoss()->SetPattern(CEnemyBoss::PATTERN_NORMAL);
 		}
 		Uninit();
 		return;

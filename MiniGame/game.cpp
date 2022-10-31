@@ -110,6 +110,7 @@ HRESULT CGame::Init()
 
 	// カメラ生成
 	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 追従対象の設定
 	m_pCamera->SetTracking(true);
 	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());
 
@@ -139,7 +140,6 @@ HRESULT CGame::Init()
 				// プレイヤー生成
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
-
 			}
 			else
 			{
@@ -147,6 +147,9 @@ HRESULT CGame::Init()
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
 			}
+
+			// ゲームに参加している状態にする
+			m_pPlayer[nCntPlayer]->SetStart(true);
 		}
 	}
 
