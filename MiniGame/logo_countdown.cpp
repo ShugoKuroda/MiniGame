@@ -15,6 +15,12 @@
 #include "number.h"
 #include "renderer.h"
 
+//*****************************************************************************
+// マクロ定義
+//*****************************************************************************
+#define COUNT_SIZE		(100.0f)
+#define COUNT_UNINIT	(60)
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -102,6 +108,7 @@ void CLogoCountDown::Update()
 
 	nCounter--;
 
+	// 破棄カウンターが一定数以下
 	if (nCounter <= 0)
 	{
 		if (m_nNum > 1)
@@ -110,8 +117,13 @@ void CLogoCountDown::Update()
 		}
 		else if (m_nNum == 1)
 		{
+			// ゲーム開始ロゴの追加
+			CLogo::Create(m_apNumber->GetPosition(), D3DXVECTOR2(200.0f, 80.0f), "TEX_TYPE_START_UI", 90);
+			// ボスを動かす
 			CManager::GetManager()->GetGame()->GetEnemyBoss()->SetPattern(CEnemyBoss::PATTERN_NORMAL);
 		}
+
+		// 破棄
 		Uninit();
 		return;
 	}

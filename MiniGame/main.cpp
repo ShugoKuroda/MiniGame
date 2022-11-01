@@ -32,7 +32,7 @@ namespace
 	LPCTSTR CLASS_NAME = _T("AppClass");
 
 	// ウインドウのキャプション名
-	LPCTSTR WINDOW_NAME = _T("PARTY PENGUIN");
+	LPCTSTR WINDOW_NAME = _T("PARTY PENGUIN's");
 }
 
 //*****************************************************************************

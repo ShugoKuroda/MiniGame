@@ -69,7 +69,7 @@ public:
 	void Damage(int nDamage, CPlayer* pPlayer);
 	void State();
 	void SetAnim();
-	bool Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move);
+	bool Pattern(D3DXVECTOR3& pos);
 	void ChangeSize(D3DXVECTOR2 *pSize, const float& fSize);
 	void StateReset();
 

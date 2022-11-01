@@ -144,6 +144,9 @@ void CEnemyBoss::Update()
 	//// 死亡していなければ
 	//if (bDie == false)
 	//{
+
+	// 各行動
+	Pattern(pos);
 	
 	//当たり判定
 	Collision(pos);
@@ -256,7 +259,7 @@ void CEnemyBoss::SetAnim()
 //-----------------------------------------------------------------------------------------------
 // 行動パターン管理
 //-----------------------------------------------------------------------------------------------
-bool CEnemyBoss::Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move)
+bool CEnemyBoss::Pattern(D3DXVECTOR3& pos)
 {
 	//雑魚敵生成情報の取得
 	//ParentEnemyInfo *pBossInfo = LoadSpace::GetParentEnemy();

@@ -64,9 +64,6 @@
     <ClCompile Include="load.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="logo.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="meshfield.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -142,9 +139,6 @@
     <ClCompile Include="renderer.cpp">
       <Filter>ソースファイル\renderer</Filter>
     </ClCompile>
-    <ClCompile Include="logo_countdown.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>ソースファイル\model</Filter>
     </ClCompile>
@@ -156,6 +150,15 @@
     </ClCompile>
     <ClCompile Include="model_obstacle.cpp">
       <Filter>ソースファイル\model</Filter>
+    </ClCompile>
+    <ClCompile Include="logo.cpp">
+      <Filter>ソースファイル\logo</Filter>
+    </ClCompile>
+    <ClCompile Include="logo_countdown.cpp">
+      <Filter>ソースファイル\logo</Filter>
+    </ClCompile>
+    <ClCompile Include="logo_extend.cpp">
+      <Filter>ソースファイル\logo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +234,6 @@
     <ClInclude Include="load.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
-    <ClInclude Include="logo.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
     <ClInclude Include="meshfield.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
@@ -306,9 +306,6 @@
     <ClInclude Include="object2D.h">
       <Filter>ソースファイル\objects</Filter>
     </ClInclude>
-    <ClInclude Include="logo_countdown.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
       <Filter>ソースファイル\model</Filter>
     </ClInclude>
@@ -320,6 +317,15 @@
     </ClInclude>
     <ClInclude Include="model_obstacle.h">
       <Filter>ソースファイル\model</Filter>
+    </ClInclude>
+    <ClInclude Include="logo.h">
+      <Filter>ソースファイル\logo</Filter>
+    </ClInclude>
+    <ClInclude Include="logo_countdown.h">
+      <Filter>ソースファイル\logo</Filter>
+    </ClInclude>
+    <ClInclude Include="logo_extend.h">
+      <Filter>ソースファイル\logo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +352,9 @@
     </Filter>
     <Filter Include="ソースファイル\model">
       <UniqueIdentifier>{c062292f-c6e2-4aee-a0bf-c18f99959dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\logo">
+      <UniqueIdentifier>{b6852932-4d31-46a7-9bf7-7a7860cd7fa8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
