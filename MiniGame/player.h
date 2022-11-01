@@ -97,14 +97,15 @@ public:
 	// 死亡状態の取得
 	bool GetDie() { return m_bDie; }
 	D3DXVECTOR3 GetPositionOld() { return m_posOld; }
-	void SetMove(D3DXVECTOR3 move) { m_move = move; }
-	void SetMoveX(float fmove) { m_move.x = fmove; }
-	void SetMoveZ(float fmove) { m_move.z = fmove; }
-	void SetMoveY(float fmove) { m_move.y = fmove; }
-	void SetState(STATE inState) { m_state = inState; }
-	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
-	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
-	void SetGamePadNum(int nNum) { m_nGamePadNum = nNum; }
+	void SetMove(const D3DXVECTOR3& move) { m_move = move; }
+	void SetMoveX(const float& fmove) { m_move.x = fmove; }
+	void SetMoveZ(const float& fmove) { m_move.z = fmove; }
+	void SetMoveY(const float& fmove) { m_move.y = fmove; }
+	void SetState(const STATE& inState) { m_state = inState; }
+	void SetJumping(const bool& bJumping) { m_bIsJumping = bJumping; }
+	void SetKeyboard(const bool& bControl) { m_bControlKeyboard = bControl; }
+	void SetGamePadNum(const int& nNum) { m_nGamePadNum = nNum; }
+	void SetStart(const bool& bStart) { m_bStart = bStart; }
 
 	void State();
 	void Damage();
@@ -156,6 +157,8 @@ private:	//メンバ変数
 	//雪崩を抜けるためのキー(ボタン)入力回数
 	int m_nPushButton;
 
+	// ゲームを開始しているかどうか
+	bool m_bStart;
 	// 死亡したかどうか
 	bool m_bDie;
 };

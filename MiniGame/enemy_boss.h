@@ -69,11 +69,12 @@ public:
 	void Damage(int nDamage, CPlayer* pPlayer);
 	void State();
 	void SetAnim();
-	bool Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move);
+	bool Pattern(D3DXVECTOR3& pos);
 	void ChangeSize(D3DXVECTOR2 *pSize, const float& fSize);
 	void StateReset();
 
 	PATTERN GetPattern() { return m_pattern; }
+	void SetPattern(PATTERN pattern) { m_pattern = pattern; }
 
 private:
 	D3DXVECTOR3 m_PosOld;	//‘O‰ñ‚ÌˆÊ’u

@@ -1,11 +1,11 @@
 //-------------------------------------------
 //
-// カウントダウンロゴの情報[logo_countdown.h]
+// ロゴの情報[logo_extend.h]
 // Author : SHUGO KURODA
 //
 //-------------------------------------------
-#ifndef _LOGO_COUNTDOWN_H_
-#define _LOGO_COUNTDOWN_H_
+#ifndef _LOGO_EXTEND_H_
+#define _LOGO_EXTEND_H_
 
 //-------------------------------------------
 // インクルード
@@ -13,23 +13,29 @@
 #include "logo.h"
 
 //-------------------------------------------
-// 前方宣言
+// ロゴクラス
 //-------------------------------------------
-class CNumber;
-
-//-------------------------------------------
-// カウントダウンロゴクラス
-//-------------------------------------------
-class CLogoCountDown : public CLogo
+class CLogoExtend : public CLogo
 {
+private:
+	// 動き方の種類
+	enum EAnim
+	{
+		ANIM_NONE = 0,
+		ANIM_Y_EXPAND,
+		ANIM_Y_SHORTEN,
+		ANIM_X_EXPAND,
+		ANIM_X_SHORTEN
+	};
+
 public:
 	// コンストラクタ
-	CLogoCountDown();
+	CLogoExtend();
 	// デストラクタ
-	~CLogoCountDown() override;
+	~CLogoExtend() override;
 
 	// 生成
-	static CLogoCountDown* Create(const int& nNum);
+	static CLogoExtend* Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const char* name, const int& nCount);
 
 	// 初期化
 	HRESULT Init() override;
@@ -40,12 +46,12 @@ public:
 	// 描画
 	void Draw() override;
 
+	// メンバ変数
 private:
-	void Set();							// スコアの設定
-
-private:
-	CNumber *m_apNumber;				// 数字のポインタ
-	int m_nNum;							// 数字の格納情報
+	// 元のサイズ記憶用
+	D3DXVECTOR2 m_DefaultSize;
+	// 動き方の種類
+	EAnim m_anim;
 };
 
-#endif		// _LOGO_COUNTDOWN_H_
+#endif		// _LOGO_EXTEND_H_

@@ -45,11 +45,7 @@ public:
 	~CLogo() override;
 
 	// 生成
-	static CLogo* Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const D3DXCOLOR& col, const float& fRot, const LOGOTYPE& type, const ANIMTYPE& AnimType, const int& nCount);
-	// テクスチャの読み込み
-	static HRESULT Load();
-	// テクスチャの削除
-	static void Unload();
+	static CLogo* Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const char* name, const int& nCount);
 
 	// 初期化
 	HRESULT Init() override;
@@ -65,16 +61,8 @@ public:
 	int GetCountUninit() { return m_nCountUninit; }
 
 private:
-	// テクスチャのポインタ
-	static LPDIRECT3DTEXTURE9 m_pTexture[TYPE_MAX];
-	// アニメーションの種類
-	ANIMTYPE m_AnimType;
 	// 破棄するまでのカウンター
 	int m_nCountUninit;
-	// 元のサイズ記憶用
-	D3DXVECTOR2 m_DefaultSize;
-
-	LOGOTYPE m_type;
 };
 
 #endif		// _LOGO_H_

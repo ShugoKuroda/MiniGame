@@ -193,9 +193,9 @@ void CContinue::Update()
 	{// ”jŠü
 		Uninit();
 		
-		// ƒQ[ƒ€ƒI[ƒo[ƒƒS‚Ì¶¬
-		CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, CRenderer::SCREEN_HEIGHT / 2, 0.0f), D3DXVECTOR2(300.0f, 50.0f),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_GAMEOVER, CLogo::ANIM_LENGTHWISE, 300)->SetType(OBJ_PAUSE);
+		//// ƒQ[ƒ€ƒI[ƒo[ƒƒS‚Ì¶¬
+		//CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, CRenderer::SCREEN_HEIGHT / 2, 0.0f), D3DXVECTOR2(300.0f, 50.0f),
+		//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_GAMEOVER, CLogo::ANIM_LENGTHWISE, 300)->SetType(OBJ_PAUSE);
 	}
 }
 

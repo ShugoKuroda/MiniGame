@@ -110,6 +110,7 @@ HRESULT CGame::Init()
 
 	// カメラ生成
 	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 追従対象の設定
 	m_pCamera->SetTracking(true);
 	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());
 
@@ -125,6 +126,7 @@ HRESULT CGame::Init()
 	// カウントダウンの開始
 	CLogoCountDown::Create(5);
 
+	// プレイヤー参加情報の取得
 	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
 
 	// プレイヤー生成
@@ -139,7 +141,6 @@ HRESULT CGame::Init()
 				// プレイヤー生成
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
-
 			}
 			else
 			{
@@ -147,6 +148,9 @@ HRESULT CGame::Init()
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
 			}
+
+			// ゲームに参加している状態にする
+			m_pPlayer[nCntPlayer]->SetStart(true);
 		}
 	}
 
@@ -251,6 +255,19 @@ void CGame::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CGame::Update()
 {
+	//// プレイヤー参加情報の取得
+	//CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
+
+	//// プレイヤー生成
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	// 現在の番号が参加しているなら
+	//	if (pEntry[nCntPlayer].bEntry == true)
+	//	{
+
+	//	}
+	//}
+
 	//// キーボード情報の取得
 	//CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 	//// ゲームパッド情報の取得
@@ -473,30 +490,30 @@ void CGame::CreateEnemy()
 //-----------------------------------------------------------------------------------------------
 void CGame::CreateLogo(int nCounter)
 {
-	if (nCounter == 4800)
-	{
-		// ボス接近中のロゴ
-		CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 300.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 400.0f, 90.0f),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING, CLogo::ANIM_LENGTHWISE, 420);
+	//if (nCounter == 4800)
+	//{
+	//	// ボス接近中のロゴ
+	//	CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 300.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 400.0f, 90.0f),
+	//		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING, CLogo::ANIM_LENGTHWISE, 420);
 
-		// ゲームBGMをストップ
-		CSound::Stop(CSound::SOUND_LABEL_GAME);
-		// 警告音
-		CSound::Play(CSound::SOUND_LABEL_SE_WARNING);
-	}
+	//	// ゲームBGMをストップ
+	//	CSound::Stop(CSound::SOUND_LABEL_GAME);
+	//	// 警告音
+	//	CSound::Play(CSound::SOUND_LABEL_SE_WARNING);
+	//}
 
-	if (nCounter == 4920)
-	{
-		// ボス接近中の説明ロゴ
-		CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 760.0f, 270.0f),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING_SUB, CLogo::ANIM_HORIZONTALLY, 300);
-	}
+	//if (nCounter == 4920)
+	//{
+	//	// ボス接近中の説明ロゴ
+	//	CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 760.0f, 270.0f),
+	//		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING_SUB, CLogo::ANIM_HORIZONTALLY, 300);
+	//}
 
-	if (nCounter == 4800)
-	{
-		// ボス接近時の薄暗いフェード
-		CFadeScene::Create(CFadeScene::TYPE_BLACK);
-	}
+	//if (nCounter == 4800)
+	//{
+	//	// ボス接近時の薄暗いフェード
+	//	CFadeScene::Create(CFadeScene::TYPE_BLACK);
+	//}
 }
 
 //-----------------------------------------------------------------------------------------------
