@@ -10,7 +10,6 @@
 
 #include "object2D.h"
 #include "library.h"
-#include "meshfield.h"
 #include "game.h"
 
 //*****************************************************************************

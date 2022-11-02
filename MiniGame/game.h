@@ -16,7 +16,6 @@
 // 前方宣言
 //*****************************************************************************
 class CScore;
-class CMeshField;
 class CEnemyBoss;
 class CItem;
 class CCamera;
@@ -60,8 +59,6 @@ public:		//メンバ関数
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
 
-	// スコア情報の取得
-	CMeshField *GetMeshField() { return m_pMeshField; }
 	// ゲーム開始フラグを取得
 	bool GetStart() { return m_bStart; }
 	// プレイヤーのスコアをランキングに設定
@@ -76,7 +73,6 @@ private:
 private:	//メンバ変数
 	// プレイヤー情報
 	CPlayer *m_pPlayer[CPlayer::PLAYER_MAX];
-	CMeshField *m_pMeshField;
 	CEnemyBoss* m_pEnemyBoss;
 	CItem* m_pItem;
 	CCamera* m_pCamera;

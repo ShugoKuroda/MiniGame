@@ -36,7 +36,6 @@
 #include "bubble.h"
 #include "effect.h"
 #include "bg_move.h"
-#include "meshfield.h"
 #include "ui.h"
 #include "gauge.h"
 #include "continue.h"
@@ -52,6 +51,7 @@
 #include "model_manager.h"
 #include "logo_countdown.h"
 #include "logo_extend.h"
+#include "mesh_sphere.h"
 //#include "avalanche.h"
 
 //-----------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_pPlayer{}, m_pMeshField(), m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false)
+CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
@@ -84,6 +84,10 @@ CGame::~CGame()
 //-----------------------------------------------------------------------------------------------
 HRESULT CGame::Init()
 {
+	//球体メッシュの配置
+	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
+
 	// 板ポリ生成
 	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	// 板ポリ生成
@@ -237,13 +241,6 @@ void CGame::Uninit()
 		{
 			m_pPlayer[nCntPlayer] = nullptr;
 		}
-	}
-
-	// メッシュ破棄
-	if (m_pMeshField != nullptr)
-	{
-		m_pMeshField->Uninit();
-		m_pMeshField = nullptr;
 	}
 }
 
@@ -459,13 +456,6 @@ void CGame::CreateEnemy()
 		//CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
 		// 警告音
 		CSound::Play(CSound::SOUND_LABEL_BOSS);
-	}
-
-	// ボス戦用背景の生成
-	if (m_EnemyInfo.nCreatenCount == 5220)
-	{
-		//CBgMove::Create();
-		m_pMeshField = CMeshField::Create();
 	}
 
 	//ロゴの生成

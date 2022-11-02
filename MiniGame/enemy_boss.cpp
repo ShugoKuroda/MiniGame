@@ -25,7 +25,6 @@
 #include "player.h"
 #include "bullet.h"
 #include "explosion.h"
-#include "meshfield.h"
 #include "logo.h"
 
 // ’Ç‰Á

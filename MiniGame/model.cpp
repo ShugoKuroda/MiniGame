@@ -16,7 +16,6 @@
 #include "camera.h"
 //#include "shadow.h"
 #include "bullet.h"
-#include "meshfield.h"
 #include "load.h"
 #include "enemy.h"
 
