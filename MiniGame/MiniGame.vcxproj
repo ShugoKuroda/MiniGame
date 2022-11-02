@@ -187,9 +187,11 @@
     <ClCompile Include="load.cpp" />
     <ClCompile Include="logo.cpp" />
     <ClCompile Include="logo_countdown.cpp" />
+    <ClCompile Include="logo_extend.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
-    <ClCompile Include="meshfield.cpp" />
+    <ClCompile Include="mesh_sphere.cpp" />
+    <ClCompile Include="mesh_field.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_crevasse.cpp" />
     <ClCompile Include="model_manager.cpp" />
@@ -243,9 +245,11 @@
     <ClInclude Include="load.h" />
     <ClInclude Include="logo.h" />
     <ClInclude Include="logo_countdown.h" />
+    <ClInclude Include="logo_extend.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
-    <ClInclude Include="meshfield.h" />
+    <ClInclude Include="mesh_sphere.h" />
+    <ClInclude Include="mesh_field.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="model_crevasse.h" />
     <ClInclude Include="model_manager.h" />

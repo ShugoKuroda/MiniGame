@@ -1,11 +1,11 @@
 //===================================================================
 //
-//	メッシュフィールド処理のヘッダー[meshfield.h]
+//	メッシュフィールド処理のヘッダー[mesh_field.h]
 //	Author:SHUGO KURODA
 //
 //===================================================================
-#ifndef _MESHFIELD_H_
-#define _MESHFIELD_H_
+#ifndef _MESH_FIELD_H_
+#define _MESH_FIELD_H_
 
 #include "object.h"
 
@@ -60,4 +60,4 @@ private:
 	bool m_bUninit;	//終了するかどうか
 };
 
-#endif		// _MESHFIELD_H_
+#endif		// _MESH_FIELD_H_

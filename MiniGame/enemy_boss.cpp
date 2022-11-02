@@ -25,7 +25,6 @@
 #include "player.h"
 #include "bullet.h"
 #include "explosion.h"
-#include "meshfield.h"
 #include "logo.h"
 
 // 追加
@@ -144,9 +143,10 @@ void CEnemyBoss::Update()
 	//// 死亡していなければ
 	//if (bDie == false)
 	//{
-	
-	pos.z -= 1.0f;
 
+	// 各行動
+	Pattern(pos);
+	
 	//当たり判定
 	Collision(pos);
 
@@ -258,60 +258,62 @@ void CEnemyBoss::SetAnim()
 //-----------------------------------------------------------------------------------------------
 // 行動パターン管理
 //-----------------------------------------------------------------------------------------------
-bool CEnemyBoss::Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move)
+bool CEnemyBoss::Pattern(D3DXVECTOR3& pos)
 {
-	////雑魚敵生成情報の取得
+	//雑魚敵生成情報の取得
 	//ParentEnemyInfo *pBossInfo = LoadSpace::GetParentEnemy();
 
-	//switch (m_pattern)
-	//{
-	//	//=================================
-	//	// 登場
-	//	//=================================
-	//case CEnemyBoss::PATTERN_ENTRY:
-	//	pos += D3DXVECTOR3(-0.5f, -2.0f, 0.0f);
+	switch (m_pattern)
+	{
+		//=================================
+		// 登場
+		//=================================
+	case CEnemyBoss::PATTERN_ENTRY:
+		//pos += D3DXVECTOR3(-0.5f, -2.0f, 0.0f);
 
-	//	if (pos.y <= 250.0f)
-	//	{
-	//		m_pattern = PATTERN_NORMAL;
-	//	}
+		//if (pos.y <= 250.0f)
+		//{
+		//	m_pattern = PATTERN_NORMAL;
+		//}
 
-	//	//拡縮させる
-	//	ChangeSize(&size, 0.5f);
-	//	break;
+		////拡縮させる
+		//ChangeSize(&size, 0.5f);
+		break;
 
-	//	//=================================
-	//	// 通常
-	//	//=================================
-	//case CEnemyBoss::PATTERN_NORMAL:
+		//=================================
+		// 通常
+		//=================================
+	case CEnemyBoss::PATTERN_NORMAL:
 
-	//	//移動量の加算
-	//	move += D3DXVECTOR3(0.1f, 0.05f, 0.0f);
+		pos.z -= 1.0f;
 
-	//	// 移動量の更新
-	//	pos = D3DXVECTOR3((CRenderer::SCREEN_WIDTH - 200.0f) - sinf(move.x) * 100,
-	//		(CRenderer::SCREEN_HEIGHT / 2) - cosf(move.y) * 100,
-	//		0.0f);
+		////移動量の加算
+		//move += D3DXVECTOR3(0.1f, 0.05f, 0.0f);
 
-	//	//次の行動に移すまでのカウンター加算
-	//	m_nCounter++;
+		//// 移動量の更新
+		//pos = D3DXVECTOR3((CRenderer::SCREEN_WIDTH - 200.0f) - sinf(move.x) * 100,
+		//	(CRenderer::SCREEN_HEIGHT / 2) - cosf(move.y) * 100,
+		//	0.0f);
 
-	//	if (m_nCounter >= 300)
-	//	{
-	//		//カウンターリセット
-	//		m_nCounter = 0;
-	//		//次の行動をランダムで決める
-	//		m_pattern = (PATTERN)LibrarySpace::GetRandNum(PATTERN_BARRAGE, PATTERN_RUSH);
-	//	}
+		////次の行動に移すまでのカウンター加算
+		//m_nCounter++;
 
-	//	//拡縮させる
-	//	ChangeSize(&size, 0.5f);
+		//if (m_nCounter >= 300)
+		//{
+		//	//カウンターリセット
+		//	m_nCounter = 0;
+		//	//次の行動をランダムで決める
+		//	m_pattern = (PATTERN)LibrarySpace::GetRandNum(PATTERN_BARRAGE, PATTERN_RUSH);
+		//}
 
-	//	break;
+		////拡縮させる
+		//ChangeSize(&size, 0.5f);
 
-	//	//=================================
-	//	// 連続突進攻撃
-	//	//=================================
+		break;
+
+		//=================================
+		// 連続突進攻撃
+		//=================================
 	//case CEnemyBoss::PATTERN_RUSH:
 
 	//	if (m_nCountOperation <= 0)
@@ -574,9 +576,9 @@ bool CEnemyBoss::Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move)
 	//	}
 	//	break;
 
-	//default:
-	//	break;
-	//}
+	default:
+		break;
+	}
 
 	return false;
 }

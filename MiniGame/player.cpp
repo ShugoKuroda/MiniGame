@@ -32,17 +32,18 @@
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
-#define PLAYER_UI_SIZE			(D3DXVECTOR2(200.0f, 50.0f))
-#define LIFE_UI_SIZE			(D3DXVECTOR2(120.0f, 30.0f))
-#define LEVEL_UI_SIZE			(D3DXVECTOR2(50.0f, 50.0f))
-#define ATTACK_INTERVAL			(7)
-#define JOYKEY_LEFT_STICK_UP	(-0.2f)
-#define JOYKEY_LEFT_STICK_DOWN	(0.2f)
+#define PLAYER_UI_SIZE				(D3DXVECTOR2(200.0f, 50.0f))
+#define LIFE_UI_SIZE				(D3DXVECTOR2(120.0f, 30.0f))
+#define LEVEL_UI_SIZE				(D3DXVECTOR2(50.0f, 50.0f))
+#define ATTACK_INTERVAL				(7)
+#define JOYKEY_LEFT_STICK_UP		(-0.2f)
+#define JOYKEY_LEFT_STICK_DOWN		(0.2f)
 
-#define FIELD_SIZE_WIDTH		(130.0f)
-#define FIELD_SIZE_HEIGHT		(70.0f)
+#define FIELD_SIZE_WIDTH			(130.0f)
+#define FIELD_SIZE_HEIGHT			(250.0f)
+#define FIELD_SIZE_HEIGHT_CAMERA	(70.0f)
 
-#define PLAYER_SIZE				(16.0f)
+#define PLAYER_SIZE					(16.0f)
 
 //-----------------------------------------------------------------------------
 // using宣言
@@ -79,7 +80,7 @@ const int CPlayer::DEFAULT_LIFE = 2;
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
 	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0),
-	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false)
+	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_PLAYER);
@@ -155,8 +156,8 @@ void CPlayer::Update()
 	// サイズの取得
  	D3DXVECTOR3 size = GetSizeMax();
 
-	//操作できる状態なら
-	if (m_bControl == true)
+	//操作できる状態なら && 死亡していないなら
+	if (m_bControl == true && m_state != STATE_DIE)
 	{
 		//移動処理
 		Move();
@@ -239,13 +240,26 @@ void CPlayer::Update()
 	//	g_Player.pos.z = (400.0f / 2) - (PLAYER_WIDTH / 2);
 	//}
 
-	// カメラ位置の取得
-	//D3DXVECTOR3 posCamera = CGame::GetCamera()->GetPosV();
+	// ゲーム参加中であれば
+	if (m_bStart == true)
+	{
+		// カメラ位置の取得
+		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
-	//if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT)
-	//{//手前壁
-	//	pos.z = (posCamera.z + FIELD_SIZE_HEIGHT) + (size.z / 2);
-	//}
+		if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT_CAMERA)
+		{//手前壁
+			pos.z = (posCamera.z + FIELD_SIZE_HEIGHT_CAMERA) + (size.z / 2);
+		}
+	}
+	// ロビー待機中であれば
+	else
+	{
+		if (pos.z - (size.z / 2) <= -FIELD_SIZE_HEIGHT / 2)
+		{//手前壁
+			pos.z = (-FIELD_SIZE_HEIGHT / 2) + (size.z / 2);
+		}
+	}
+
 	if (pos.y <= 0.0f)
 	{//床
 		pos.y = 0.0f;
@@ -424,110 +438,38 @@ void CPlayer::Jump()
 //-----------------------------------------------------------------------------
 // 状態管理
 //-----------------------------------------------------------------------------
-//void CPlayer::State()
-//{
-//	// 対角線(サイズ)の取得
-//	D3DXVECTOR2 size = CObject2D::GetSize();
-//	// 位置の取得
-//	D3DXVECTOR3 pos = CObject2D::GetPosition();
-//
-//	switch (m_state)
-//	{
-//	case STATE_NORMAL:			//プレイヤーの状態が通常の場合
-//		break;
-//	case STATE_ENTRY:			//登場状態の場合
-//
-//		m_nCntState++;
-//
-//		// 対角線(サイズ)の減算
-//		size -= D3DXVECTOR2(4.46f, 1.98f);
-//		// 対角線の取得
-//		CObject2D::SetSize(size);
-//
-//		if (pos.y <= CRenderer::SCREEN_HEIGHT / 2)
-//		{
-//			m_bControl = true;
-//			m_state = STATE_RESPAWN;
-//			m_nCntState = 150;
-//		}
-//		else if (pos.y <= CRenderer::SCREEN_HEIGHT / 1.5f)
-//		{
-//			pos += D3DXVECTOR3(-20.0f, -3.0f, 0.0f);
-//		}
-//		else
-//		{
-//			pos += D3DXVECTOR3(22.0f, -3.0f, 0.0f);
-//		}
-//
-//		if (m_nCntState >= 96)
-//		{
-//			m_nTexRotType = TYPE_NEUTRAL;
-//		}
-//		else if (m_nCntState >= 72)
-//		{
-//			m_nTexRotType = TYPE_DOWN;
-//		}
-//		else if (m_nCntState >= 48)
-//		{
-//			m_nTexRotType = TYPE_NEUTRAL;
-//		}
-//		else if (m_nCntState >= 24)
-//		{
-//			m_nTexRotType = TYPE_UP;
-//		}
-//
-//		CObject2D::SetPosition(pos);
-//
-//		break;
-//	case STATE_RESPAWN:			//プレイヤーがダメージ状態の場合
-//								//状態カウンターの減算
-//		m_nCntState--;
-//		//右から出現させる
-//		if (m_nCntState >= 150)
-//		{
-//			// 位置の加算
-//			pos.x += 10.0f;
-//			// 位置の設定
-//			CObject2D::SetPosition(pos);
-//
-//			// カウンターが一定
-//			if (m_nCntState == 150)
-//			{
-//				//操作可能にする
-//				m_bControl = true;
-//			}
-//		}
-//
-//		//点滅させる
-//		if (m_nCntState % 4 == 0)
-//		{//黄色
-//			CObject2D::SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-//		}
-//		else
-//		{//色なし
-//			CObject2D::SetColor(DEFAULT_COL);
-//		}
-//
-//		//状態を通常に戻す
-//		if (m_nCntState <= 0)
-//		{
-//			m_state = STATE_NORMAL;
-//
-//			CObject2D::SetColor(DEFAULT_COL);
-//		}
-//		break;
-//	case STATE_DIE:			//プレイヤーが死亡状態の場合
-//							//状態カウンターの減算
-//		m_nCntState--;
-//
-//		if (m_nCntState <= 0)
-//		{
-//			m_state = STATE_RESPAWN;
-//			m_nCntState = 180;
-//		}
-//		break;
-//	}
-//}
+void CPlayer::State()
+{
+	switch (m_state)
+	{
+		// 通常
+	case CPlayer::STATE_NORMAL:
+		break;
+
+		// 走る
+	case CPlayer::STATE_RUN:
+		break;
+
+		// ジャンプ
+	case CPlayer::STATE_JUMP:
+		break;
+
+		// 攻撃
+	case CPlayer::STATE_ATTACK:
+		break;
+
+		// 死亡
+	case CPlayer::STATE_DIE:
+		break;
+
+		// 雪崩に巻き込まれてる
+	case CPlayer::STATE_INAVALANCHE:
+		break;
+
+	default:
+		break;
+	}
+}
 
 //-----------------------------------------------------------------------------
 // ダメージ処理
@@ -570,7 +512,13 @@ void CPlayer::Damage()
 //-----------------------------------------------------------------------------
 void CPlayer::Die()
 {
-	CModel::Uninit();
+	//CModel::Uninit();
+
+	// 操作不能にする
+	m_bControl = false;
+	// プレイヤーを死亡状態にする
+	m_bDie = true;
+
 	//// ライフが破棄されていなければ
 	//if (m_pLife != nullptr)
 	//{

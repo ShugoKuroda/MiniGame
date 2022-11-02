@@ -168,16 +168,16 @@ HRESULT CEnemy::Init()
 		CSpray::Create(D3DXVECTOR3(pos.x, pos.y + 20.0f, pos.z));
 	}
 	
-	if (CManager::GetManager()->GetGame()->GetBubble() == false)
-	{
-		// 頂点カラーの設定
-		CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
-	}
-	else
-	{
-		// 頂点カラーの設定
-		CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	}
+	//if (CManager::GetManager()->GetGame()->GetBubble() == false)
+	//{
+	//	// 頂点カラーの設定
+	//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
+	//}
+	//else
+	//{
+	//	// 頂点カラーの設定
+	//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	//}
 
 	return S_OK;
 }
@@ -329,15 +329,15 @@ void CEnemy::State()
 			{//色の設定
 				SetItemColor(m_col);
 			}
-			//水中に入っていれば
-			else if (CManager::GetManager()->GetGame()->GetBubble() == false)
-			{//水色にする
-				CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
-			}
-			else
-			{//通常色に戻す
-				CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-			}
+			////水中に入っていれば
+			//else if (CManager::GetManager()->GetGame()->GetBubble() == false)
+			//{//水色にする
+			//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
+			//}
+			//else
+			//{//通常色に戻す
+			//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+			//}
 		}
 		break;
 	}

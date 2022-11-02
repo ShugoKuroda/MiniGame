@@ -16,13 +16,12 @@
 // 前方宣言
 //*****************************************************************************
 class CScore;
-class CMeshField;
 class CEnemyBoss;
 class CItem;
 class CCamera;
 
 //-----------------------------------------------------------------------------
-// ベースクラス(派生クラス)
+// ゲーム画面クラス
 //-----------------------------------------------------------------------------
 class CGame
 {
@@ -34,25 +33,20 @@ public:		//メンバ関数
 	CGame();
 	~CGame();
 
+	// 初期化
 	HRESULT Init();
+	// 終了
 	void Uninit();
+	// 更新
 	void Update();
 
-	// 雲を生成
-	void CreateCloud();
-	// 水中の泡を生成
-	void CreateBubble();
+	// ゲームを終了するかどうかを判定
+	bool CheckGameEnd();
 	// 敵を生成
 	void CreateEnemy();
 	// ロゴを生成
 	void CreateLogo(int nCounter);
 
-	// 雲の生成状態を設定
-	void SetCreateCloud(bool bCreate) { m_bCreateCloud = bCreate; }
-	// 泡の生成状態を設定
-	void SetCreateBubble(bool bCreate) { m_bCreateBubble = bCreate; }
-	// ボス死亡フラグを設定
-	void SetDieBoss(bool bDie);
 	// ゲーム開始フラグを取得
 	void SetStart(bool bStart) { m_bStart = bStart; }
 
@@ -65,12 +59,6 @@ public:		//メンバ関数
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
 
-	// スコア情報の取得
-	CMeshField *GetMeshField() { return m_pMeshField; }
-	// 泡の生成状態を取得
-	bool GetBubble() { return m_bCreateCloud; }
-	// ボス死亡フラグを取得
-	bool GetDieBoss() { return m_bDieBoss; }
 	// ゲーム開始フラグを取得
 	bool GetStart() { return m_bStart; }
 	// プレイヤーのスコアをランキングに設定
@@ -85,27 +73,14 @@ private:
 private:	//メンバ変数
 	// プレイヤー情報
 	CPlayer *m_pPlayer[CPlayer::PLAYER_MAX];
-	CMeshField *m_pMeshField;
 	CEnemyBoss* m_pEnemyBoss;
 	CItem* m_pItem;
 	CCamera* m_pCamera;
 
-	// 雲を生成するかどうか
-	bool m_bCreateCloud;
-	// 泡を生成するかどうか
-	bool m_bCreateBubble;
-	// ボスが倒されたかどうか
-	bool m_bDieBoss;
-
-	// 雲の生成情報
-	CloudInfo m_CloudInfo;
-	// 雲が生成されるまでの時間(乱数)
-	int m_nRandBubble;
-	// 雲が生成されるまでの時間カウンター
-	int m_nCntBubble;
-
 	// ゲームが始まったかどうか
 	bool m_bStart;
+	// ゲームが終了したかどうか
+	bool m_bEnd;
 
 	// 敵のセット情報
 	EnemySetInfo m_EnemyInfo;

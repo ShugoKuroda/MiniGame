@@ -266,8 +266,8 @@ void CBg::Update()
 
 		if (m_nCntBgChange >= BG_INTERVAL_BUBBLE)
 		{
-			//泡エフェクトの生成を開始する
-			CManager::GetManager()->GetGame()->SetCreateBubble(true);
+			////泡エフェクトの生成を開始する
+			//CManager::GetManager()->GetGame()->SetCreateBubble(true);
 
 			fMul = 0.75f;
 			sizeSea.y += 0.5f;
@@ -284,8 +284,8 @@ void CBg::Update()
 			//海藻2のアニメーション
 			m_apObject2D[BG_A_SETWEED2]->SetAnimBg(1, 1000, true);
 
-			//雲の生成を止める
-			CManager::GetManager()->GetGame()->SetCreateCloud(false);
+			////雲の生成を止める
+			//CManager::GetManager()->GetGame()->SetCreateCloud(false);
 		}
 		else if (m_nCntBgChange >= BG_INTERVAL_SEA_WEED)
 		{

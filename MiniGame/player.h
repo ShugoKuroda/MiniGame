@@ -61,11 +61,12 @@ public:
 	//状態
 	enum STATE
 	{
-		STATE_NORMAL = 0,	//通常
-		STATE_ENTRY,		//登場
-		STATE_RESPAWN,		//無敵(リスポーン)状態
-		STATE_DIE,			//死亡状態
-		STATE_INAVALANCHE,	//雪崩に巻き込まれている状態
+		STATE_NORMAL = 0,	// 通常
+		STATE_RUN,			// 走る
+		STATE_JUMP,			// ジャンプ
+		STATE_ATTACK,		// 攻撃
+		STATE_DIE,			// 死亡状態
+		STATE_INAVALANCHE,	// 雪崩に巻き込まれている状態
 		STATE_MAX
 	};
 
@@ -78,37 +79,64 @@ public:
 		TYPE_MAX
 	};
 
+	//メンバ関数
+public:
+
+	// コンストラクタ
 	CPlayer();
+	// デストラクタ
 	~CPlayer() override;
 
-	//メンバ関数
+	// 生成
 	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name, int nPlayryNum);	//インスタンス生成処理
 
+	// 初期化
 	HRESULT Init() override;
+	// 終了
 	void Uninit() override;
+	// 更新
 	void Update() override;
+	// 描画
 	void Draw() override;
+	// 移動
 	void Move();
+	// ジャンプ
 	void Jump();
+	// 状態管理
+	void State();
+	// ダメージ処理
+	void Damage();
+	// 死亡処理
+	void Die();
 
+	// 状態の取得
 	STATE GetState() { return m_state; }
 	// スコア情報の取得
 	CScore *GetScore() { return m_pScore; }
 	// 死亡状態の取得
 	bool GetDie() { return m_bDie; }
+	// 過去の位置を取得
 	D3DXVECTOR3 GetPositionOld() { return m_posOld; }
-	void SetMove(D3DXVECTOR3 move) { m_move = move; }
-	void SetMoveX(float fmove) { m_move.x = fmove; }
-	void SetMoveZ(float fmove) { m_move.z = fmove; }
-	void SetMoveY(float fmove) { m_move.y = fmove; }
-	void SetState(STATE inState) { m_state = inState; }
-	void SetJumping(bool bJumping) { m_bIsJumping = bJumping; }
-	void SetKeyboard(bool bControl) { m_bControlKeyboard = bControl; }
-	void SetGamePadNum(int nNum) { m_nGamePadNum = nNum; }
+	
+	// 移動量の設定
+	void SetMove(const D3DXVECTOR3& move) { m_move = move; }
+	// 移動量Xの設定
+	void SetMoveX(const float& fmove) { m_move.x = fmove; }
+	// 移動量Zの設定
+	void SetMoveZ(const float& fmove) { m_move.z = fmove; }
+	// 移動量Yの設定
+	void SetMoveY(const float& fmove) { m_move.y = fmove; }
+	// 状態の設定
+	void SetState(const STATE& inState) { m_state = inState; }
 
-	void State();
-	void Damage();
-	void Die();
+	// ジャンプフラグの設定
+	void SetJumping(const bool& bJumping) { m_bIsJumping = bJumping; }
+	// キーボード使用フラグの設定
+	void SetKeyboard(const bool& bControl) { m_bControlKeyboard = bControl; }
+	// ゲームパッド番号の設定
+	void SetGamePadNum(const int& nNum) { m_nGamePadNum = nNum; }
+	// ゲーム開始フラグの設定
+	void SetStart(const bool& bStart) { m_bStart = bStart; }
 
 private:	//メンバ変数
 
@@ -156,8 +184,10 @@ private:	//メンバ変数
 	//雪崩を抜けるためのキー(ボタン)入力回数
 	int m_nPushButton;
 
+	// ゲームを開始しているかどうか
+	bool m_bStart;
 	// 死亡したかどうか
 	bool m_bDie;
 };
 
-#endif //_PLAYER_H_
+#endif	//_PLAYER_H_
