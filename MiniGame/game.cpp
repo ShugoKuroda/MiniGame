@@ -51,7 +51,7 @@
 #include "model_obstacle.h"
 #include "model_manager.h"
 #include "logo_countdown.h"
-#include "title.h"
+#include "logo_extend.h"
 //#include "avalanche.h"
 
 //-----------------------------------------------------------------------------------------------
@@ -66,13 +66,10 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_nCntBubble(0), m_nRandBubble(0), m_bCreateCloud(true), m_bCreateBubble(false), m_bDieBoss(false),
-				m_pPlayer{}, m_pMeshField(), m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false)
+CGame::CGame() :m_pPlayer{}, m_pMeshField(), m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
-	//雲の生成情報を初期化
-	ZeroMemory(&m_CloudInfo, sizeof(m_CloudInfo));
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -255,19 +252,12 @@ void CGame::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CGame::Update()
 {
-	//// プレイヤー参加情報の取得
-	//CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
-
-	//// プレイヤー生成
-	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	//{
-	//	// 現在の番号が参加しているなら
-	//	if (pEntry[nCntPlayer].bEntry == true)
-	//	{
-
-	//	}
-	//}
-
+	// ゲームが終了していないなら
+	if (m_bEnd == false)
+	{
+		// ゲームが終了したかどうかを判定
+		CheckGameEnd();
+	}
 	//// キーボード情報の取得
 	//CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 	//// ゲームパッド情報の取得
@@ -383,45 +373,42 @@ void CGame::Update()
 }
 
 //-----------------------------------------------------------------------------------------------
-// 雲のランダム生成
+// ゲームを終了するかどうかを判定
 //-----------------------------------------------------------------------------------------------
-void CGame::CreateCloud()
+bool CGame::CheckGameEnd()
 {
-	m_CloudInfo.nCount++;
-	if (m_CloudInfo.nCount >= m_CloudInfo.nRandTime)
+	// プレイヤーの死亡数
+	int nNumDie = 0;
+
+	// プレイヤー生成
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
-		//雲の生成
-		CCloud::Create();
-		//カウンターリセット
-		m_CloudInfo.nCount = 0;
-
-		//雲の再出現時間を乱数で設定
-		m_CloudInfo.nRandTime = GetRandNum(250, 180);
-	}
-}
-
-//-----------------------------------------------------------------------------------------------
-// 泡エフェクトの生成
-//-----------------------------------------------------------------------------------------------
-void CGame::CreateBubble()
-{
-	m_nCntBubble++;
-
-	if (m_nCntBubble >= m_nRandBubble)
-	{
-		D3DXVECTOR3 posBubble = D3DXVECTOR3((float)GetRandNum(CRenderer::SCREEN_WIDTH, 0), (float)GetRandNum(CRenderer::SCREEN_HEIGHT, CRenderer::SCREEN_HEIGHT - 250), 0.0f);
-
-		for (int nCntBubble = 0; nCntBubble < 3; nCntBubble++)
+		// 現在のプレイヤーが参加しているなら
+		if (m_pPlayer[nCntPlayer] != nullptr)
 		{
-			CBubble::Create(D3DXVECTOR3(posBubble.x, posBubble.y - (nCntBubble * 20), posBubble.z), D3DXVECTOR2((float)CBubble::MIN_SIZE * (nCntBubble + 1), (float)CBubble::MIN_SIZE * (nCntBubble + 1)));
+			// 死亡していたら
+			if (m_pPlayer[nCntPlayer]->GetDie() == true)
+			{// プレイヤーの死亡数を加算
+				nNumDie++;
+			}
 		}
-
-		//カウンターリセット
-		m_nCntBubble = 0;
-
-		//泡エフェクトの再出現時間を乱数で設定
-		m_nRandBubble = GetRandNum(120, 30);
+		else
+		{// プレイヤーの死亡数を加算
+			nNumDie++;
+		}
 	}
+
+	// プレイヤーが全員死亡していたら
+	if (CPlayer::PLAYER_MAX <= nNumDie)
+	{
+		// ゲーム終了フラグを立てる
+		m_bEnd = true;
+		// ゲーム終了ロゴの生成
+		CLogoExtend::Create(D3DXVECTOR2(250.0f, 80.0f), "TEX_TYPE_END_UI", 180);
+		return true;
+	}
+
+	return false;
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -514,17 +501,6 @@ void CGame::CreateLogo(int nCounter)
 	//	// ボス接近時の薄暗いフェード
 	//	CFadeScene::Create(CFadeScene::TYPE_BLACK);
 	//}
-}
-
-//-----------------------------------------------------------------------------------------------
-// ボスの死亡フラグ設定
-//-----------------------------------------------------------------------------------------------
-void CGame::SetDieBoss(bool bDie)
-{
-	// ボスの死亡状態を設定
-	m_bDieBoss = bDie;
-	// 画面を止める
-	CManager::GetManager()->SetPause(true);
 }
 
 //-----------------------------------------------------------------------------------------------

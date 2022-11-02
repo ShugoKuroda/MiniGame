@@ -156,8 +156,8 @@ void CPlayer::Update()
 	// サイズの取得
  	D3DXVECTOR3 size = GetSizeMax();
 
-	//操作できる状態なら
-	if (m_bControl == true)
+	//操作できる状態なら && 死亡していないなら
+	if (m_bControl == true && m_state != STATE_DIE)
 	{
 		//移動処理
 		Move();
@@ -438,110 +438,38 @@ void CPlayer::Jump()
 //-----------------------------------------------------------------------------
 // 状態管理
 //-----------------------------------------------------------------------------
-//void CPlayer::State()
-//{
-//	// 対角線(サイズ)の取得
-//	D3DXVECTOR2 size = CObject2D::GetSize();
-//	// 位置の取得
-//	D3DXVECTOR3 pos = CObject2D::GetPosition();
-//
-//	switch (m_state)
-//	{
-//	case STATE_NORMAL:			//プレイヤーの状態が通常の場合
-//		break;
-//	case STATE_ENTRY:			//登場状態の場合
-//
-//		m_nCntState++;
-//
-//		// 対角線(サイズ)の減算
-//		size -= D3DXVECTOR2(4.46f, 1.98f);
-//		// 対角線の取得
-//		CObject2D::SetSize(size);
-//
-//		if (pos.y <= CRenderer::SCREEN_HEIGHT / 2)
-//		{
-//			m_bControl = true;
-//			m_state = STATE_RESPAWN;
-//			m_nCntState = 150;
-//		}
-//		else if (pos.y <= CRenderer::SCREEN_HEIGHT / 1.5f)
-//		{
-//			pos += D3DXVECTOR3(-20.0f, -3.0f, 0.0f);
-//		}
-//		else
-//		{
-//			pos += D3DXVECTOR3(22.0f, -3.0f, 0.0f);
-//		}
-//
-//		if (m_nCntState >= 96)
-//		{
-//			m_nTexRotType = TYPE_NEUTRAL;
-//		}
-//		else if (m_nCntState >= 72)
-//		{
-//			m_nTexRotType = TYPE_DOWN;
-//		}
-//		else if (m_nCntState >= 48)
-//		{
-//			m_nTexRotType = TYPE_NEUTRAL;
-//		}
-//		else if (m_nCntState >= 24)
-//		{
-//			m_nTexRotType = TYPE_UP;
-//		}
-//
-//		CObject2D::SetPosition(pos);
-//
-//		break;
-//	case STATE_RESPAWN:			//プレイヤーがダメージ状態の場合
-//								//状態カウンターの減算
-//		m_nCntState--;
-//		//右から出現させる
-//		if (m_nCntState >= 150)
-//		{
-//			// 位置の加算
-//			pos.x += 10.0f;
-//			// 位置の設定
-//			CObject2D::SetPosition(pos);
-//
-//			// カウンターが一定
-//			if (m_nCntState == 150)
-//			{
-//				//操作可能にする
-//				m_bControl = true;
-//			}
-//		}
-//
-//		//点滅させる
-//		if (m_nCntState % 4 == 0)
-//		{//黄色
-//			CObject2D::SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-//		}
-//		else
-//		{//色なし
-//			CObject2D::SetColor(DEFAULT_COL);
-//		}
-//
-//		//状態を通常に戻す
-//		if (m_nCntState <= 0)
-//		{
-//			m_state = STATE_NORMAL;
-//
-//			CObject2D::SetColor(DEFAULT_COL);
-//		}
-//		break;
-//	case STATE_DIE:			//プレイヤーが死亡状態の場合
-//							//状態カウンターの減算
-//		m_nCntState--;
-//
-//		if (m_nCntState <= 0)
-//		{
-//			m_state = STATE_RESPAWN;
-//			m_nCntState = 180;
-//		}
-//		break;
-//	}
-//}
+void CPlayer::State()
+{
+	switch (m_state)
+	{
+		// 通常
+	case CPlayer::STATE_NORMAL:
+		break;
+
+		// 走る
+	case CPlayer::STATE_RUN:
+		break;
+
+		// ジャンプ
+	case CPlayer::STATE_JUMP:
+		break;
+
+		// 攻撃
+	case CPlayer::STATE_ATTACK:
+		break;
+
+		// 死亡
+	case CPlayer::STATE_DIE:
+		break;
+
+		// 雪崩に巻き込まれてる
+	case CPlayer::STATE_INAVALANCHE:
+		break;
+
+	default:
+		break;
+	}
+}
 
 //-----------------------------------------------------------------------------
 // ダメージ処理
@@ -584,7 +512,13 @@ void CPlayer::Damage()
 //-----------------------------------------------------------------------------
 void CPlayer::Die()
 {
-	CModel::Uninit();
+	//CModel::Uninit();
+
+	// 操作不能にする
+	m_bControl = false;
+	// プレイヤーを死亡状態にする
+	m_bDie = true;
+
 	//// ライフが破棄されていなければ
 	//if (m_pLife != nullptr)
 	//{

@@ -17,8 +17,9 @@
 #include "texture.h"
 
 //-----------------------------------------------------------------------------------------------
-// 定数宣言
+// マクロ定義
 //-----------------------------------------------------------------------------------------------
+#define EXTEND_SPEED		(20.0f)		// アニメーションの速度
 
 //-----------------------------------------------------------------------------------------------
 // 静的メンバ変数
@@ -46,16 +47,13 @@ CLogoExtend::~CLogoExtend()
 // const char* name → 生成するテクスチャ
 // const int& nCount → 破棄するまでの時間
 //-----------------------------------------------------------------------------------------------
-CLogoExtend* CLogoExtend::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const char* name, const int& nCount)
+CLogoExtend* CLogoExtend::Create(const D3DXVECTOR2& size, const char* name, const int& nCount)
 {
 	// ポインタクラスを宣言
 	CLogoExtend* pLogoExtend = new CLogoExtend;
 
 	if (pLogoExtend != nullptr)
 	{// もしnullptrではなかったら
-
-		// 位置設定
-		pLogoExtend->SetPosition(pos);
 
 		// サイズの保存
 		pLogoExtend->m_DefaultSize = size;
@@ -78,6 +76,8 @@ CLogoExtend* CLogoExtend::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size
 //-----------------------------------------------------------------------------------------------
 HRESULT CLogoExtend::Init()
 {
+	// 位置設定
+	SetPosition(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, CRenderer::SCREEN_HEIGHT / 2, 0.0f));
 	// 動き方の設定
 	m_anim = ANIM_Y_EXPAND;
 	// サイズの設定
@@ -109,7 +109,11 @@ void CLogoExtend::Update()
 
 	// 表示カウンターが0以下
 	if (nCountUninit <= 0)
-	{// 破棄
+	{
+		// モードの設定
+		CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+
+		// 破棄
 		Uninit();
 		return;
 	}
@@ -117,17 +121,34 @@ void CLogoExtend::Update()
 	// 破棄カウンターの設定
 	SetCountUninit(nCountUninit);
 
+	// 動き方の設定
+	Pattern();
+}
 
+//-----------------------------------------------------------------------------------------------
+// 描画
+//-----------------------------------------------------------------------------------------------
+void CLogoExtend::Draw()
+{
+	CObject2D::Draw();
+}
+
+//-----------------------------------------------------------------------------------------------
+// 動き方の設定
+//-----------------------------------------------------------------------------------------------
+void CLogoExtend::Pattern()
+{
 	// サイズの取得
 	D3DXVECTOR2 size = GetSize();
 
+	// 動き方の設定
 	switch (m_anim)
 	{
 		// 縦に広がる
 	case CLogoExtend::ANIM_Y_EXPAND:
 
 		// サイズの加算
-		size.y += 1.0f;
+		size.y += EXTEND_SPEED;
 		// 指定のサイズに達したら
 		if (size.y >= m_DefaultSize.y * 2.0f)
 		{
@@ -140,7 +161,7 @@ void CLogoExtend::Update()
 	case CLogoExtend::ANIM_Y_SHORTEN:
 
 		// サイズの加算
-		size.y -= 1.0f;
+		size.y -= EXTEND_SPEED;
 		// 指定のサイズに達したら
 		if (size.y <= m_DefaultSize.y)
 		{
@@ -153,7 +174,7 @@ void CLogoExtend::Update()
 	case CLogoExtend::ANIM_X_EXPAND:
 
 		// サイズの加算
-		size.x += 1.0f;
+		size.x += EXTEND_SPEED;
 		// 指定のサイズに達したら
 		if (size.x >= m_DefaultSize.x * 1.5f)
 		{
@@ -165,7 +186,7 @@ void CLogoExtend::Update()
 	case CLogoExtend::ANIM_X_SHORTEN:
 
 		// サイズの加算
-		size.x -= 1.0f;
+		size.x -= EXTEND_SPEED;
 		// 指定のサイズに達したら
 		if (size.x <= m_DefaultSize.x)
 		{
@@ -185,12 +206,4 @@ void CLogoExtend::Update()
 		// 頂点座標の設定
 		SetVertex();
 	}
-}
-
-//-----------------------------------------------------------------------------------------------
-// 描画
-//-----------------------------------------------------------------------------------------------
-void CLogoExtend::Draw()
-{
-	CObject2D::Draw();
 }

@@ -77,6 +77,31 @@ HRESULT CTitle::Init()
 	// カメラ生成
 	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 60.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
+	// プレイヤー参加情報の取得
+	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
+
+	// プレイヤー生成
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		// 現在の番号が参加しているなら
+		if (pEntry[nCntPlayer].bEntry == true)
+		{
+			// キーボードで参加しているなら
+			if (pEntry[nCntPlayer].bEntryKeyboard == true)
+			{
+				// プレイヤー生成
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
+			}
+			else
+			{
+				// プレイヤー生成
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
+			}
+		}
+	}
+
 	//// テクスチャのロード
 	//CTitle::Load();
 	//// 雲
@@ -183,6 +208,7 @@ void CTitle::Update()
 	// ジョイパッド情報の取得
 	CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
+	// プレイヤー参加情報の取得
 	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
 
 	// プレイヤー生成

@@ -35,7 +35,7 @@ public:
 	~CLogoExtend() override;
 
 	// ¶¬
-	static CLogoExtend* Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const char* name, const int& nCount);
+	static CLogoExtend* Create(const D3DXVECTOR2& size, const char* name, const int& nCount);
 
 	// ‰Šú‰»
 	HRESULT Init() override;
@@ -45,6 +45,9 @@ public:
 	void Update() override;
 	// •`‰æ
 	void Draw() override;
+
+	// “®‚«•û‚Ìİ’è
+	void Pattern();
 
 	// ƒƒ“ƒo•Ï”
 private:
