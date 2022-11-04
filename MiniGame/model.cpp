@@ -120,6 +120,7 @@ HRESULT CModel::Init()
 
 	//頂点アンロック
 	m_aXFile.pMesh->UnlockVertexBuffer();
+
 	return S_OK;
 }
 
@@ -157,9 +158,9 @@ void CModel::Draw()
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
-	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
-	D3DMATERIAL9 matDef;			//現在のマテリアル保存用
-	D3DXMATERIAL *pMat;				//マテリアルデータへのポインタ
+	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
+	D3DMATERIAL9 matDef;			// 現在のマテリアル保存用
+	D3DXMATERIAL *pMat;				// マテリアルデータへのポインタ
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
