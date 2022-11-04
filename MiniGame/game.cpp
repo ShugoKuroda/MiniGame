@@ -122,7 +122,7 @@ HRESULT CGame::Init()
 	CModelManager::Create();
 
 	// モデル生成
-	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
+	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
 
 	// カウントダウンの開始
 	CLogoCountDown::Create(5);

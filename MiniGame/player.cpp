@@ -62,7 +62,7 @@ const float CPlayer::SIZE_X = 90.0f;
 const float CPlayer::SIZE_Y = 40.0f;
 const float CPlayer::ENTRY_SIZE_X = 630.0f;
 const float CPlayer::ENTRY_SIZE_Y = 280.0f;
-const float CPlayer::MOVE_DEFAULT = 0.5f;
+const float CPlayer::MOVE_DEFAULT = 0.35f;
 // アニメーション間隔
 const int CPlayer::ANIM_INTERVAL = 5;
 // アニメーション最大数
@@ -101,7 +101,7 @@ CPlayer::~CPlayer()
 //-----------------------------------------------------------------------------
 // インスタンス生成処理
 //-----------------------------------------------------------------------------
-CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name,int nPlayerNum)
+CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name, int nPlayerNum)
 {
 	//インスタンス生成
 	CPlayer *pPlayer = new CPlayer;
