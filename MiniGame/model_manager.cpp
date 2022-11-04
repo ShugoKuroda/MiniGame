@@ -32,7 +32,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CModelManager::CModelManager() :m_nCounter(0), m_nNumCreate(0)
+CModelManager::CModelManager() :m_nCounter(0), m_nCounterCreate(0), m_nNumCreate(0)
 {
 }
 
@@ -66,7 +66,7 @@ CModelManager *CModelManager::Create()
 HRESULT CModelManager::Init()
 {
 	// モデル生成までの数値取得
-	m_nNumCreate = GetRandNum(300, 60);
+	m_nCounterCreate = GetRandNum(120, 60);
 
 	return S_OK;
 }
@@ -85,36 +85,45 @@ void CModelManager::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CModelManager::Update()
 {
-	// カウンター加算
-	m_nCounter++;
-
-	// カウンターが生成までの数値以上になったら
-	if (m_nNumCreate <= m_nCounter)
+	// ゲームが開始していれば
+	if (CManager::GetManager()->GetGame()->GetStart() == true)
 	{
-		// カウンターリセット
-		m_nCounter = 0;
-		// モデル生成までの数値取得
-		m_nNumCreate = GetRandNum(300, 60);
+		// カウンター加算
+		m_nCounter++;
 
-		// カメラ情報の取得
-		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
-		
-		// 生成位置の取得
-		float fRand = (float)GetRandNum(80, -80);
-
-		// 障害物生成
-		switch (GetRandNum(1, 0))
+		// カウンターが生成までの数値以上になったら
+		if (m_nCounterCreate <= m_nCounter)
 		{
-		case 0:
-			CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
-			break;
+			// カウンターリセット
+			m_nCounter = 0;
+			// モデル生成までの数値取得
+			m_nCounterCreate = GetRandNum(240, 90);
+			// 生成するオブジェクト数を取得
+			m_nNumCreate = GetRandNum(3, 1);
 
-		case 1:
-			CObstacle::Create(D3DXVECTOR3(fRand, -0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
-			break;
+			// カメラ情報の取得
+			D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
-		default:
-			break;
+			for (int nCntModel = 0; nCntModel < m_nNumCreate; nCntModel++)
+			{
+				// 生成位置の取得
+				float fRand = (float)GetRandNum(80, -80);
+
+				// 障害物生成
+				switch (GetRandNum(1, 0))
+				{
+				case 0:
+					CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
+					break;
+
+				case 1:
+					CObstacle::Create(D3DXVECTOR3(fRand, -0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
+					break;
+
+				default:
+					break;
+				}
+			}
 		}
 	}
 }

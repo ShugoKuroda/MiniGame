@@ -107,10 +107,10 @@ HRESULT CGame::Init()
 	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
 
 	// “Gƒ{ƒX¶¬
-	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
 
 	// ƒJƒƒ‰¶¬
-	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -280.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -230.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	// ’Ç]‘ÎÛ‚ÌÝ’è
 	m_pCamera->SetTracking(true);
 	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());

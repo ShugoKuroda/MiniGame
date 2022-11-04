@@ -27,8 +27,9 @@ public:
 	void Draw() override;
 
 private:
-	int m_nCounter;		// カウンター
-	int m_nNumCreate;	// オブジェクト生成までの数値
+	int m_nCounter;			// カウンター
+	int m_nCounterCreate;	// オブジェクト生成までの数値
+	int m_nNumCreate;		// 1回に生成するオブジェクト数
 };
 
 #endif	// _MODEL_MANAGER_H_

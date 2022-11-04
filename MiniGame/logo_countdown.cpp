@@ -121,6 +121,8 @@ void CLogoCountDown::Update()
 			CLogo::Create(m_apNumber->GetPosition(), D3DXVECTOR2(200.0f, 80.0f), "TEX_TYPE_START_UI", 90);
 			// ボスを動かす
 			CManager::GetManager()->GetGame()->GetEnemyBoss()->SetPattern(CEnemyBoss::PATTERN_NORMAL);
+			// ゲームの開始フラグを立てる
+			CManager::GetManager()->GetGame()->SetStart(true);
 		}
 
 		// 破棄

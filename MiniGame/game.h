@@ -47,7 +47,7 @@ public:		//メンバ関数
 	// ロゴを生成
 	void CreateLogo(int nCounter);
 
-	// ゲーム開始フラグを取得
+	// ゲーム開始フラグを設定
 	void SetStart(bool bStart) { m_bStart = bStart; }
 
 	// プレイヤー情報の取得
