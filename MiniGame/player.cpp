@@ -45,6 +45,11 @@
 
 #define PLAYER_SIZE					(16.0f)
 
+// 重力
+#define GRAVITY			(0.1f)
+// ジャンプ力
+#define JUMP_POWER		(2.0f)
+
 //-----------------------------------------------------------------------------
 // using宣言
 //-----------------------------------------------------------------------------
@@ -156,46 +161,45 @@ void CPlayer::Update()
 	// サイズの取得
  	D3DXVECTOR3 size = GetSizeMax();
 
-	//操作できる状態なら && 死亡していないなら
+	// 操作できる状態なら && 死亡していないなら
 	if (m_bControl == true && m_state != STATE_DIE)
 	{
-		//移動処理
+		// 移動処理
 		Move();
 
-		// キーボード情報の取得
-		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
-		// ジョイパッド情報の取得
-		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
-
+		// ジャンプしていなければ
 		if (m_bIsJumping == false)
 		{
-			// キーボード操作の場合
-			if (m_bControlKeyboard == true)
-			{
-				if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
-				{//スペースキーが押された
-					m_move.y = 3.0f;
+			// キーボード情報の取得
+			CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
+			// ジョイパッド情報の取得
+			CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
-					m_bIsJumping = true;
-				}
+			// キーボード操作の場合
+			if (m_bControlKeyboard == true &&
+				pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
+			{// SPACEキー押下
+
+				// ジャンプ力の設定
+				m_move.y = JUMP_POWER;
+
+				// ジャンプフラグの設定
+				m_bIsJumping = true;
 			}
 			// ゲームパッド操作の場合
-			else
-			{
-				if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
-				{//スペースキーが押された
-					m_move.y = 3.0f;
+			else if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
+			{// Aボタン押下
 
-					m_bIsJumping = true;
-				}
+				// ジャンプ力の設定
+				m_move.y = JUMP_POWER;
+
+				// ジャンプフラグの設定
+				m_bIsJumping = true;
 			}
 		}
 
 		// 重力負荷をかける
-		m_move.y -= 0.1f;
-
-		// 移動量の加算
-		pos += m_move;
+		m_move.y -= GRAVITY;
 	}
 	
 	//プレイヤーが雪崩に巻き込まれていたら
@@ -218,6 +222,9 @@ void CPlayer::Update()
 			}
 		}
 	}
+
+	// 移動量の加算
+	pos += m_move;
 
 	// 障害物の当たり判定
 	CObstacle::CollisionAll(&pos, m_nPlayerNum);
