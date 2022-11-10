@@ -163,6 +163,12 @@
     <ClCompile Include="mesh_sphere.cpp">
       <Filter>ソースファイル\mesh</Filter>
     </ClCompile>
+    <ClCompile Include="x_file_motion.cpp">
+      <Filter>ソースファイル\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>ソースファイル\motion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -190,9 +196,6 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="cloud.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="cloud_data.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="continue.h">
@@ -333,6 +336,18 @@
     <ClInclude Include="mesh_sphere.h">
       <Filter>ソースファイル\mesh</Filter>
     </ClInclude>
+    <ClInclude Include="x_file_motion.h">
+      <Filter>ソースファイル\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>ソースファイル\motion</Filter>
+    </ClInclude>
+    <ClInclude Include="x_file_data.h">
+      <Filter>ソースファイル\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="motion_data.h">
+      <Filter>ソースファイル\managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -364,6 +379,9 @@
     </Filter>
     <Filter Include="ソースファイル\mesh">
       <UniqueIdentifier>{e2a92aca-90d6-4d6c-9b57-61c059cd9079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\motion">
+      <UniqueIdentifier>{4421b1b3-173c-404c-9ab2-1827e1a0a178}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

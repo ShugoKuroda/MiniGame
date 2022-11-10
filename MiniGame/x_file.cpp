@@ -18,7 +18,7 @@
 //================================================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
 //================================================
-std::vector<CXFile::SModelInfo> CXFile::m_aXFile = {};
+std::vector<SModelInfo> CXFile::m_aXFile = {};
 std::vector<std::string> CXFile::m_aPas;
 std::map<std::string, int> CXFile::m_texType;
 int CXFile::m_nNumXFile = 0;

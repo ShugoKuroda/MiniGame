@@ -7,7 +7,6 @@
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
-#include "cloud_data.h"
 #include "renderer.h"
 #include "player.h"
 

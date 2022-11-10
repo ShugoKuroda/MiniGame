@@ -28,6 +28,7 @@
 #include "model_obstacle.h"
 #include "game.h"
 #include "camera.h"
+#include "x_file.h"
 
 //-----------------------------------------------------------------------------
 // É}ÉNÉçíËã`

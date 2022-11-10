@@ -8,7 +8,6 @@
 #define _GAME_H_
 
 #include "enemy_data.h"
-#include "cloud_data.h"
 
 #include "player.h"
 

@@ -8,7 +8,7 @@
 #define _MODEL_H_			//2重インクルード防止のマクロ定義
 
 #include "object.h"
-#include "x_file.h"
+#include "x_file_data.h"
 
 //=============================================================================
 // クラス定義
@@ -31,8 +31,6 @@ public:
 	void Update() override;
 	// 描画
 	void Draw() override;
-	// 当たり判定
-	//bool Collision();
 
 	// 位置設定
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
@@ -49,11 +47,11 @@ public:
 	// 最小サイズ取得
 	D3DXVECTOR3 GetSizeMin() { return m_vtxMin; }
 	// テクスチャの設定
-	void BindXFile(CXFile::SModelInfo XFile) { m_aXFile = XFile; }
+	void BindXFile(SModelInfo XFile) { m_aXFile = XFile; }
 
 private:
 	//Xファイル情報
-	CXFile::SModelInfo m_aXFile;	
+	SModelInfo m_aXFile;	
 	//位置
 	D3DXVECTOR3 m_pos;
 	//前回の位置

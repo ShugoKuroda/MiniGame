@@ -195,7 +195,9 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_crevasse.cpp" />
     <ClCompile Include="model_manager.cpp" />
+    <ClCompile Include="motion.cpp" />
     <ClCompile Include="model_obstacle.cpp" />
+    <ClCompile Include="x_file_motion.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2D.cpp" />
@@ -223,7 +225,6 @@
     <ClInclude Include="bullet_option.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cloud.h" />
-    <ClInclude Include="cloud_data.h" />
     <ClInclude Include="continue.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
@@ -253,7 +254,11 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="model_crevasse.h" />
     <ClInclude Include="model_manager.h" />
+    <ClInclude Include="motion.h" />
     <ClInclude Include="model_obstacle.h" />
+    <ClInclude Include="motion_data.h" />
+    <ClInclude Include="x_file_data.h" />
+    <ClInclude Include="x_file_motion.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="object2D.h" />
