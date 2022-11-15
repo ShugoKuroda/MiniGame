@@ -7,7 +7,7 @@
 #ifndef _ENEMY_BOSS_H_
 #define _ENEMY_BOSS_H_
 
-#include "enemy.h"
+#include "model.h"
 
 //*******************************************************************
 //	前方宣言
@@ -17,7 +17,7 @@ class CPlayer;
 //*******************************************************************
 //	敵クラスの定義
 //*******************************************************************
-class CEnemyBoss : public CEnemy
+class CEnemyBoss : public CModel
 {
 public:		//定数
 	// 幅
@@ -59,21 +59,22 @@ public:
 	~CEnemyBoss() override;
 
 	//メンバ関数
-	static CEnemyBoss *Create(const D3DXVECTOR3& pos, CEnemy::TYPE type);	//インスタンス生成処理
+	static CEnemyBoss *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name);		//インスタンス生成処理
 
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
-	bool Collision(D3DXVECTOR3 posStart) override;
-	void Damage(int nDamage, CPlayer* pPlayer) override;
-	void State() override;
-	void SetAnim() override;
-	bool Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move);
+	bool Collision(D3DXVECTOR3 posStart);
+	void Damage(int nDamage, CPlayer* pPlayer);
+	void State();
+	void SetAnim();
+	bool Pattern(D3DXVECTOR3& pos);
 	void ChangeSize(D3DXVECTOR2 *pSize, const float& fSize);
 	void StateReset();
 
 	PATTERN GetPattern() { return m_pattern; }
+	void SetPattern(PATTERN pattern) { m_pattern = pattern; }
 
 private:
 	D3DXVECTOR3 m_PosOld;	//前回の位置

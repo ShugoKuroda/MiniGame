@@ -16,9 +16,11 @@
 #include "camera.h"
 //#include "shadow.h"
 #include "bullet.h"
-#include "meshfield.h"
 #include "load.h"
 #include "enemy.h"
+
+// 追加
+#include "x_file.h"
 
 //-----------------------------------------------------------------------------
 // コンストラクタ
@@ -53,7 +55,7 @@ CModel* CModel::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 	pModel->SetRotation(rot);
 
 	// Xファイルの割り当て
-	pModel->BindXFile(CManager::GetXFile()->GetXFile(name));
+	pModel->BindXFile(CManager::GetManager()->GetXFile()->GetXFile(name));
 
 	// 初期化
 	pModel->Init();
@@ -121,6 +123,7 @@ HRESULT CModel::Init()
 
 	//頂点アンロック
 	m_aXFile.pMesh->UnlockVertexBuffer();
+
 	return S_OK;
 }
 
@@ -156,11 +159,11 @@ void CModel::Update()
 void CModel::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
-	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
-	D3DMATERIAL9 matDef;			//現在のマテリアル保存用
-	D3DXMATERIAL *pMat;				//マテリアルデータへのポインタ
+	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
+	D3DMATERIAL9 matDef;			// 現在のマテリアル保存用
+	D3DXMATERIAL *pMat;				// マテリアルデータへのポインタ
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
@@ -204,76 +207,3 @@ void CModel::Draw()
 	//保持していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
 }
-
-//-----------------------------------------------------------------------------
-// 当たり判定
-//-----------------------------------------------------------------------------
-//bool CModel::Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, float& Width, float& Height)
-//{
-//	//衝突フラグ
-//	bool bIsPush = false;
-//
-//	if (pPosOld->x <= m_pos.x + m_vtxMin.x		//前回の位置(X軸)がX軸の最小値以下
-//		&& pPos->x >= m_pos.x + m_vtxMin.x		//現在の位置(X軸)がX軸の最小値以上
-//		&& pPos->z <= m_pos.z + m_vtxMax.z		//Z軸の最大値より内側
-//		&& pPos->z >= m_pos.z + m_vtxMin.z		//Z軸の最小値より内側
-//		&& pPos->y <= m_pos.y + m_vtxMax.y		//Y軸の最大値より内側
-//		&& pPos->y >= m_pos.y + m_vtxMin.y)		//Y軸の最小値より内側
-//	{//左側の当たり判定(-X)
-//		pPos->x = m_pos.x + m_vtxMin.x;
-//		bIsPush = true;
-//	}
-//	else if (pPosOld->x >= m_pos.x + m_vtxMax.x	//前回の位置(X軸)がX軸の最小値以上
-//		&& pPos->x <= m_pos.x + m_vtxMax.x		//現在の位置(X軸)がX軸の最小値以下
-//		&& pPos->z <= m_pos.z + m_vtxMax.z		//Z軸の最大値より内側
-//		&& pPos->z >= m_pos.z + m_vtxMin.z		//Z軸の最小値より内側
-//		&& pPos->y <= m_pos.y + m_vtxMax.y		//Y軸の最大値より内側
-//		&& pPos->y >= m_pos.y + m_vtxMin.y)		//Y軸の最小値より内側
-//	{//右側の当たり判定(+X)
-//		pPos->x = m_pos.x + m_vtxMax.x;
-//		bIsPush = true;
-//	}
-//
-//	if (pPosOld->z <= m_pos.z + m_vtxMin.z		//前回の位置(Z軸)がZ軸の最小値以下
-//		&& pPos->z >= m_pos.z + m_vtxMin.z		//現在の位置(Z軸)がZ軸の最小値以上
-//		&& pPos->x <= m_pos.x + m_vtxMax.x		//X軸の最大値より内側
-//		&& pPos->x >= m_pos.x + m_vtxMin.x		//X軸の最小値より内側
-//		&& pPos->y <= m_pos.y + m_vtxMax.y		//Y軸の最大値より内側
-//		&& pPos->y >= m_pos.y + m_vtxMin.y)		//Y軸の最小値より内側
-//	{//手前側の当たり判定(-Z)
-//		pPos->z = m_pos.z + m_vtxMin.z;
-//		bIsPush = true;
-//	}
-//	else if (pPosOld->z >= m_pos.z + m_vtxMax.z	//前回の位置(Z軸)がZ軸の最小値以上
-//		&& pPos->z <= m_pos.z + m_vtxMax.z		//現在の位置(Z軸)がZ軸の最小値以下
-//		&& pPos->x <= m_pos.x + m_vtxMax.x		//X軸の最大値より内側
-//		&& pPos->x >= m_pos.x + m_vtxMin.x		//X軸の最小値より内側
-//		&& pPos->y <= m_pos.y + m_vtxMax.y		//Y軸の最大値より内側
-//		&& pPos->y >= m_pos.y + m_vtxMin.y)		//Y軸の最小値より内側
-//	{//奥側の当たり判定(+Z)
-//		pPos->z = m_pos.z + m_vtxMax.z;
-//		bIsPush = true;
-//	}
-//
-//	if (pPosOld->y >= m_pos.y + m_vtxMax.y		//前回の位置(Y軸)がY軸の最小値以上
-//		&& pPos->y <= m_pos.y + m_vtxMax.y		//現在の位置(Y軸)がY軸の最小値以下
-//		&& pPos->x <= m_pos.x + m_vtxMax.x		//X軸の最大値より内側
-//		&& pPos->x >= m_pos.x + m_vtxMin.x		//X軸の最小値より内側
-//		&& pPos->z <= m_pos.z + m_vtxMax.z		//Z軸の最大値より内側
-//		&& pPos->z >= m_pos.z + m_vtxMin.z)		//Z軸の最小値より内側
-//	{//上側の当たり判定(-Y)
-//		//pPos->y = g_aModel[nCnt].pos.y + g_aModel[nCnt].vtxMax.y;
-//	}
-//	else if (pPosOld->y <= m_pos.y + m_vtxMin.y	//前回の位置(Y軸)がY軸の最小値以下
-//		&& pPos->y >= m_pos.y + m_vtxMin.y		//現在の位置(Y軸)がY軸の最小値以上
-//		&& pPos->x <= m_pos.x + m_vtxMax.x		//X軸の最大値より内側
-//		&& pPos->x >= m_pos.x + m_vtxMin.x		//X軸の最小値より内側
-//		&& pPos->z <= m_pos.z + m_vtxMax.z		//Z軸の最大値より内側
-//		&& pPos->z >= m_pos.z + m_vtxMin.z)		//Z軸の最小値より内側
-//	{//下側の当たり判定(+Y)
-//		pPos->y = m_pos.y + m_vtxMin.y;
-//		bIsPush = true;
-//	}
-//
-//	return bIsPush;
-//}

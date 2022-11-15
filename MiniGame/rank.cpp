@@ -39,7 +39,7 @@ int CRank::m_nScorePlayer[MAX_PLAYER_SCORE] = { 0 };
 //=============================================================================
 CRank::CRank() :m_pScore{ nullptr }, m_apObject2D{ nullptr }, m_aScore{ 0 }, m_bMyScoreFade{ 0 }, m_bNextMode(false)
 {
-	SetObjType(CObject::OBJ_UI);
+	SetType(CObject::OBJ_UI);
 }
 
 //=============================================================================
@@ -69,7 +69,7 @@ CRank *CRank::Create()
 HRESULT CRank::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/CustomBg001.jpg", &m_apTexture[TYPE_BG]);	// 背景
@@ -111,8 +111,8 @@ HRESULT CRank::Init()
 	}
 
 	//オブジェクトの種類設定
-	m_apObject2D[TYPE_BG]->SetObjType(EObject::OBJ_BG);
-	m_apObject2D[TYPE_RANK]->SetObjType(EObject::OBJ_UI);
+	m_apObject2D[TYPE_BG]->SetType(EObject::OBJ_BG);
+	m_apObject2D[TYPE_RANK]->SetType(EObject::OBJ_UI);
 
 	// スコアの生成
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
@@ -121,30 +121,30 @@ HRESULT CRank::Init()
 			SCORE_SIZE, SCORE_SPACE);
 	}
 
-	// プレイヤースコアの生成
-	for (int nCnt = 0; nCnt < MAX_PLAYER_SCORE; nCnt++)
-	{
-		// プレイヤーENTRY情報の取得
-		bool bEntry = CManager::GetEntry(nCnt);
+	//// プレイヤースコアの生成
+	//for (int nCnt = 0; nCnt < MAX_PLAYER_SCORE; nCnt++)
+	//{
+	//	// プレイヤーENTRY情報の取得
+	//	bool bEntry = CManager::GetManager()->GetEntry(nCnt);
 
-		// エントリーしていれば
-		if (bEntry == true)
-		{// プレイヤースコア生成
-			m_pScore[nCnt + MAX_RANKING] = CScore::Create(D3DXVECTOR3(PLAYER_SCORE_POS.x + (nCnt * 650.0f), PLAYER_SCORE_POS.y, SCORE_POS.z),
-				PLAYER_SCORE_SIZE, PLAYER_SCORE_SPACE);
+	//	// エントリーしていれば
+	//	if (bEntry == true)
+	//	{// プレイヤースコア生成
+	//		m_pScore[nCnt + MAX_RANKING] = CScore::Create(D3DXVECTOR3(PLAYER_SCORE_POS.x + (nCnt * 650.0f), PLAYER_SCORE_POS.y, SCORE_POS.z),
+	//			PLAYER_SCORE_SIZE, PLAYER_SCORE_SPACE);
 
-			// スコアの設定
-			m_aScore[nCnt + MAX_RANKING] = m_nScorePlayer[nCnt];
+	//		// スコアの設定
+	//		m_aScore[nCnt + MAX_RANKING] = m_nScorePlayer[nCnt];
 
-			// UIの生成
-			m_apObject2D[nCnt] = new CObject2D;
-			m_apObject2D[nCnt]->SetObjType(EObject::OBJ_UI);
-			m_apObject2D[nCnt]->SetPosition(D3DXVECTOR3(100.0f + (nCnt * 650.0f), CRenderer::SCREEN_HEIGHT - 50.0f, 0.0f));
-			m_apObject2D[nCnt]->SetSize(D3DXVECTOR2(200.0f, 100.0f));
-			m_apObject2D[nCnt]->Init();
-			m_apObject2D[nCnt]->BindTexture(m_apTexture[nCnt]);
-		}
-	}
+	//		// UIの生成
+	//		m_apObject2D[nCnt] = new CObject2D;
+	//		m_apObject2D[nCnt]->SetType(EObject::OBJ_UI);
+	//		m_apObject2D[nCnt]->SetPosition(D3DXVECTOR3(100.0f + (nCnt * 650.0f), CRenderer::SCREEN_HEIGHT - 50.0f, 0.0f));
+	//		m_apObject2D[nCnt]->SetSize(D3DXVECTOR2(200.0f, 100.0f));
+	//		m_apObject2D[nCnt]->Init();
+	//		m_apObject2D[nCnt]->BindTexture(m_apTexture[nCnt]);
+	//	}
+	//}
 
 	// テキストからスコアをロード
 	int *pScore = LoadSpace::LoadScore();
@@ -210,9 +210,9 @@ void CRank::Update()
 	m_apObject2D[TYPE_BG]->SetAnimBgLeftUp(1, 400, true);
 
 	// キーボード情報の取得
-	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 	// ゲームパッド情報の取得
-	CInputJoypad *pJoypad = CManager::GetInputJoypad();
+	CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
 	for (int nCnt = CInputKeyboard::KEYINFO_OK; nCnt < CInputKeyboard::KEYINFO_MAX; nCnt++)
 	{
@@ -236,7 +236,7 @@ void CRank::Update()
 				CSound::Play(CSound::SOUND_LABEL_SE_MENU_OK);
 
 				// モードの設定
-				CManager::GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+				CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
 				return;
 			}
 
@@ -269,7 +269,7 @@ void CRank::Update()
 				if (m_bNextMode == true)
 				{
 					// モードの設定
-					CManager::GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+					CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
 					return;
 				}
 

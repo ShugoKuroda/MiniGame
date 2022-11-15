@@ -21,7 +21,8 @@ public:		// 定数
 public:
 	enum EObject
 	{// オブジェクトの種類(下から描画を優先)
-		OBJ_BG = 0,
+		OBJ_NONE = 0,
+		OBJ_BG,
 		OBJ_CLOUD,
 		OBJ_BG_MOVE,
 		OBJ_TITLE_LOGO,
@@ -33,6 +34,7 @@ public:
 		OBJ_EFFECT,
 		OBJ_ENEMYBOSS,
 		OBJ_ENEMY,
+		OBJ_OBSTACLE,
 		OBJ_BULLET,
 		OBJ_ITEM,
 		OBJ_EXPLOSION,
@@ -64,7 +66,7 @@ public:
 	static void ShakeAll();
 
 	static CObject* GetObject(int nCnt) { return m_apObject[nCnt]; }
-	void SetObjType(EObject type) { m_nType = type; }
+	void SetType(EObject type) { m_nType = type; }
 	static void SetShake(int nShakeNum);
 	static bool GetShake() { return m_bShake; }
 	EObject GetObjType() { return m_nType; }

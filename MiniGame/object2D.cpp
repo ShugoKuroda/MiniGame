@@ -42,7 +42,7 @@ CObject2D::CObject2D()
 CObject2D::CObject2D(EObject type)
 {
 	//オブジェクトの種類設定
-	SetObjType(type);
+	SetType(type);
 }
 
 //-----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ CObject2D::~CObject2D()
 HRESULT CObject2D::Init()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * MAX_VERTEX,
@@ -144,7 +144,7 @@ void CObject2D::Update()
 void CObject2D::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));

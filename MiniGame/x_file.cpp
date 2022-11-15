@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// Xファイル処理 [x_file.cpp]
+// Xファイルマネージャー [x_file.cpp]
 // Author : SHUGO KURODA
 //
 //=============================================================================
@@ -18,7 +18,7 @@
 //================================================
 // 静的メンバ変数宣言
 //================================================
-std::vector<CXFile::SModelInfo> CXFile::m_aXFile = {};
+std::vector<SModelInfo> CXFile::m_aXFile = {};
 std::vector<std::string> CXFile::m_aPas;
 std::map<std::string, int> CXFile::m_texType;
 int CXFile::m_nNumXFile = 0;
@@ -98,7 +98,7 @@ void CXFile::Init()
 	fclose(pFile);
 
 	//デバイスを取得する
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	for (int nCntXFile = 0; nCntXFile < m_nNumXFile; nCntXFile++)
 	{
@@ -151,7 +151,7 @@ void CXFile::Uninit()
 void CXFile::LoadXFileTexture(SModelInfo& XFile)
 {
 	//デバイスを取得する
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 	//マテリアルデータへのポインタ
 	D3DXMATERIAL *pMat;
 

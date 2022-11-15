@@ -37,7 +37,7 @@ LPDIRECT3DTEXTURE9 CExplosion::m_pTexture = nullptr;
 CExplosion::CExplosion()
 	:m_nCntAnim(0), m_nPatternAnim(0), m_nPatterAnimV(0)
 {
-	SetObjType(EObject::OBJ_EXPLOSION);
+	SetType(EObject::OBJ_EXPLOSION);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ CExplosion* CExplosion::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 HRESULT CExplosion::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,

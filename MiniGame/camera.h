@@ -10,12 +10,6 @@
 #include "object.h"
 
 //======================================================
-//	マクロ定義
-//======================================================
-#define CAMERA_POS_MOVE		(1.7f)		//視点の移動量
-#define CAMERA_ROT_MOVE		(0.03f)		//回転の移動量
-
-//======================================================
 //	カメラの構造体
 //======================================================
 class CCamera : public CObject
@@ -31,16 +25,29 @@ public:
 	void Update() override;
 	void Draw() override;
 
+	// 視点位置の取得
+	D3DXVECTOR3 GetPosV() { return m_posV; }
+	// 注視点位置の取得
+	D3DXVECTOR3 GetPosR() { return m_posR; }
+
+	// 追従対象の設定
+	void SetPosTracking(D3DXVECTOR3 *pPosDest) { m_pPosTracking = pPosDest; }
+	// 追従フラグの設定
+	void SetTracking(bool bTracking) { m_bTracking = bTracking; }
+
 private:
-	D3DXVECTOR3 m_posV;			//視点
-	D3DXVECTOR3 m_posR;			//注視点
-	D3DXVECTOR3 m_vecU;			//上方向ベクトル
-	D3DXVECTOR3 m_rot;			//向き
-	D3DXVECTOR3 m_posVDest;		//目的の視点
-	D3DXVECTOR3 m_posRDest;		//目的の注視点
-	float m_fDistance;			//視点から注視点までの距離
-	D3DXMATRIX m_mtxProjection;	//プロジェクションマトリックス
-	D3DXMATRIX m_mtxView;		//ビューマトリックス
+	D3DXVECTOR3 m_move;				//移動量
+	D3DXVECTOR3 m_posV;				//視点
+	D3DXVECTOR3 m_posR;				//注視点
+	D3DXVECTOR3 m_vecU;				//上方向ベクトル
+	D3DXVECTOR3 m_rot;				//向き
+	D3DXVECTOR3 *m_pPosTracking;	//追従対象の位置
+	D3DXVECTOR3 m_posVDest;			//目的の視点
+	D3DXVECTOR3 m_posRDest;			//目的の注視点
+	float m_fDistance;				//視点から注視点までの距離
+	D3DXMATRIX m_mtxProjection;		//プロジェクションマトリックス
+	D3DXMATRIX m_mtxView;			//ビューマトリックス
+	bool m_bTracking;				//カメラ追従中かどうか
 };
 
 #endif

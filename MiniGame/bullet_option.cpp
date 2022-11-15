@@ -30,7 +30,7 @@ LPDIRECT3DTEXTURE9 CBulletOption::m_apTexture = { nullptr };
 //-----------------------------------------------------------------------------------------------
 CBulletOption::CBulletOption() :m_fRad(0.0f), m_col(FADE_NONE), m_nCounterAttack(0)
 {
-	SetObjType(EObject::OBJ_BULLET);
+	SetType(EObject::OBJ_BULLET);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ CBulletOption* CBulletOption::Create(const float& fRot, const PARENT& parent)
 HRESULT CBulletOption::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -103,7 +103,7 @@ void CBulletOption::Unload()
 HRESULT CBulletOption::Init()
 {
 	// プレイヤー位置の取得
-	D3DXVECTOR3 posPlayer = CGame::GetPlayer(m_parent)->GetPosition();
+	D3DXVECTOR3 posPlayer = CManager::GetManager()->GetGame()->GetPlayer(m_parent)->GetPosition();
 
 	// 位置設定
 	CObject2D::SetPosition(D3DXVECTOR3(posPlayer.x - sinf(m_fRad) * 100,
@@ -176,10 +176,10 @@ void CBulletOption::Update()
 	// プレイヤー位置の取得
 	D3DXVECTOR3 posPlayer;
 
-	CPlayer* pPlayer = CGame::GetPlayer(m_parent);
+	CPlayer* pPlayer = CManager::GetManager()->GetGame()->GetPlayer(m_parent);
 	if (pPlayer != nullptr)
 	{
-		posPlayer = CGame::GetPlayer(m_parent)->GetPosition();
+		posPlayer = CManager::GetManager()->GetGame()->GetPlayer(m_parent)->GetPosition();
 
 		// 位置の更新(プレイヤーを中心に回転させる)
 		pos = D3DXVECTOR3(posPlayer.x - sinf(m_fRad) * 100,

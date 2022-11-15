@@ -44,7 +44,7 @@ CEnemy::CEnemy() :
 	m_move(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_type(TYPE_NONE), m_col(COLOR_NONE), m_nLife(0),
 	m_nCntState(0), m_nPattern(0), m_nCounter(0), m_nCountAttack(0), m_nNumPatten(0)
 {
-	SetObjType(EObject::OBJ_ENEMY);
+	CObject::SetType(EObject::OBJ_ENEMY);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ CEnemy *CEnemy::Create(const D3DXVECTOR3& pos, TYPE type, int nLife, EnemyMove *
 HRESULT CEnemy::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/Enemy000.png", &m_apTexture[TYPE_STARFISH]);			// ヒトデ型の敵
@@ -168,16 +168,16 @@ HRESULT CEnemy::Init()
 		CSpray::Create(D3DXVECTOR3(pos.x, pos.y + 20.0f, pos.z));
 	}
 	
-	if (CGame::GetBubble() == false)
-	{
-		// 頂点カラーの設定
-		CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
-	}
-	else
-	{
-		// 頂点カラーの設定
-		CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	}
+	//if (CManager::GetManager()->GetGame()->GetBubble() == false)
+	//{
+	//	// 頂点カラーの設定
+	//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
+	//}
+	//else
+	//{
+	//	// 頂点カラーの設定
+	//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	//}
 
 	return S_OK;
 }
@@ -211,7 +211,7 @@ void CEnemy::Update()
 		// 色が通常以外なら
 		if (m_col != COLOR_NONE)
 		{//死亡時にアイテムドロップ
-			CItem::Create(pos, (CItem::EType)m_col);
+			//CItem::Create(pos, (CItem::EType)m_col);
 		}
 
 		// 爆発の生成
@@ -259,7 +259,7 @@ void CEnemy::Update()
 void CEnemy::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//テクスチャブレンディングを加算合成にする
 	pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
@@ -329,15 +329,15 @@ void CEnemy::State()
 			{//色の設定
 				SetItemColor(m_col);
 			}
-			//水中に入っていれば
-			else if (CGame::GetBubble() == false)
-			{//水色にする
-				CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
-			}
-			else
-			{//通常色に戻す
-				CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-			}
+			////水中に入っていれば
+			//else if (CManager::GetManager()->GetGame()->GetBubble() == false)
+			//{//水色にする
+			//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.3f, 1.0f));
+			//}
+			//else
+			//{//通常色に戻す
+			//	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+			//}
 		}
 		break;
 	}
@@ -355,7 +355,7 @@ bool CEnemy::Collision(D3DXVECTOR3 posStart)
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
 		//プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(nCntPlayer);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
 
 		if (pPlayer != nullptr)
 		{
@@ -612,11 +612,11 @@ D3DXVECTOR3 CEnemy::SetVector()
 	// プレイヤーのエントリー情報
 	bool bEntry[CPlayer::PLAYER_MAX];
 
-	// プレイヤーENTRY情報の取得
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		bEntry[nCntPlayer] = CManager::GetEntry(nCntPlayer);
-	}
+	//// プレイヤーENTRY情報の取得
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	bEntry[nCntPlayer] = CManager::GetManager()->GetEntry(nCntPlayer);
+	//}
 
 	// 2人プレイをしている場合
 	if (bEntry[CPlayer::PLAYER_1] == true && bEntry[CPlayer::PLAYER_2] == true)
@@ -629,7 +629,7 @@ D3DXVECTOR3 CEnemy::SetVector()
 		// 全てのプレイヤーの距離を保存
 		for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 		{
-			pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
+			pPlayer[nCntPlayer] = CManager::GetManager()->GetGame()->GetPlayer(nCntPlayer);
 
 			if (pPlayer[nCntPlayer] != nullptr)
 			{
@@ -654,7 +654,7 @@ D3DXVECTOR3 CEnemy::SetVector()
 	else if (bEntry[CPlayer::PLAYER_1] == true)
 	{
 		// プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(CPlayer::PLAYER_1);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(CPlayer::PLAYER_1);
 
 		if (pPlayer != nullptr)
 		{
@@ -666,7 +666,7 @@ D3DXVECTOR3 CEnemy::SetVector()
 	else if (bEntry[CPlayer::PLAYER_2] == true)
 	{
 		// プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(CPlayer::PLAYER_2);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(CPlayer::PLAYER_2);
 
 		if (pPlayer != nullptr)
 		{

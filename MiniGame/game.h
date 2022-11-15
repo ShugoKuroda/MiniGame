@@ -7,9 +7,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "base.h"
 #include "enemy_data.h"
-#include "cloud_data.h"
 
 #include "player.h"
 
@@ -17,12 +15,14 @@
 // 前方宣言
 //*****************************************************************************
 class CScore;
-class CMeshField;
+class CEnemyBoss;
+class CItem;
+class CCamera;
 
 //-----------------------------------------------------------------------------
-// ベースクラス(派生クラス)
+// ゲーム画面クラス
 //-----------------------------------------------------------------------------
-class CGame : public CBase
+class CGame
 {
 private:	//定数
 	static const int MAX_POS_CLOUD = 250;
@@ -30,37 +30,38 @@ private:	//定数
 
 public:		//メンバ関数
 	CGame();
-	~CGame() override;
+	~CGame();
 
-	HRESULT Init() override;
-	void Uninit() override;
-	void Update() override;
+	// 初期化
+	HRESULT Init();
+	// 終了
+	void Uninit();
+	// 更新
+	void Update();
 
-	// 雲を生成
-	void CreateCloud();
-	// 水中の泡を生成
-	void CreateBubble();
+	// ゲームを終了するかどうかを判定
+	bool CheckGameEnd();
 	// 敵を生成
 	void CreateEnemy();
 	// ロゴを生成
 	void CreateLogo(int nCounter);
 
-	// 雲の生成状態を設定
-	static void SetCreateCloud(bool bCreate) { m_bCreateCloud = bCreate; }
-	// 泡の生成状態を設定
-	static void SetCreateBubble(bool bCreate) { m_bCreateBubble = bCreate; }
-	// ボス死亡フラグを設定
-	static void SetDieBoss(bool bDie);
+	// ゲーム開始フラグを設定
+	void SetStart(bool bStart) { m_bStart = bStart; }
+
 	// プレイヤー情報の取得
-	static CPlayer *GetPlayer(int nNum) { return m_pPlayer[nNum]; }
-	// スコア情報の取得
-	static CMeshField *GetMeshField() { return m_pMeshField; }
-	// 泡の生成状態を取得
-	static bool GetBubble() { return m_bCreateCloud; }
-	// ボス死亡フラグを取得
-	static bool GetDieBoss() { return m_bDieBoss; }
+	CPlayer *GetPlayer(int nNum) { return m_pPlayer[nNum]; }
+	// 敵ボス情報
+	CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
+	//Item 情報
+	CItem* GetItem() { return m_pItem; }
+	//カメラ情報
+	CCamera* GetCamera() { return m_pCamera; }
+
+	// ゲーム開始フラグを取得
+	bool GetStart() { return m_bStart; }
 	// プレイヤーのスコアをランキングに設定
-	static void SetPlayerScore();
+	void SetPlayerScore();
 
 private:
 	// テクスチャ読み込み
@@ -70,22 +71,15 @@ private:
 
 private:	//メンバ変数
 	// プレイヤー情報
-	static CPlayer *m_pPlayer[CPlayer::PLAYER_MAX];
-	static CMeshField *m_pMeshField;
+	CPlayer *m_pPlayer[CPlayer::PLAYER_MAX];
+	CEnemyBoss* m_pEnemyBoss;
+	CItem* m_pItem;
+	CCamera* m_pCamera;
 
-	// 雲を生成するかどうか
-	static bool m_bCreateCloud;
-	// 泡を生成するかどうか
-	static bool m_bCreateBubble;
-	// ボスが倒されたかどうか
-	static bool m_bDieBoss;
-
-	// 雲の生成情報
-	CloudInfo m_CloudInfo;
-	// 雲が生成されるまでの時間(乱数)
-	int m_nRandBubble;
-	// 雲が生成されるまでの時間カウンター
-	int m_nCntBubble;
+	// ゲームが始まったかどうか
+	bool m_bStart;
+	// ゲームが終了したかどうか
+	bool m_bEnd;
 
 	// 敵のセット情報
 	EnemySetInfo m_EnemyInfo;

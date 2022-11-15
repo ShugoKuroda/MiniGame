@@ -11,6 +11,7 @@
 #include "ui.h"
 #include "manager.h"	// アプリケーション
 #include "renderer.h"	// レンダリング
+#include "base.h"
 
 #include "game.h"
 #include "player.h"
@@ -30,7 +31,7 @@ LPDIRECT3DTEXTURE9 CUi::m_pTexture[TYPE_MAX] = {};
 //-----------------------------------------------------------------------------------------------
 CUi::CUi() :m_nCountUninit(0), m_AnimType(ANIM_NONE)
 {
-	SetObjType(EObject::OBJ_UI);
+	SetType(EObject::OBJ_UI);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -85,7 +86,7 @@ CUi* CUi::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const TYPE& ty
 HRESULT CUi::Load()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -171,21 +172,21 @@ void CUi::Update()
 	// 親プレイヤーが参加していなければ
 	if (m_parent == PLAYER_1_NOT_ENTRY || m_parent == PLAYER_2_NOT_ENTRY)
 	{
-		// プレイヤー情報の取得
-		bool bEntry = CManager::GetEntry(m_parent - 2);
+		//// プレイヤー情報の取得
+		//bool bEntry = CManager::GetManager()->GetEntry(m_parent - 2);
 
-		// 親プレイヤーが参加したら
-		if (bEntry == true)
-		{// 破棄
-			Uninit();
-			return;
-		}
+		//// 親プレイヤーが参加したら
+		//if (bEntry == true)
+		//{// 破棄
+		//	Uninit();
+		//	return;
+		//}
 	}
 	// 親プレイヤーがいれば
 	else if (m_parent != PLAYER_NONE)
 	{
 		// プレイヤー情報の取得
-		CPlayer *pPlayer = CGame::GetPlayer(m_parent);
+		CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(m_parent);
 
 		// 親プレイヤーが破棄されていたら
 		if (pPlayer == nullptr)

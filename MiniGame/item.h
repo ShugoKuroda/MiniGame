@@ -8,11 +8,11 @@
 #define _ITEM_H_
 
 #include "object2D.h"
-
+#include "model.h"
 //*******************************************************************
 //	アイテムクラスの定義
 //*******************************************************************
-class CItem : public CObject2D
+class CItem : public CModel
 {
 private:
 	// サイズ(X)
@@ -45,7 +45,7 @@ public:
 	~CItem() override;
 
 	//メンバ関数
-	static CItem *Create(const D3DXVECTOR3& pos, const EType type);		//インスタンス生成処理
+	static CItem *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const EType type, const char* name);		//インスタンス生成処理
 	//テクスチャの読み込み
 	static HRESULT Load();
 	//テクスチャの削除

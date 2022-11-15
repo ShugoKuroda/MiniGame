@@ -41,7 +41,7 @@ CLife *CLife::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 	for (int nCntScore = 0; nCntScore < MAX_LIFE; nCntScore++)
 	{
 		// 数字ポリゴン生成
-		pLife->m_apNumber[nCntScore] = new CNumber;
+		pLife->m_apNumber[nCntScore] = new CNumber("TEX_TYPE_SCORE_UI");
 
 		if (pLife->m_apNumber[nCntScore] != nullptr)
 		{
@@ -63,7 +63,7 @@ CLife *CLife::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 HRESULT CLife::Init()
 {
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_PAUSE);
+	SetType(EObject::OBJ_PAUSE);
 
 	return S_OK;
 }

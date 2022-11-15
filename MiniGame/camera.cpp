@@ -11,11 +11,21 @@
 #include "input_mouse.h"
 #include "camera.h"
 
+// 追加
+#include "title.h"
+#include "enemy_boss.h"
+
+//======================================================
+//	マクロ定義
+//======================================================
+#define CAMERA_POS_MOVE		(3.0f)		//視点の移動量
+#define CAMERA_ROT_MOVE		(0.03f)		//回転の移動量
+
 //======================================================
 //	コンストラクタ
 //======================================================
-CCamera::CCamera() :m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
-					m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f)
+CCamera::CCamera() :m_move(0.0f, 0.0f, 0.0f), m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
+					m_pPosTracking(nullptr), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_bTracking(false)
 {
 }
 
@@ -84,7 +94,7 @@ void CCamera::Uninit()
 void CCamera::Update()
 {
 	//マウスの移動量情報の取得
-	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
 
 	//注視点の旋回
 	if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_E) == true)
@@ -173,6 +183,33 @@ void CCamera::Update()
 	//	m_posR.z = m_posV.z - sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
 	//	m_posR.y = m_posV.y - cosf(m_rot.x) * m_fDistance;
 	//}
+
+	//カメラ位置の更新
+	m_posR.x = m_posV.x - sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
+	m_posR.z = m_posV.z - sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+	m_posR.y = m_posV.y - cosf(m_rot.x) * m_fDistance;
+
+	// カメラが追従中の場合
+	if (m_bTracking == true)
+	{
+		// 追従
+		m_posRDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y);
+		m_posRDest.z = (m_pPosTracking->z - 70.0f) + sinf(m_rot.x) * cosf(m_rot.y);
+		m_posRDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x);
+		m_posVDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
+		m_posVDest.z = (m_pPosTracking->z - 70.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+		m_posVDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x) * m_fDistance;
+
+		// カメラ位置の更新
+		m_posR.x += (m_posRDest.x - m_posR.x) * 0.3f;
+		m_posR.z += (m_posRDest.z - m_posR.z) * 0.3f;
+		m_posR.y += (m_posRDest.y - m_posR.y) * 0.3f;
+		m_posV.x += (m_posVDest.x - m_posV.x) * 0.3f;
+		m_posV.z += (m_posVDest.z - m_posV.z) * 0.3f;
+		m_posV.y += (m_posVDest.y - m_posV.y) * 0.3f;
+	}
+
+	//}
 	//if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_RIGHT) == true)
 	//{//右移動
 	//	m_posV.x += sinf(m_rot.y + (D3DX_PI / 2)) * CAMERA_POS_MOVE;
@@ -230,7 +267,7 @@ void CCamera::Update()
 void CCamera::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
 	//ビューマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxView);

@@ -36,10 +36,23 @@
 #include "bubble.h"
 #include "effect.h"
 #include "bg_move.h"
-#include "meshfield.h"
 #include "ui.h"
 #include "gauge.h"
 #include "continue.h"
+
+// 追加
+#include "object3D.h"
+#include "camera.h"
+#include "light.h"
+#include "player.h"
+#include "enemy_boss.h"
+#include "item.h"
+#include "model_obstacle.h"
+#include "model_manager.h"
+#include "logo_countdown.h"
+#include "logo_extend.h"
+#include "mesh_sphere.h"
+//#include "avalanche.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -49,21 +62,14 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------------------------
-bool CGame::m_bCreateCloud = true; 
-bool CGame::m_bCreateBubble = false;
-bool CGame::m_bDieBoss = false;
-CPlayer *CGame::m_pPlayer[CPlayer::PLAYER_MAX] = {};
-CMeshField *CGame::m_pMeshField = nullptr;
 
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_nCntBubble(0), m_nRandBubble(0)
+CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
-	//雲の生成情報を初期化
-	ZeroMemory(&m_CloudInfo, sizeof(m_CloudInfo));
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -78,6 +84,77 @@ CGame::~CGame()
 //-----------------------------------------------------------------------------------------------
 HRESULT CGame::Init()
 {
+	//球体メッシュの配置
+	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
+
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -400.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -600.0f));
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
+
+	// ライト生成
+	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	CLight::Create(D3DXVECTOR3(0.2f, -0.1f, -0.8f), D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f));
+
+	// モデル生成
+	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
+
+	// 敵ボス生成
+	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+
+	// カメラ生成
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -230.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 追従対象の設定
+	m_pCamera->SetTracking(true);
+	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());
+
+	// Item生成
+	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
+
+	// モデルマネージャー生成
+	CModelManager::Create();
+
+	// モデル生成
+	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
+
+	// カウントダウンの開始
+	CLogoCountDown::Create(5);
+
+	// プレイヤー参加情報の取得
+	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
+
+	// プレイヤー生成
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	{
+		// 現在の番号が参加しているなら
+		if (pEntry[nCntPlayer].bEntry == true)
+		{
+			// キーボードで参加しているなら
+			if (pEntry[nCntPlayer].bEntryKeyboard == true)
+			{
+				// プレイヤー生成
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
+			}
+			else
+			{
+				// プレイヤー生成
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
+			}
+
+			// ゲームに参加している状態にする
+			m_pPlayer[nCntPlayer]->SetStart(true);
+		}
+	}
+
 	////敵情報読み込み
 	//m_EnemyInfo.pCreate = LoadSpace::GetEnemy();
 	////ウェーブ数の読み込み
@@ -152,7 +229,7 @@ void CGame::Uninit()
 	//UnloadAll();
 
 	// ポーズ状態を解除
-	CManager::SetPause(false);
+	CManager::GetManager()->SetPause(false);
 
 	// 決定音
 	CSound::Stop();
@@ -165,13 +242,6 @@ void CGame::Uninit()
 			m_pPlayer[nCntPlayer] = nullptr;
 		}
 	}
-
-	// メッシュ破棄
-	if (m_pMeshField != nullptr)
-	{
-		m_pMeshField->Uninit();
-		m_pMeshField = nullptr;
-	}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -179,6 +249,12 @@ void CGame::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CGame::Update()
 {
+	// ゲームが終了していないなら
+	if (m_bEnd == false)
+	{
+		// ゲームが終了したかどうかを判定
+		CheckGameEnd();
+	}
 	//// キーボード情報の取得
 	//CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 	//// ゲームパッド情報の取得
@@ -294,45 +370,42 @@ void CGame::Update()
 }
 
 //-----------------------------------------------------------------------------------------------
-// 雲のランダム生成
+// ゲームを終了するかどうかを判定
 //-----------------------------------------------------------------------------------------------
-void CGame::CreateCloud()
+bool CGame::CheckGameEnd()
 {
-	m_CloudInfo.nCount++;
-	if (m_CloudInfo.nCount >= m_CloudInfo.nRandTime)
+	// プレイヤーの死亡数
+	int nNumDie = 0;
+
+	// プレイヤー生成
+	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
-		//雲の生成
-		CCloud::Create();
-		//カウンターリセット
-		m_CloudInfo.nCount = 0;
-
-		//雲の再出現時間を乱数で設定
-		m_CloudInfo.nRandTime = GetRandNum(250, 180);
-	}
-}
-
-//-----------------------------------------------------------------------------------------------
-// 泡エフェクトの生成
-//-----------------------------------------------------------------------------------------------
-void CGame::CreateBubble()
-{
-	m_nCntBubble++;
-
-	if (m_nCntBubble >= m_nRandBubble)
-	{
-		D3DXVECTOR3 posBubble = D3DXVECTOR3((float)GetRandNum(CRenderer::SCREEN_WIDTH, 0), (float)GetRandNum(CRenderer::SCREEN_HEIGHT, CRenderer::SCREEN_HEIGHT - 250), 0.0f);
-
-		for (int nCntBubble = 0; nCntBubble < 3; nCntBubble++)
+		// 現在のプレイヤーが参加しているなら
+		if (m_pPlayer[nCntPlayer] != nullptr)
 		{
-			CBubble::Create(D3DXVECTOR3(posBubble.x, posBubble.y - (nCntBubble * 20), posBubble.z), D3DXVECTOR2((float)CBubble::MIN_SIZE * (nCntBubble + 1), (float)CBubble::MIN_SIZE * (nCntBubble + 1)));
+			// 死亡していたら
+			if (m_pPlayer[nCntPlayer]->GetDie() == true)
+			{// プレイヤーの死亡数を加算
+				nNumDie++;
+			}
 		}
-
-		//カウンターリセット
-		m_nCntBubble = 0;
-
-		//泡エフェクトの再出現時間を乱数で設定
-		m_nRandBubble = GetRandNum(120, 30);
+		else
+		{// プレイヤーの死亡数を加算
+			nNumDie++;
+		}
 	}
+
+	// プレイヤーが全員死亡していたら
+	if (CPlayer::PLAYER_MAX <= nNumDie)
+	{
+		// ゲーム終了フラグを立てる
+		m_bEnd = true;
+		// ゲーム終了ロゴの生成
+		CLogoExtend::Create(D3DXVECTOR2(250.0f, 80.0f), "TEX_TYPE_END_UI", 180);
+		return true;
+	}
+
+	return false;
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -380,16 +453,9 @@ void CGame::CreateEnemy()
 	// ボスを出現させる
 	if (m_EnemyInfo.nCreatenCount == 5260)
 	{
-		CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
+		//CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
 		// 警告音
 		CSound::Play(CSound::SOUND_LABEL_BOSS);
-	}
-
-	// ボス戦用背景の生成
-	if (m_EnemyInfo.nCreatenCount == 5220)
-	{
-		//CBgMove::Create();
-		m_pMeshField = CMeshField::Create();
 	}
 
 	//ロゴの生成
@@ -401,41 +467,30 @@ void CGame::CreateEnemy()
 //-----------------------------------------------------------------------------------------------
 void CGame::CreateLogo(int nCounter)
 {
-	if (nCounter == 4800)
-	{
-		// ボス接近中のロゴ
-		CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 300.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 400.0f, 90.0f),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING, CLogo::ANIM_LENGTHWISE, 420);
+	//if (nCounter == 4800)
+	//{
+	//	// ボス接近中のロゴ
+	//	CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 300.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 400.0f, 90.0f),
+	//		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING, CLogo::ANIM_LENGTHWISE, 420);
 
-		// ゲームBGMをストップ
-		CSound::Stop(CSound::SOUND_LABEL_GAME);
-		// 警告音
-		CSound::Play(CSound::SOUND_LABEL_SE_WARNING);
-	}
+	//	// ゲームBGMをストップ
+	//	CSound::Stop(CSound::SOUND_LABEL_GAME);
+	//	// 警告音
+	//	CSound::Play(CSound::SOUND_LABEL_SE_WARNING);
+	//}
 
-	if (nCounter == 4920)
-	{
-		// ボス接近中の説明ロゴ
-		CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 760.0f, 270.0f),
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING_SUB, CLogo::ANIM_HORIZONTALLY, 300);
-	}
+	//if (nCounter == 4920)
+	//{
+	//	// ボス接近中の説明ロゴ
+	//	CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 760.0f, 270.0f),
+	//		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, CLogo::TYPE_WARNING_SUB, CLogo::ANIM_HORIZONTALLY, 300);
+	//}
 
-	if (nCounter == 4800)
-	{
-		// ボス接近時の薄暗いフェード
-		CFadeScene::Create(CFadeScene::TYPE_BLACK);
-	}
-}
-
-//-----------------------------------------------------------------------------------------------
-// ボスの死亡フラグ設定
-//-----------------------------------------------------------------------------------------------
-void CGame::SetDieBoss(bool bDie)
-{
-	// ボスの死亡状態を設定
-	m_bDieBoss = bDie;
-	// 画面を止める
-	CManager::SetPause(true);
+	//if (nCounter == 4800)
+	//{
+	//	// ボス接近時の薄暗いフェード
+	//	CFadeScene::Create(CFadeScene::TYPE_BLACK);
+	//}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -443,27 +498,27 @@ void CGame::SetDieBoss(bool bDie)
 //-----------------------------------------------------------------------------------------------
 void CGame::SetPlayerScore()
 {
-	// プレイヤーのスコアを保存
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		if (m_pPlayer[nCntPlayer] != nullptr)
-		{
-			// プレイヤーENTRY情報の取得
-			bool bEntry = CManager::GetEntry(nCntPlayer);
+	//// プレイヤーのスコアを保存
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	if (m_pPlayer[nCntPlayer] != nullptr)
+	//	{
+	//		// プレイヤーENTRY情報の取得
+	//		bool bEntry = CManager::GetManager()->GetEntry(nCntPlayer);
 
-			// エントリーしていれば
-			if (bEntry == true)
-			{// プレイヤー生成
-				// プレイヤースコアの初期化
-				CRank::SetScore(0, nCntPlayer);
+	//		// エントリーしていれば
+	//		if (bEntry == true)
+	//		{// プレイヤー生成
+	//			// プレイヤースコアの初期化
+	//			CRank::SetScore(0, nCntPlayer);
 
-				CScore* pScore = m_pPlayer[nCntPlayer]->GetScore();
-				if (pScore != nullptr)
-				{
-					int nSocre = pScore->GetScore();
-					CRank::SetScore(nSocre, nCntPlayer);
-				}
-			}
-		}
-	}
+	//			CScore* pScore = m_pPlayer[nCntPlayer]->GetScore();
+	//			if (pScore != nullptr)
+	//			{
+	//				int nSocre = pScore->GetScore();
+	//				CRank::SetScore(nSocre, nCntPlayer);
+	//			}
+	//		}
+	//	}
+	//}
 }

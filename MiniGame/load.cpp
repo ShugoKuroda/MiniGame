@@ -4,7 +4,6 @@
 // Author : SHUGO KURODA
 //
 //=============================================================================
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "load.h"
 #include "enemy_data.h"
@@ -30,7 +29,8 @@ int g_aScore[CRank::MAX_RANKING];
 //-----------------------------------------------------------------------------
 HRESULT LoadSpace::LoadEnemy(HWND hWnd)
 {
-	FILE *pFile = NULL;		//ファイルポインター宣言
+	//ファイルポインター宣言
+	FILE *pFile = NULL;
 
 	//初期化
 	ZeroMemory(&g_aEnemyInfo, sizeof(g_aEnemyInfo));
