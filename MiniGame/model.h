@@ -46,7 +46,7 @@ public:
 	D3DXVECTOR3 GetSizeMax() { return m_vtxMax; }
 	// 最小サイズ取得
 	D3DXVECTOR3 GetSizeMin() { return m_vtxMin; }
-	// テクスチャの設定
+	// モデルの設定
 	void BindXFile(SModelInfo XFile) { m_aXFile = XFile; }
 
 private:

@@ -169,6 +169,9 @@
     <ClCompile Include="motion.cpp">
       <Filter>ソースファイル\motion</Filter>
     </ClCompile>
+    <ClCompile Include="motion_parts.cpp">
+      <Filter>ソースファイル\motion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -339,14 +342,17 @@
     <ClInclude Include="x_file_motion.h">
       <Filter>ソースファイル\managers</Filter>
     </ClInclude>
-    <ClInclude Include="motion.h">
-      <Filter>ソースファイル\motion</Filter>
-    </ClInclude>
     <ClInclude Include="x_file_data.h">
       <Filter>ソースファイル\managers</Filter>
     </ClInclude>
     <ClInclude Include="motion_data.h">
       <Filter>ソースファイル\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>ソースファイル\motion</Filter>
+    </ClInclude>
+    <ClInclude Include="motion_parts.h">
+      <Filter>ソースファイル\motion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

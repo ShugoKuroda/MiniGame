@@ -22,7 +22,7 @@ struct SModelInfo
 	LPD3DXMESH pMesh = nullptr;			//メッシュ情報へのポインタ
 	LPD3DXBUFFER pBuffMat = nullptr;	//マテリアル情報へのポインタ
 	DWORD nNumMat = 0;					//マテリアル情報の数
-	LPDIRECT3DTEXTURE9 pTexture[MAX_TEXTURE] = { nullptr };			//テクスチャへのポインタ
+	LPDIRECT3DTEXTURE9 pTexture[MAX_TEXTURE] = { nullptr };		//テクスチャへのポインタ
 };
 
 #endif		// _X_FILE_DATA_H_
