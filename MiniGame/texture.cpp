@@ -18,10 +18,6 @@
 //================================================
 // 静的メンバ変数宣言
 //================================================
-std::vector<LPDIRECT3DTEXTURE9> CTexture::m_apTexture = {};
-std::vector<std::string> CTexture::m_aPas;
-std::map<std::string, int> CTexture::m_texType;
-int CTexture::m_nNumTex = 0;
 
 //=============================================================================
 // コンストラクタ

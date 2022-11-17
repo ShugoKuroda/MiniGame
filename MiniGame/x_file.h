@@ -28,26 +28,26 @@ public:
 	~CXFile();					//デストラクタ
 
 	// 初期化
-	static void Init();
+	void Init();
 	// 終了
-	static void Uninit();
+	void Uninit();
 	// Xファイルのテクスチャ読み込み
-	static void LoadXFileTexture(SModelInfo& XFile);
+	void LoadXFileTexture(SModelInfo& XFile);
 
 	// Xファイル情報の取得(名前指定)
-	static SModelInfo GetXFile(std::string texType) { return m_aXFile[m_texType[texType]]; }
+	SModelInfo GetXFile(std::string texType) { return m_aXFile[m_texType[texType]]; }
 	// Xファイル情報の取得(番号指定)
-	static SModelInfo GetXFile(int nCnt) { return m_aXFile[nCnt]; }
+	SModelInfo GetXFile(int nCnt) { return m_aXFile[nCnt]; }
 	// Xファイルのパス取得処理
-	static std::string GetPas(int nCntTex) { return m_aPas[nCntTex]; }
+	std::string GetPas(int nCntTex) { return m_aPas[nCntTex]; }
 	// Xファイルの総数取得処理
-	static int GetNum() { return m_nNumXFile; }
+	int GetNum() { return m_nNumXFile; }
 
 private:
-	static std::vector<SModelInfo> m_aXFile;		// Xファイル情報
-	static std::vector<std::string>	m_aPas;			// Xファイルのパス
-	static std::map<std::string, int> m_texType;	// Xファイルの種類
-	static int m_nNumXFile;							// Xファイルの総数
+	std::vector<SModelInfo> m_aXFile;		// Xファイル情報
+	std::vector<std::string> m_aPas;		// Xファイルのパス
+	std::map<std::string, int> m_texType;	// Xファイルの種類
+	int m_nNumXFile;						// Xファイルの総数
 };
 
 #endif		// _X_FILE_H_

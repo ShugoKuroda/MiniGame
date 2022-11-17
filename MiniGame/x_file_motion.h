@@ -7,7 +7,6 @@
 #ifndef _X_FILE_MOTION_H_
 #define _X_FILE_MOTION_H_
 
-#include "x_file_data.h"
 #include "motion_data.h"
 #include <vector>
 #include <string>
@@ -32,9 +31,9 @@ public:
 	// モーション情報の読み込み
 	bool LoadMotion(char *pas);
 	// Xファイル情報の取得(名前指定)
-	ModelMotion GetXFile(std::string texType) { return m_aMotion[m_texType[texType]]; }
+	ModelMotion GetMotion(std::string texType) { return m_aMotion[m_texType[texType]]; }
 	// Xファイル情報の取得(番号指定)
-	ModelMotion GetXFile(int nCnt) { return m_aMotion[nCnt]; }
+	ModelMotion GetMotion(int nCnt) { return m_aMotion[nCnt]; }
 
 private:
 	// パーツの読み込み

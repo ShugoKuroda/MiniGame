@@ -16,7 +16,7 @@ TEX_NUM = 5
 //==================================================
 // É^ÉCÉgÉãè∞
 TEXSET
-	PAS = data/TEXTURE/bg000_11.jpg
+	PAS = data/TEXTURE/floor000.png
 	NAME = TEX_TYPE_TITLE_FLOOR
 END_TEXSET
 

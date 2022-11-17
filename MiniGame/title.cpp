@@ -30,7 +30,10 @@
 #include "item.h"
 #include "model_obstacle.h"
 #include "model_manager.h"
+#include "mesh_sphere.h"
 //#include "avalanche.h"
+
+#include "motion.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -67,6 +70,10 @@ CTitle::~CTitle()
 //-----------------------------------------------------------------------------------------------
 HRESULT CTitle::Init()
 {
+	//球体メッシュの配置
+	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
+
 	// 板ポリ生成
 	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
@@ -90,13 +97,13 @@ HRESULT CTitle::Init()
 			if (pEntry[nCntPlayer].bEntryKeyboard == true)
 			{
 				// プレイヤー生成
-				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
 			}
 			else
 			{
 				// プレイヤー生成
-				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", nCntPlayer);
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
 			}
 		}
@@ -219,7 +226,7 @@ void CTitle::Update()
 		{
 			if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_START, nCntPlayer) == true)
 			{// スタートボタン押下
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", m_nEntryNum);
+				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetGamePadNum(nCntPlayer);
 				pEntry[m_nEntryNum].nGamePadNum = nCntPlayer;
 				pEntry[m_nEntryNum].bEntry = true;
@@ -233,7 +240,7 @@ void CTitle::Update()
 			}
 			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) == true && m_bEntryKeyboard == false)
 			{// エンターキー押下 && キーボードで参加していなければ
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_STAR", m_nEntryNum);
+				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetKeyboard(true);
 				m_bEntryKeyboard = true;
 				pEntry[m_nEntryNum].bEntryKeyboard = true;

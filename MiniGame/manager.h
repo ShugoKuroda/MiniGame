@@ -23,8 +23,11 @@ class CFade;				// フェードクラス
 class CInputKeyboard;		// キーボードクラス
 class CInputJoypad;			// ジョイパッドクラス
 class CInputMouse;			// マウスクラス
+
+// 追加
 class CTexture;				// テクスチャクラス
 class CXFile;				// Xファイルクラス
+class CXFileMotion;			// モデルモーションクラス
 
 //*****************************************************************************
 // クラス定義(基本クラス)
@@ -74,8 +77,10 @@ public:
 	CInputKeyboard *GetInputKeyboard() { return m_pInputKeyboard; }
 	CInputJoypad *GetInputJoypad() { return m_pInputJoypad; }
 	CInputMouse *GetInputMouse() { return m_pInputMouse; }
+
 	CTexture *GetTexture() { return m_pTexture; }
 	CXFile *GetXFile() { return m_pXFile; }
+	CXFileMotion *GetMotion() { return m_pMotion; }
 	
 	bool GetPause() { return m_bPause; }
 	void SetPause(bool bPause) { m_bPause = bPause; }
@@ -104,8 +109,13 @@ private:
 	CInputMouse *m_pInputMouse;			// マウス情報のポインタ
 	CSound *m_pSound;					// サウンド情報のポインタ
 	CFade *m_pFade;						// 画面フェード情報のポインタ
+
+	// 追加
 	CTexture *m_pTexture;				// テクスチャ情報のポインタ
 	CXFile *m_pXFile;					// Xファイル情報のポインタ
+	CXFileMotion *m_pMotion;			// モデルモーション情報のポインタ
+	/**/
+
 	MODE m_mode;						// モード情報
 	bool m_bPause;						// ポーズするかどうか
 

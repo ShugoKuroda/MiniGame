@@ -67,7 +67,7 @@ CLogo* CLogo::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size, const char
 		pLogo->Init();
 
 		// テクスチャの設定
-		pLogo->BindTexture(CTexture::GetTexture(name));
+		pLogo->BindTexture(CManager::GetManager()->GetTexture()->GetTexture(name));
 	}
 
 	return pLogo;

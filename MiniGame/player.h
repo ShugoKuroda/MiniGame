@@ -8,7 +8,7 @@
 #define _PLAYER_H_
 
 #include "object2D.h"
-#include "model.h"
+#include "motion.h"
 
 //*******************************************************************
 //	前方宣言
@@ -19,17 +19,13 @@ class CScore;
 //*******************************************************************
 //	プレイヤークラスの定義
 //*******************************************************************
-class CPlayer : public CModel
+class CPlayer : public CMotion
 {
 private:
 	//プレイヤーのサイズ(X)
 	static const float SIZE_X;
 	// プレイヤーのサイズ(Y)
 	static const float SIZE_Y;
-	// 登場時のサイズ(X)
-	static const float ENTRY_SIZE_X;
-	// 登場時のサイズ(Y)
-	static const float ENTRY_SIZE_Y;
 	// プレイヤーの基本移動量
 	static const float MOVE_DEFAULT;
 	// アニメーション間隔
@@ -171,8 +167,6 @@ private:	//メンバ変数
 	// 使うゲームパッドの番号
 	int m_nGamePadNum;
 
-	//弾の発射位置
-	D3DXVECTOR2 posBullet;
 	// ジャンプしているかどうか
 	bool m_bIsJumping;
 	//プレイヤーが操作できるかどうか

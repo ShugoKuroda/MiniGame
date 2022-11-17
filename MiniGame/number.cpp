@@ -26,7 +26,7 @@ CNumber::CNumber(char *cName)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_SCORE);
-	CObject2D::BindTexture(CTexture::GetTexture(cName));
+	CObject2D::BindTexture(CManager::GetManager()->GetTexture()->GetTexture(cName));
 }
 
 //=============================================================================

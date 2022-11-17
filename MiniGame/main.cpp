@@ -148,7 +148,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 #endif // _DEBUG
 
 			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
-			{ // 1/60ïbåoâﬂ
+			{// 1/60ïbåoâﬂ
 				// åªç›ÇÃéûä‘Çï€ë∂
 				dwExecLastTime = dwCurrentTime;
 
@@ -162,7 +162,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 				CManager::SetManager(pManager);
 #ifdef _DEBUG
 				dwFrameCount++;
-#endif // _DEBUG
+#endif //_DEBUG
 			}
 		}
 	}

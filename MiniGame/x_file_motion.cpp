@@ -15,7 +15,7 @@
 #include "manager.h"
 
 // 追加
-#include "motion_parts.h"
+//#include "motion_parts.h"
 
 //=============================================================================
 // マクロ定義
@@ -49,7 +49,7 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 	int nNum = 0;
 
 	// ファイルを開く
-	pFile = fopen("motion_pas.ini", "r");
+	pFile = fopen("data/TEXT/motion_pas.ini", "r");
 
 	if (pFile == NULL)
 	{//開けなかった時用
@@ -60,8 +60,6 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 	//文字列の読み取りループ処理
 	while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
 	{
-		//文字読み込み用変数の初期化
-		memset(&cBffHead, 0, sizeof(cBffHead));
 		//文字列の分析
 		sscanf(cBff, "%s", &cBffHead);
 
@@ -77,6 +75,9 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 			// 一行ずつ保存
 			while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
 			{
+				//文字列の分析
+				sscanf(cBff, "%s", &cBffHead);
+
 				if (strcmp(&cBffHead[0], "SCRIPT_FILENAME") == 0)
 				{//モーションテキストの相対パス用
 
@@ -340,6 +341,8 @@ bool CXFileMotion::LoadMotion(char* pas)
 				}
 				else if (strcmp(&cBffHead[0], "END_MOTIONSET") == 0)
 				{
+					// モーションの総数を加算
+					motion.nNumMotion++;
 					motion.aMotion.push_back(motionInfo);
 					break;
 				}

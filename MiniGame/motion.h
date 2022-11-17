@@ -1,42 +1,46 @@
 //===================================================================
 //
 //	モデル処理のヘッダー[motion.h]
-//	Author:SHUGO KURODA
+//	Author : SHUGO KURODA
 //
 //===================================================================
 #ifndef _MOTION_H_			//このマクロ定義がされなかったら
 #define _MOTION_H_			//2重インクルード防止のマクロ定義
 
 #include "object.h"
-#include "x_file_data.h"
+#include "motion_data.h"
 
 //=============================================================================
 // クラス定義
 //=============================================================================
 class CMotion : public CObject
 {
+	// 構造体
 private:
-	// 最大パーツ数
-	static const int MAX_PARTS = 20;
+	//モーション番号情報
+	struct AnimIdx
+	{
+		int nFrame;			// 現在のフレーム数
+		int nKeySetIdx;		// 再生中のキーセット番号
+		int nMotionIdx;		// 再生中のモーション番号
+	};
 
+	// メンバ関数
 public:
-	//メンバ関数
-	CMotion();			// コンストラクタ
-	~CMotion();			// デストラクタ
+	CMotion();		// コンストラクタ
+	virtual ~CMotion() override;	// デストラクタ
 
 	// 生成
 	static CMotion* Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name);
 
 	// 初期化
-	HRESULT Init() override;
+	virtual HRESULT Init() override;
 	// 終了
-	void Uninit() override;
+	virtual void Uninit() override;
 	// 更新
-	void Update() override;
+	virtual void Update() override;
 	// 描画
-	void Draw() override;
-	// モーション再生
-	void Motion();
+	virtual void Draw() override;
 
 	// 位置設定
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
@@ -52,26 +56,31 @@ public:
 	D3DXVECTOR3 GetSizeMax() { return m_vtxMax; }
 	// 最小サイズ取得
 	D3DXVECTOR3 GetSizeMin() { return m_vtxMin; }
-	// Xファイルの設定
-	void BindXFile(SModelInfo XFile) { m_aXFile = XFile; }
+	// モーション情報の設定
+	void BindMotion(ModelMotion motion) { m_motion = motion; }
+
+protected:
+	// モーション再生
+	void Motion();
 
 private:
-	//Xファイル情報
-	SModelInfo m_aXFile[MAX_PARTS];
+	// モーション変更
+	void Change(int nMotion, int nKey);
+
+	// メンバ変数
+private:
+	//モーション情報
+	ModelMotion m_motion;
+	// 現在のモーション番号情報
+	AnimIdx m_animIdx;
 	//位置
 	D3DXVECTOR3 m_pos;
-	//前回の位置
-	D3DXVECTOR3 m_posOld;
 	//回転
 	D3DXVECTOR3 m_rot;
 	//モデルの最大サイズ,最小サイズ
 	D3DXVECTOR3 m_vtxMax, m_vtxMin;
 	//ワールドマトリックス
 	D3DXMATRIX m_mtxWorld;
-	// 最大パーツ数
-	int m_nPartsMax;
-	//影の番号
-	int m_nIdxShadow;
 };
 
-#endif
+#endif		// _MOTION_H_

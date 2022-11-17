@@ -10,8 +10,12 @@
 #include "fade.h"
 #include "sound.h"
 #include "load.h"
+
+// 追加
 #include "texture.h"
 #include "x_file.h"
+#include "x_file_motion.h"
+/**/
 
 #include "input_keyboard.h"
 #include "input_joypad.h"
@@ -35,7 +39,7 @@ CManager *CManager::m_pManager = nullptr;		// マネージャーのポインタ
 // コンストラクタ
 //-----------------------------------------------------------------------------
 CManager::CManager() :m_pTitle(), m_pGame(), m_pResult(), m_pRenderer(), m_pInputKeyboard(), m_pInputJoypad(), m_pInputMouse(), m_pSound(), m_pTexture(),
-					m_pXFile(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
+					m_pXFile(), m_pMotion(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
 {
 	// 初期化
 	ZeroMemory(&m_EntryInfo, sizeof(m_EntryInfo));
@@ -102,6 +106,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	if (m_pXFile != nullptr)
 	{
 		m_pXFile->Init();
+	}
+
+	//モデルモーションクラスの初期化処理
+	m_pMotion = new CXFileMotion;
+
+	if (m_pMotion != nullptr)
+	{
+		m_pMotion->Init(hWnd);
 	}
 
 	// サウンドの初期化処理
@@ -175,6 +187,14 @@ void CManager::Uninit()
 		m_pXFile->Uninit();
 		delete m_pXFile;
 		m_pXFile = nullptr;
+	}
+
+	//モデルモーション情報の破棄
+	if (m_pMotion != nullptr)
+	{
+		m_pMotion->Uninit();
+		delete m_pMotion;
+		m_pMotion = nullptr;
 	}
 
 	// キーボードの終了処理

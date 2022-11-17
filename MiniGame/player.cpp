@@ -28,7 +28,7 @@
 #include "model_obstacle.h"
 #include "game.h"
 #include "camera.h"
-#include "x_file.h"
+#include "x_file_motion.h"
 
 //-----------------------------------------------------------------------------
 // マクロ定義
@@ -61,8 +61,6 @@ using namespace LibrarySpace;
 //*****************************************************************************
 const float CPlayer::SIZE_X = 90.0f;
 const float CPlayer::SIZE_Y = 40.0f;
-const float CPlayer::ENTRY_SIZE_X = 630.0f;
-const float CPlayer::ENTRY_SIZE_Y = 280.0f;
 const float CPlayer::MOVE_DEFAULT = 0.35f;
 // アニメーション間隔
 const int CPlayer::ANIM_INTERVAL = 5;
@@ -86,7 +84,7 @@ const int CPlayer::DEFAULT_LIFE = 2;
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
 	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0),
-	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), posBullet(0.0f, 0.0f), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
+	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_PLAYER);
@@ -114,7 +112,7 @@ CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 		// 角度設定
 		pPlayer->SetRotation(rot);
 		// Xファイルの設定
-		pPlayer->BindXFile(CManager::GetManager()->GetXFile()->GetXFile(name));
+		pPlayer->BindMotion(CManager::GetManager()->GetMotion()->GetMotion(name));
 		// 生成処理
 		pPlayer->Init();
 		// プレイヤー番号の設定
@@ -129,14 +127,14 @@ CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 //-----------------------------------------------------------------------------
 HRESULT CPlayer::Init()
 {
-	// 初期化
-	CModel::Init();
-
 	// スコアの生成
 	CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 
 	// 操作可能状態にする
 	m_bControl = true;
+
+	// 初期化
+	CMotion::Init();
 
 	return S_OK;
 }
@@ -146,7 +144,7 @@ HRESULT CPlayer::Init()
 //-----------------------------------------------------------------------------
 void CPlayer::Uninit()
 {
-	CModel::Uninit();
+	CMotion::Uninit();
 }
 
 //-----------------------------------------------------------------------------
@@ -158,7 +156,7 @@ void CPlayer::Update()
 	m_posOld = GetPosition();
 
 	// 位置情報を取得
-	D3DXVECTOR3 pos = CModel::GetPosition();
+	D3DXVECTOR3 pos = CMotion::GetPosition();
 	// サイズの取得
  	D3DXVECTOR3 size = GetSizeMax();
 
@@ -276,10 +274,13 @@ void CPlayer::Update()
 	}
 
 	//位置情報更新
-	CModel::SetPosition(pos);
+	CMotion::SetPosition(pos);
 
 	//状態管理
 	//State();
+
+	// モーション再生
+	CMotion::Motion();
 }
 
 //-----------------------------------------------------------------------------
@@ -288,7 +289,7 @@ void CPlayer::Update()
 void CPlayer::Draw()
 {
 	//描画
-	CModel::Draw();
+	CMotion::Draw();
 }
 
 //-----------------------------------------------------------------------------

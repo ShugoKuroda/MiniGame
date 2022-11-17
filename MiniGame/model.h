@@ -17,20 +17,20 @@ class CModel : public CObject
 {
 public:
 	//メンバ関数
-	CModel();					//コンストラクタ
-	~CModel();					//デストラクタ
+	CModel();						//コンストラクタ
+	virtual ~CModel() override;		//デストラクタ
 
 	// 生成
 	static CModel* Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name);
 
 	// 初期化
-	HRESULT Init() override;
+	virtual HRESULT Init() override;
 	// 終了
-	void Uninit() override;
+	virtual void Uninit() override;
 	// 更新
-	void Update() override;
+	virtual void Update() override;
 	// 描画
-	void Draw() override;
+	virtual void Draw() override;
 
 	// 位置設定
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
