@@ -72,6 +72,12 @@ CMotion* CMotion::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 //-----------------------------------------------------------------------------
 HRESULT CMotion::Init()
 {
+	// モーション情報の初期化
+	Change(0, 0);
+
+	// キー番号の初期化
+	m_animIdx.nKeySetIdx = 1;
+
 	return S_OK;
 }
 
@@ -257,7 +263,7 @@ void CMotion::Motion()
 }
 
 //-----------------------------------------------------------------------------
-// モーション再生
+// モーション変更(初期化)
 //-----------------------------------------------------------------------------
 void CMotion::Change(int nMotion, int nKey)
 {
