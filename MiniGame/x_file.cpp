@@ -41,53 +41,72 @@ CXFile::~CXFile()
 void CXFile::Init()
 {
 	//ファイル読み込み
-	FILE *pFile = fopen("data/TEXT/XFilePas.txt", "r");
+	FILE *pFile = fopen("data/TEXT/x_file_pas.txt", "r");
 
-	if (pFile != NULL)
+	if (pFile == NULL)
+	{// ファイルを開けなかった場合
+		return;
+	}
+
+	char cScanf[MAX_CHAR];		//一行分読み取るための変数
+	char cScanfHead[MAX_CHAR];	//頭の文字を読み取るための変数
+	bool bReadScript = false;	//スクリプトを読み込むかどうか
+	int nNum = 0;
+
+	//一行ずつ保存
+	while (fgets(cScanf, MAX_CHAR, pFile) != NULL)
 	{
-		char cString[MAX_CHAR];
+		// 文字列の分析
+		sscanf(cScanf, "%s", &cScanfHead);
 
-		//一行ずつ保存
-		while (fgets(cString, MAX_CHAR, pFile) != NULL)
-		{
-			//文字列を保存
-			fscanf(pFile, "%s", cString);
+		if (!bReadScript && strcmp(&cScanfHead[0], "SCRIPT") == 0)
+		{// スクリプトの読み込みを開始
+			bReadScript = true;
+		}
+		else if (bReadScript)
+		{// SCRIPT読み込みを開始したら
+
 			//文字列の中にTEX_NUMがあったら
-			if (strncmp("XFILE_NUM", cString, 8) == 0)
+			if (strcmp(&cScanfHead[0], "XFILE_NUM") == 0)
 			{
-				//テクスチャ最大数読み込み
-				fscanf(pFile, "%*s%d", &m_nNumXFile);
+				// テクスチャ最大数読み込み
+				sscanf(cScanf, "%s = %d", &cScanfHead, &m_nNumXFile);
+			}
+			if (strcmp(&cScanfHead[0], "XFILESET") == 0)
+			{// テクスチャ読み込みを開始
 
-				int nNum = 0;
 				//一行ずつ保存
-				while (fgets(cString, MAX_CHAR, pFile) != NULL)
+				while (fgets(cScanf, MAX_CHAR, pFile) != NULL)
 				{
-					//文字列を保存
-					fscanf(pFile, "%s", cString);
-					//文字列の中にPASがあったら
-					if (strncmp("PAS", cString, 4) == 0)
-					{
-						//パスの取得
-						fscanf(pFile, "%*s%s", &cString[0]);
-						m_aPas.push_back(&cString[0]);
+					// 文字列の分析
+					sscanf(cScanf, "%s", &cScanfHead);
 
+					// 文字列の中にPASがあったら
+					if (strcmp(&cScanfHead[0], "PAS") == 0)
+					{
+						// パスの取得
+						sscanf(cScanf, "%s = %s", &cScanfHead, &cScanf[0]);
+						m_aPas.push_back(&cScanf[0]);
+					}
+					else if (strcmp(&cScanfHead[0], "NAME") == 0)
+					{// 名前の取得
 						//名前の取得
-						fscanf(pFile, "%*s%*s%s", cString);
-						//名前と数の割り当て
-						m_texType[cString] = nNum;
+						sscanf(cScanf, "%s = %s", &cScanfHead, &cScanf[0]);
+						// 名前と数の割り当て
+						m_texType[cScanf] = nNum;
 						nNum++;
+					}
+					else if (strcmp(&cScanfHead[0], "END_XFILESET") == 0)
+					{// テクスチャ読み込み終了
+						break;
 					}
 				}
 			}
-			else if (strncmp("END_SCRIPT", cString, 11) == 0)
-			{//テキストファイルを読み切った時
+			else if (strcmp(&cScanfHead[0], "END_SCRIPT") == 0)
+			{// テキストファイルを読み切った時
 				break;
 			}
 		}
-	}
-	else
-	{
-		printf("テクスチャファイルが開けませんでした\n");
 	}
 
 	// ファイルを閉じる

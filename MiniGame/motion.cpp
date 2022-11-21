@@ -25,11 +25,12 @@
 //-----------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------
-CMotion::CMotion() :m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f)
+CMotion::CMotion() :m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_rotDest(0.0f, 0.0f, 0.0f),
+					m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f)
 {
 	//初期化
 	memset(&m_animIdx, 0, sizeof(AnimIdx));
-	
+
 	//モーション情報の初期化
 	//memset(&m_motion, 0, sizeof(ModelMotion));
 }
@@ -208,6 +209,34 @@ void CMotion::Draw()
 }
 
 //-----------------------------------------------------------------------------
+// 角度の正規化
+//-----------------------------------------------------------------------------
+void CMotion::NormalizeRot()
+{
+	//角度の更新
+	if (m_rotDest.y - m_rot.y > D3DX_PI)
+	{
+		m_rotDest.y -= D3DX_PI * 2;
+	}
+	if (m_rotDest.y - m_rot.y < -D3DX_PI)
+	{
+		m_rotDest.y += D3DX_PI * 2;
+	}
+
+	m_rot.y += (m_rotDest.y - m_rot.y) * 0.1f;
+
+	//角度の正規化
+	if (m_rot.y > D3DX_PI)
+	{
+		m_rot.y -= D3DX_PI * 2;
+	}
+	if (m_rot.y < -D3DX_PI)
+	{
+		m_rot.y += D3DX_PI * 2;
+	}
+}
+
+//-----------------------------------------------------------------------------
 // モーション再生
 //-----------------------------------------------------------------------------
 void CMotion::Motion()
@@ -239,7 +268,7 @@ void CMotion::Motion()
 	{//フレーム数が設定の値を超えたら
 
 		// モーション変更
-		Change(nMotion, nKey);
+		//Change(nMotion, nKey);
 
 		//再生中のキー数の加算
 		m_animIdx.nKeySetIdx++;
@@ -263,13 +292,31 @@ void CMotion::Motion()
 }
 
 //-----------------------------------------------------------------------------
+// モーション設定
+//-----------------------------------------------------------------------------
+void CMotion::Set(const int& nNum)
+{
+	// 現在のモーションが再生するモーション以外
+	if (m_animIdx.nMotionIdx != nNum)
+	{// モーションの設定
+		m_animIdx.nMotionIdx = nNum;
+		m_animIdx.nKeySetIdx = 1;
+		m_animIdx.nFrame = 0;
+
+		// モーションの初期化
+		Change(nNum, 0);
+	}
+}
+
+//-----------------------------------------------------------------------------
 // モーション変更(初期化)
 //-----------------------------------------------------------------------------
-void CMotion::Change(int nMotion, int nKey)
+void CMotion::Change(const int& nMotion, const int& nKey)
 {
+	m_motion.aParts[0].pos = m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[0].pos + m_motion.posParent;
+
 	for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
 	{
-		//m_motion.aParts[nCntParts].pos = m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos;
 		m_motion.aParts[nCntParts].rot = m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].rot;
 	}
 }

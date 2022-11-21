@@ -24,8 +24,6 @@ typedef struct
 	SModelInfo xFile;
 	// 位置
 	D3DXVECTOR3 pos;
-	// 基本の角度
-	D3DXVECTOR3 baseRot;
 	// 回転
 	D3DXVECTOR3 rot;
 	// ワールドマトリックス
@@ -65,8 +63,9 @@ typedef struct
 	int nNumMotion;		// モーション総数
 	float fMove;		// 移動量
 	float fJump;		// ジャンプ力
-	std::vector<Parts> aParts;			//パーツの情報
-	std::vector<MotionSet> aMotion;		//各モーションの情報
+	D3DXVECTOR3 posParent;				// 親(体)の原点位置
+	std::vector<Parts> aParts;			// パーツの情報
+	std::vector<MotionSet> aMotion;		// 各モーションの情報
 }ModelMotion;
 
 #endif		// _MOTION_DATA_H_

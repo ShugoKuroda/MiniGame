@@ -172,6 +172,9 @@
     <ClCompile Include="player.cpp">
       <Filter>ソースファイル\motion</Filter>
     </ClCompile>
+    <ClCompile Include="set_model.cpp">
+      <Filter>ソースファイル\managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -354,6 +357,9 @@
     <ClInclude Include="player.h">
       <Filter>ソースファイル\motion</Filter>
     </ClInclude>
+    <ClInclude Include="set_model.h">
+      <Filter>ソースファイル\managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -377,9 +383,6 @@
     <Filter Include="ソースファイル\renderer">
       <UniqueIdentifier>{de874303-5a09-4f4c-8f10-b6e51684cad2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソースファイル\model">
-      <UniqueIdentifier>{c062292f-c6e2-4aee-a0bf-c18f99959dc3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソースファイル\logo">
       <UniqueIdentifier>{b6852932-4d31-46a7-9bf7-7a7860cd7fa8}</UniqueIdentifier>
     </Filter>
@@ -388,6 +391,9 @@
     </Filter>
     <Filter Include="ソースファイル\motion">
       <UniqueIdentifier>{4421b1b3-173c-404c-9ab2-1827e1a0a178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\model">
+      <UniqueIdentifier>{c062292f-c6e2-4aee-a0bf-c18f99959dc3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

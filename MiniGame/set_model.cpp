@@ -9,7 +9,7 @@
 // インクルード
 //=============================================================================
 #include <stdio.h>
-#include "x_file_motion.h"
+#include "set_model.h"
 
 #include "renderer.h"
 #include "manager.h"
@@ -25,21 +25,21 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CXFileMotion::CXFileMotion()
+CSetModel::CSetModel()
 {
 }
 
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CXFileMotion::~CXFileMotion()
+CSetModel::~CSetModel()
 {
 }
 
 //=============================================================================
 // 初期化
 //=============================================================================
-HRESULT CXFileMotion::Init(HWND hWnd)
+HRESULT CSetModel::Init(HWND hWnd)
 {
 	// ファイルポインター宣言
 	FILE *pFile = NULL;
@@ -49,18 +49,18 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 	int nNum = 0;
 
 	// ファイルを開く
-	pFile = fopen("data/TEXT/motion_pas.ini", "r");
+	pFile = fopen("data/TEXT/model_pas.ini", "r");
 
 	if (pFile == NULL)
-	{// 開けなかった時用
+	{//開けなかった時用
 		MessageBox(hWnd, "INIファイルを開けませんでした", "警告！", MB_ICONWARNING);
 		return E_FAIL;
 	}
 
-	// 文字列の読み取りループ処理
+	//文字列の読み取りループ処理
 	while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
 	{
-		// 文字列の分析
+		//文字列の分析
 		sscanf(cBff, "%s", &cBffHead);
 
 		// 文字列の中にTEX_NUMがあったら
@@ -75,19 +75,19 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 			// 一行ずつ保存
 			while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
 			{
-				// 文字列の分析
+				//文字列の分析
 				sscanf(cBff, "%s", &cBffHead);
 
 				if (strcmp(&cBffHead[0], "SCRIPT_FILENAME") == 0)
-				{// モーションテキストの相対パス用
+				{//モーションテキストの相対パス用
 
-					// 相対パス保存用
+				 //相対パス保存用
 					char sPath[LINE_MAX_READING_LENGTH];
 
-					// 一行の文字列から相対パスの読み取り
+					//一行の文字列から相対パスの読み取り
 					sscanf(cBff, "%s = %s", &cBffHead, &sPath[0]);
 
-					// Xファイルの読み込み
+					//Xファイルの読み込み
 					if (LoadMotion(&sPath[0]) == false)
 					{// 読み込み失敗
 						MessageBox(hWnd, "モーションテキストを開けませんでした", "警告！", MB_ICONWARNING);
@@ -108,7 +108,7 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 			}
 		}
 		else if (strcmp(&cBffHead[0], "END_SCRIPT") == 0)
-		{// 読み込み終了
+		{//読み込み終了
 			break;
 		}
 	}
@@ -119,7 +119,7 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 //=============================================================================
 // 終了
 //=============================================================================
-void CXFileMotion::Uninit()
+void CSetModel::Uninit()
 {
 	for (int nCntMotion = 0; nCntMotion < m_nNumMotion; nCntMotion++)
 	{
@@ -144,7 +144,7 @@ void CXFileMotion::Uninit()
 //-----------------------------------------------------------------------------
 // モーション情報の読み込み
 //-----------------------------------------------------------------------------
-bool CXFileMotion::LoadMotion(char* pas)
+bool CSetModel::LoadMotion(char* pas)
 {
 	// ファイルポインター宣言
 	FILE *pFile = NULL;
@@ -177,7 +177,7 @@ bool CXFileMotion::LoadMotion(char* pas)
 		if (strcmp(&cBffHead[0], "MODEL_FILENAME") == 0)
 		{//Xファイルの相対パス用
 
-			// 相対パス保存用
+		 // 相対パス保存用
 			char sPath[LINE_MAX_READING_LENGTH];
 
 			// 一行の文字列から相対パスの読み取り
@@ -192,7 +192,7 @@ bool CXFileMotion::LoadMotion(char* pas)
 		else if (strcmp(&cBffHead[0], "CHARACTERSET") == 0)
 		{//プレイヤーの配置用
 
-			//プレイヤー情報の読み取りループ処理
+		 //プレイヤー情報の読み取りループ処理
 			while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
 			{
 				//文字列の分析
@@ -200,17 +200,17 @@ bool CXFileMotion::LoadMotion(char* pas)
 
 				if (strcmp(&cBffHead[0], "NUM_PARTS") == 0)
 				{//パーツ数
-					//文字列の分析
+				 //文字列の分析
 					sscanf(cBff, "%s = %d", &cBffHead, &motion.nNumParts);
 				}
 				else if (strcmp(&cBffHead[0], "MOVE") == 0)
 				{//移動量
-					//文字列の分析
+				 //文字列の分析
 					sscanf(cBff, "%s = %f", &cBffHead, &motion.fMove);
 				}
 				else if (strcmp(&cBffHead[0], "JUMP") == 0)
 				{//ジャンプ量
-					//文字列の分析
+				 //文字列の分析
 					sscanf(cBff, "%s = %f", &cBffHead, &motion.fJump);
 				}
 				else if (strcmp(&cBffHead[0], "PARTSSET") == 0)
@@ -226,17 +226,17 @@ bool CXFileMotion::LoadMotion(char* pas)
 
 						if (strcmp(&cBffHead[0], "INDEX") == 0)
 						{//パーツ番号
-							// 文字列の分析
+						 // 文字列の分析
 							sscanf(cBff, "%s = %d", &cBffHead, &parts.nIndex);
 						}
 						else if (strcmp(&cBffHead[0], "PARENT") == 0)
 						{//現在のパーツの親
-							// 文字列の分析
+						 // 文字列の分析
 							sscanf(cBff, "%s = %d", &cBffHead, &parts.nParent);
 						}
 						else if (strcmp(&cBffHead[0], "POS") == 0)
 						{//位置
-							// 文字列の分析
+						 // 文字列の分析
 							sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.pos.x, &parts.pos.y, &parts.pos.z);
 
 							// パーツの親がいないなら
@@ -244,11 +244,11 @@ bool CXFileMotion::LoadMotion(char* pas)
 							{// パーツ原点の保存
 								motion.posParent = parts.pos;
 							}
-							
+
 						}
 						else if (strcmp(&cBffHead[0], "ROT") == 0)
 						{//回転(角度)
-							// 文字列の分析
+						 // 文字列の分析
 							sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.rot.x, &parts.rot.y, &parts.rot.z);
 						}
 						else if (strcmp(&cBffHead[0], "END_PARTSSET") == 0)
@@ -269,7 +269,7 @@ bool CXFileMotion::LoadMotion(char* pas)
 		else if (strcmp(&cBffHead[0], "MOTIONSET") == 0)
 		{//モーション設定用
 
-			// モーション情報保存用
+		 // モーション情報保存用
 			MotionSet motionInfo;
 
 			//モーション情報の読み取りループ処理
@@ -280,12 +280,12 @@ bool CXFileMotion::LoadMotion(char* pas)
 
 				if (strcmp(&cBffHead[0], "LOOP") == 0)
 				{//ループ設定
-					//文字列の分析
+				 //文字列の分析
 					sscanf(cBff, "%s = %d", &cBffHead, &motionInfo.nLoop);
 				}
 				else if (strcmp(&cBffHead[0], "NUM_KEY") == 0)
 				{//キーの数
-					//文字列の分析
+				 //文字列の分析
 					sscanf(cBff, "%s = %d", &cBffHead, &motionInfo.nNumKey);
 				}
 				else if (strcmp(&cBffHead[0], "KEYSET") == 0)
@@ -301,7 +301,7 @@ bool CXFileMotion::LoadMotion(char* pas)
 
 						if (strcmp(&cBffHead[0], "FRAME") == 0)
 						{//ループ設定
-							//文字列の分析
+						 //文字列の分析
 							sscanf(cBff, "%s = %d", &cBffHead, &keyInfo.nFrame);
 
 							if (keyInfo.nFrame == 0)
@@ -312,7 +312,7 @@ bool CXFileMotion::LoadMotion(char* pas)
 						if (strcmp(&cBffHead[0], "KEY") == 0)
 						{// ループ設定
 
-							// キー情報保存用
+						 // キー情報保存用
 							Key key;
 
 							// キー情報の読み取りループ処理
@@ -372,7 +372,7 @@ bool CXFileMotion::LoadMotion(char* pas)
 //-----------------------------------------------------------------------------
 // Xファイルの読み込み
 //-----------------------------------------------------------------------------
-SModelInfo CXFileMotion::LoadParts(const char* pas)
+SModelInfo CSetModel::LoadParts(const char* pas)
 {
 	//デバイスを取得する
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
@@ -392,7 +392,7 @@ SModelInfo CXFileMotion::LoadParts(const char* pas)
 
 	if (hr != S_OK)
 	{//Xファイル読み込み失敗
-		//return nullptr;
+	 //return nullptr;
 	}
 
 	// テクスチャの読み込み処理
@@ -404,7 +404,7 @@ SModelInfo CXFileMotion::LoadParts(const char* pas)
 //-----------------------------------------------------------------------------
 // テクスチャの読み込み
 //-----------------------------------------------------------------------------
-void CXFileMotion::LoadXFileTexture(SModelInfo* pXFile)
+void CSetModel::LoadXFileTexture(SModelInfo* pXFile)
 {
 	//マテリアルデータへのポインタ
 	D3DXMATERIAL *pMat;

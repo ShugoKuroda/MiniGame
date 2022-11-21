@@ -29,6 +29,8 @@ public:
 	D3DXVECTOR3 GetPosV() { return m_posV; }
 	// ’‹“_ˆÊ’u‚Ìæ“¾
 	D3DXVECTOR3 GetPosR() { return m_posR; }
+	// Šp“x‚Ìæ“¾
+	D3DXVECTOR3 GetRotation() { return m_rot; }
 
 	// ’Ç]‘ÎÛ‚Ìİ’è
 	void SetPosTracking(D3DXVECTOR3 *pPosDest) { m_pPosTracking = pPosDest; }

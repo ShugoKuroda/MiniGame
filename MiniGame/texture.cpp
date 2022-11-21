@@ -41,7 +41,7 @@ CTexture::~CTexture()
 void CTexture::Init()
 {
 	// ファイル読み込み
-	FILE *pFile = fopen("data/TEXT/texPas.txt", "r");
+	FILE *pFile = fopen("data/TEXT/tex_pas.txt", "r");
 
 	if (pFile == NULL)
 	{// ファイルを開けなかった場合

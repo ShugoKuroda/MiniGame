@@ -1,0 +1,65 @@
+//==================================================
+//
+// Xファイルのパス読み込み用ファイル [x_file_pas.txt]
+// Author : SHUGO KURODA
+//
+//==================================================
+SCRIPT		# この行は消さないこと！
+
+//==================================================
+// Xファイル最大数
+//==================================================
+XFILE_NUM = 8
+
+//==================================================
+// Xファイル読み込み情報
+//==================================================
+//メタル
+XFILESET
+	PAS = data/MODEL/model/MetalBox.x
+	NAME = XFILE_TYPE_ITEM_METAL
+END_XFILESET
+
+//★
+XFILESET
+	PAS = data/MODEL/model/Star.x
+	NAME = XFILE_TYPE_STAR
+END_XFILESET
+
+//鷲巣
+XFILESET
+	PAS = data/MODEL/model/wasizu.x
+	NAME = XFILE_TYPE_WASIZU
+END_XFILESET
+
+//アイテム
+XFILESET
+	PAS = data/MODEL/model/shoe.x
+	NAME = XFILE_TYPE_SHOE
+END_XFILESET
+
+//障害物(小)
+XFILESET
+	PAS = data/MODEL/model/RockIce.x
+	NAME = XFILE_TYPE_ROCKICE_SMALL
+END_XFILESET
+
+//障害物(中)
+XFILESET
+	PAS = data/MODEL/model/RockIce2.x
+	NAME = XFILE_TYPE_ROCKICE_NORMAL
+END_XFILESET
+
+//障害物(大)
+XFILESET
+	PAS = data/MODEL/model/RockIce2.x
+	NAME = XFILE_TYPE_ROCKICE_BIG
+END_XFILESET
+
+//クレバス(落とし穴)
+XFILESET
+	PAS = data/MODEL/model/Crevasse.x
+	NAME = XFILE_TYPE_CREVASSE
+END_XFILESET
+
+END_SCRIPT		# この行は消さないこと！

@@ -26,7 +26,7 @@ MODEL_FILENAME = data/MODEL/pingu/pengu005_LeftLeg.x		# [5]
 #------------------------------------------------------------------------------
 CHARACTERSET
 	NUM_PARTS = 6					# パーツ数
-	MOVE = 3.0						# 移動量
+	MOVE = 0.35						# 移動量
 	JUMP = 12.25					# ジャンプ量
 	RADIUS = 20.0					# 半径
 	HEIGHT = 40.0					# 高さ

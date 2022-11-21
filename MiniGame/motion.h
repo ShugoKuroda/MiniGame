@@ -41,11 +41,15 @@ public:
 	virtual void Update() override;
 	// 描画
 	virtual void Draw() override;
+	// 角度の正規化
+	void NormalizeRot();
 
 	// 位置設定
-	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
+	void SetPosition(const D3DXVECTOR3& pos) { m_pos = pos; }
 	// 角度設定
-	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
+	void SetRotation(const D3DXVECTOR3& rot) { m_rot = rot; }
+	// 目的の角度設定
+	void SetRotDest(const D3DXVECTOR3& rotDest) { m_rotDest = rotDest; }
 	// 位置取得
 	D3DXVECTOR3 GetPosition() { return m_pos; }
 	// 位置取得
@@ -56,16 +60,20 @@ public:
 	D3DXVECTOR3 GetSizeMax() { return m_vtxMax; }
 	// 最小サイズ取得
 	D3DXVECTOR3 GetSizeMin() { return m_vtxMin; }
+	// モーション情報の取得
+	ModelMotion GetMotion() { return m_motion; }
 	// モーション情報の設定
-	void BindMotion(ModelMotion motion) { m_motion = motion; }
+	void BindMotion(const ModelMotion& motion) { m_motion = motion; }
 
 protected:
 	// モーション再生
 	void Motion();
+	// モーション設定
+	void Set(const int& nNum);
 
 private:
 	// モーション変更
-	void Change(int nMotion, int nKey);
+	void Change(const int& nMotion, const int& nKey);
 
 	// メンバ変数
 private:
@@ -73,13 +81,15 @@ private:
 	ModelMotion m_motion;
 	// 現在のモーション番号情報
 	AnimIdx m_animIdx;
-	//位置
+	// 位置
 	D3DXVECTOR3 m_pos;
-	//回転
+	// 回転
 	D3DXVECTOR3 m_rot;
-	//モデルの最大サイズ,最小サイズ
+	// 目的の角度
+	D3DXVECTOR3 m_rotDest;
+	// モデルの最大サイズ,最小サイズ
 	D3DXVECTOR3 m_vtxMax, m_vtxMin;
-	//ワールドマトリックス
+	// ワールドマトリックス
 	D3DXMATRIX m_mtxWorld;
 };
 

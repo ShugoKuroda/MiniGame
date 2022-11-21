@@ -94,16 +94,8 @@ public:
 	void Update() override;
 	// 描画
 	void Draw() override;
-	// 移動
-	void Move();
-	// ジャンプ
-	void Jump();
-	// 状態管理
-	void State();
 	// ダメージ処理
 	void Damage();
-	// 死亡処理
-	void Die();
 
 	// 状態の取得
 	STATE GetState() { return m_state; }
@@ -134,8 +126,18 @@ public:
 	// ゲーム開始フラグの設定
 	void SetStart(const bool& bStart) { m_bStart = bStart; }
 
-private:	//メンバ変数
+private:
+	// 移動
+	bool Move();
+	// ジャンプ
+	void Jump();
+	// 状態管理
+	void State();
+	// 死亡処理
+	void Die();
 
+	//メンバ変数
+private:	
 	// ライフのポインタ
 	CLife *m_pLife;
 	// スコアのポインタ
@@ -147,6 +149,10 @@ private:	//メンバ変数
 	D3DXVECTOR3 m_posOld;
 	//状態
 	STATE m_state;
+	// 移動力
+	float m_fMove;
+	// ジャンプ力
+	float m_fJump;
 	//状態カウンター
 	int m_nCntState;
 	//攻撃カウンター

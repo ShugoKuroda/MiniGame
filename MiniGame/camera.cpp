@@ -282,8 +282,8 @@ void CCamera::Draw()
 	D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
 		D3DXToRadian(45.0f),
 		(float)CRenderer::SCREEN_WIDTH / (float)CRenderer::SCREEN_HEIGHT,
-		10.0f,
-		6400.0f);			//視界の設定
+		10.0f,				// 視野角の設定
+		6400.0f);			// 視界の設定
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProjection);
