@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// Xファイルモーション [x_file_motion.h]
+// Xファイルモーション [set_model.h]
 // Author : SHUGO KURODA
 //
 //=============================================================================
-#ifndef _X_FILE_MOTION_H_
-#define _X_FILE_MOTION_H_
+#ifndef _SET_MODEL_
+#define _SET_MODEL_
 
 #include "motion_data.h"
 #include <vector>
@@ -29,24 +29,17 @@ public:
 	// 終了
 	void Uninit();
 	// モーション情報の読み込み
-	bool LoadMotion(char *pas);
+	bool LoadModel(char *pas);
 	// Xファイル情報の取得(名前指定)
-	ModelMotion GetMotion(std::string texType) { return m_aMotion[m_texType[texType]]; }
+	char *GetPas(std::string texType) { return m_aPas[m_texType[texType]]; }
 	// Xファイル情報の取得(番号指定)
-	ModelMotion GetMotion(int nCnt) { return m_aMotion[nCnt]; }
-
-private:
-	// パーツの読み込み
-	SModelInfo LoadParts(const char* pas);
-	// テクスチャの読み込み
-	void LoadXFileTexture(SModelInfo* pXFile);
+	char *GetPas(int nCnt) { return m_aPas[nCnt]; }
 
 	// メンバ変数
 private:
-	std::vector<ModelMotion> m_aMotion;		// モーション情報
-	std::vector<std::string> m_aPas;		// Xファイルのパス
+	std::vector<char*> m_aPas;				// Xファイルのパス
 	std::map<std::string, int> m_texType;	// Xファイルの種類
 	int m_nNumMotion;						// Xファイルの総数
 };
 
-#endif	//_X_FILE_MOTION_H_
+#endif	//_SET_MODEL_

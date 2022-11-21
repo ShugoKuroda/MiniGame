@@ -15,6 +15,7 @@
 #include "texture.h"
 #include "x_file.h"
 #include "x_file_motion.h"
+#include "set_model.h"
 /**/
 
 #include "input_keyboard.h"
@@ -38,8 +39,9 @@ CManager *CManager::m_pManager = nullptr;		// マネージャーのポインタ
 //-----------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------
-CManager::CManager() :m_pTitle(), m_pGame(), m_pResult(), m_pRenderer(), m_pInputKeyboard(), m_pInputJoypad(), m_pInputMouse(), m_pSound(), m_pTexture(),
-					m_pXFile(), m_pMotion(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
+CManager::CManager()
+	:m_pTitle(), m_pGame(), m_pResult(), m_pRenderer(), m_pInputKeyboard(), m_pInputJoypad(), m_pInputMouse(), m_pSound(), m_pTexture(),
+	m_pXFile(), m_pMotion(), m_pSetModel(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
 {
 	// 初期化
 	ZeroMemory(&m_EntryInfo, sizeof(m_EntryInfo));
@@ -92,7 +94,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		m_pInputMouse->Init(hInstance, hWnd);
 	}
 
-	//テクスチャクラスの初期化処理
+	//テクスチャ情報の初期化処理
 	m_pTexture = new CTexture;
 
 	if (m_pTexture != nullptr)
@@ -100,7 +102,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		m_pTexture->Init();
 	}
 	
-	//Xファイルクラスの初期化処理
+	//Xファイル情報スの初期化処理
 	m_pXFile = new CXFile;
 
 	if (m_pXFile != nullptr)
@@ -108,12 +110,20 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		m_pXFile->Init();
 	}
 
-	//モデルモーションクラスの初期化処理
+	//モーション情報の初期化処理
 	m_pMotion = new CXFileMotion;
 
 	if (m_pMotion != nullptr)
 	{
 		m_pMotion->Init(hWnd);
+	}
+
+	//モデル配置情報の初期化処理
+	m_pSetModel = new CSetModel;
+
+	if (m_pSetModel != nullptr)
+	{
+		m_pSetModel->Init(hWnd);
 	}
 
 	// サウンドの初期化処理
@@ -195,6 +205,14 @@ void CManager::Uninit()
 		m_pMotion->Uninit();
 		delete m_pMotion;
 		m_pMotion = nullptr;
+	}
+
+	//モデル配置情報の破棄
+	if (m_pSetModel != nullptr)
+	{
+		m_pSetModel->Uninit();
+		delete m_pSetModel;
+		m_pSetModel = nullptr;
 	}
 
 	// キーボードの終了処理

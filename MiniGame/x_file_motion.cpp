@@ -20,7 +20,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define LINE_MAX_READING_LENGTH (256)			//一行の最大読み取り文字数
+#define MAX_CHAR (256)			//一行の最大読み取り文字数
 
 //=============================================================================
 // コンストラクタ
@@ -44,8 +44,8 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 	// ファイルポインター宣言
 	FILE *pFile = NULL;
 
-	char cBff[LINE_MAX_READING_LENGTH];			// 一行分読み取るための変数
-	char cBffHead[LINE_MAX_READING_LENGTH];		// 頭の文字を読み取るための変数
+	char cBff[MAX_CHAR];			// 一行分読み取るための変数
+	char cBffHead[MAX_CHAR];		// 頭の文字を読み取るための変数
 	int nNum = 0;
 
 	// ファイルを開く
@@ -58,7 +58,7 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 	}
 
 	// 文字列の読み取りループ処理
-	while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
+	while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 	{
 		// 文字列の分析
 		sscanf(cBff, "%s", &cBffHead);
@@ -73,7 +73,7 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 		{// モデルモーション読み込みを開始
 
 			// 一行ずつ保存
-			while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
+			while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 			{
 				// 文字列の分析
 				sscanf(cBff, "%s", &cBffHead);
@@ -82,7 +82,7 @@ HRESULT CXFileMotion::Init(HWND hWnd)
 				{// モーションテキストの相対パス用
 
 					// 相対パス保存用
-					char sPath[LINE_MAX_READING_LENGTH];
+					char sPath[MAX_CHAR];
 
 					// 一行の文字列から相対パスの読み取り
 					sscanf(cBff, "%s = %s", &cBffHead, &sPath[0]);
@@ -160,206 +160,216 @@ bool CXFileMotion::LoadMotion(char* pas)
 	// モーション情報保存用
 	ModelMotion motion;
 	// 一行分読み取るための変数
-	char cBff[LINE_MAX_READING_LENGTH];
+	char cBff[MAX_CHAR];
 	// 頭の文字を読み取るための変数
-	char cBffHead[LINE_MAX_READING_LENGTH];
+	char cBffHead[MAX_CHAR];
 	// パーツの読み込み
 	std::vector<SModelInfo> partsXFile;
+	//スクリプトを読み込むかどうか
+	bool bReadScript = false;
 
 	//文字列の読み取りループ処理
-	while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
+	while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 	{
 		// 文字読み込み用変数の初期化
 		memset(&cBffHead, 0, sizeof(cBffHead));
 		// 文字列の分析
 		sscanf(cBff, "%s", &cBffHead);
 
-		if (strcmp(&cBffHead[0], "MODEL_FILENAME") == 0)
-		{//Xファイルの相対パス用
-
-			// 相対パス保存用
-			char sPath[LINE_MAX_READING_LENGTH];
-
-			// 一行の文字列から相対パスの読み取り
-			sscanf(cBff, "%s = %s", &cBffHead, &sPath[0]);
-
-			// パーツの読み込み
-			SModelInfo xFile = LoadParts(&sPath[0]);
-
-			// パーツ情報の格納
-			partsXFile.push_back(xFile);
+		if (!bReadScript && strcmp(&cBffHead[0], "SCRIPT") == 0)
+		{// スクリプトの読み込みを開始
+			bReadScript = true;
 		}
-		else if (strcmp(&cBffHead[0], "CHARACTERSET") == 0)
-		{//プレイヤーの配置用
+		else if (bReadScript)
+		{// SCRIPT読み込みを開始したら
 
-			//プレイヤー情報の読み取りループ処理
-			while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
-			{
-				//文字列の分析
-				sscanf(cBff, "%s", &cBffHead);
+			if (strcmp(&cBffHead[0], "MODEL_FILENAME") == 0)
+			{//Xファイルの相対パス用
 
-				if (strcmp(&cBffHead[0], "NUM_PARTS") == 0)
-				{//パーツ数
-					//文字列の分析
-					sscanf(cBff, "%s = %d", &cBffHead, &motion.nNumParts);
-				}
-				else if (strcmp(&cBffHead[0], "MOVE") == 0)
-				{//移動量
-					//文字列の分析
-					sscanf(cBff, "%s = %f", &cBffHead, &motion.fMove);
-				}
-				else if (strcmp(&cBffHead[0], "JUMP") == 0)
-				{//ジャンプ量
-					//文字列の分析
-					sscanf(cBff, "%s = %f", &cBffHead, &motion.fJump);
-				}
-				else if (strcmp(&cBffHead[0], "PARTSSET") == 0)
-				{
-					// パーツ情報保存用	
-					Parts parts;
+				// 相対パス保存用
+				char sPath[MAX_CHAR];
 
-					//プレイヤーパーツ情報の読み取りループ処理
-					while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
-					{
-						//文字列の分析
-						sscanf(cBff, "%s", &cBffHead);
+				// 一行の文字列から相対パスの読み取り
+				sscanf(cBff, "%s = %s", &cBffHead, &sPath[0]);
 
-						if (strcmp(&cBffHead[0], "INDEX") == 0)
-						{//パーツ番号
-							// 文字列の分析
-							sscanf(cBff, "%s = %d", &cBffHead, &parts.nIndex);
-						}
-						else if (strcmp(&cBffHead[0], "PARENT") == 0)
-						{//現在のパーツの親
-							// 文字列の分析
-							sscanf(cBff, "%s = %d", &cBffHead, &parts.nParent);
-						}
-						else if (strcmp(&cBffHead[0], "POS") == 0)
-						{//位置
-							// 文字列の分析
-							sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.pos.x, &parts.pos.y, &parts.pos.z);
+				// パーツの読み込み
+				SModelInfo xFile = LoadParts(&sPath[0]);
 
-							// パーツの親がいないなら
-							if (parts.nParent == -1)
-							{// パーツ原点の保存
-								motion.posParent = parts.pos;
-							}
-							
-						}
-						else if (strcmp(&cBffHead[0], "ROT") == 0)
-						{//回転(角度)
-							// 文字列の分析
-							sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.rot.x, &parts.rot.y, &parts.rot.z);
-						}
-						else if (strcmp(&cBffHead[0], "END_PARTSSET") == 0)
-						{// パーツ読み込み終了
-							parts.xFile = partsXFile[parts.nIndex];
-							// パーツ情報の保存
-							motion.aParts.push_back(parts);
-							break;
-						}
-					}
-				}
-				else if (strcmp(&cBffHead[0], "END_CHARACTERSET") == 0)
-				{//プレイヤー読み込み終了
-					break;
-				}
+				// パーツ情報の格納
+				partsXFile.push_back(xFile);
 			}
-		}
-		else if (strcmp(&cBffHead[0], "MOTIONSET") == 0)
-		{//モーション設定用
+			else if (strcmp(&cBffHead[0], "CHARACTERSET") == 0)
+			{//プレイヤーの配置用
 
-			// モーション情報保存用
-			MotionSet motionInfo;
-
-			//モーション情報の読み取りループ処理
-			while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
-			{
-				//文字列の分析
-				sscanf(cBff, "%s", &cBffHead);
-
-				if (strcmp(&cBffHead[0], "LOOP") == 0)
-				{//ループ設定
-					//文字列の分析
-					sscanf(cBff, "%s = %d", &cBffHead, &motionInfo.nLoop);
-				}
-				else if (strcmp(&cBffHead[0], "NUM_KEY") == 0)
-				{//キーの数
-					//文字列の分析
-					sscanf(cBff, "%s = %d", &cBffHead, &motionInfo.nNumKey);
-				}
-				else if (strcmp(&cBffHead[0], "KEYSET") == 0)
+				//プレイヤー情報の読み取りループ処理
+				while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 				{
-					// キー情報保存用
-					KeySet keyInfo;
+					//文字列の分析
+					sscanf(cBff, "%s", &cBffHead);
 
-					//キーセット情報の読み取りループ処理
-					while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
-					{
+					if (strcmp(&cBffHead[0], "NUM_PARTS") == 0)
+					{//パーツ数
 						//文字列の分析
-						sscanf(cBff, "%s", &cBffHead);
+						sscanf(cBff, "%s = %d", &cBffHead, &motion.nNumParts);
+					}
+					else if (strcmp(&cBffHead[0], "MOVE") == 0)
+					{//移動量
+						//文字列の分析
+						sscanf(cBff, "%s = %f", &cBffHead, &motion.fMove);
+					}
+					else if (strcmp(&cBffHead[0], "JUMP") == 0)
+					{//ジャンプ量
+						//文字列の分析
+						sscanf(cBff, "%s = %f", &cBffHead, &motion.fJump);
+					}
+					else if (strcmp(&cBffHead[0], "PARTSSET") == 0)
+					{
+						// パーツ情報保存用	
+						Parts parts;
 
-						if (strcmp(&cBffHead[0], "FRAME") == 0)
-						{//ループ設定
-							//文字列の分析
-							sscanf(cBff, "%s = %d", &cBffHead, &keyInfo.nFrame);
-
-							if (keyInfo.nFrame == 0)
-							{//再生フレーム数が0の場合1にする
-								keyInfo.nFrame = 1;
-							}
-						}
-						if (strcmp(&cBffHead[0], "KEY") == 0)
-						{// ループ設定
-
-							// キー情報保存用
-							Key key;
-
-							// キー情報の読み取りループ処理
-							while (fgets(cBff, LINE_MAX_READING_LENGTH, pFile) != NULL)
-							{
-								//文字列の分析
-								sscanf(cBff, "%s", &cBffHead);
-
-								if (strcmp(&cBffHead[0], "POS") == 0)
-								{//モーション再生中の位置情報読み込み
-								 //文字列の分析
-									sscanf(cBff, "%s = %f%f%f", &cBffHead, &key.pos.x, &key.pos.y, &key.pos.z);
-								}
-								else if (strcmp(&cBffHead[0], "ROT") == 0)
-								{//モーション再生中の回転情報読み込み
-								 //文字列の分析
-									sscanf(cBff, "%s = %f%f%f", &cBffHead, &key.rot.x, &key.rot.y, &key.rot.z);
-								}
-								else if (strcmp(&cBffHead[0], "END_KEY") == 0)
-								{
-									keyInfo.aKey.push_back(key);
-									break;
-								}
-							}
-						}
-						else if (strcmp(&cBffHead[0], "END_KEYSET") == 0)
+						//プレイヤーパーツ情報の読み取りループ処理
+						while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 						{
-							motionInfo.aKeyInfo.push_back(keyInfo);
-							break;
+							//文字列の分析
+							sscanf(cBff, "%s", &cBffHead);
+
+							if (strcmp(&cBffHead[0], "INDEX") == 0)
+							{//パーツ番号
+								// 文字列の分析
+								sscanf(cBff, "%s = %d", &cBffHead, &parts.nIndex);
+							}
+							else if (strcmp(&cBffHead[0], "PARENT") == 0)
+							{//現在のパーツの親
+								// 文字列の分析
+								sscanf(cBff, "%s = %d", &cBffHead, &parts.nParent);
+							}
+							else if (strcmp(&cBffHead[0], "POS") == 0)
+							{//位置
+								// 文字列の分析
+								sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.pos.x, &parts.pos.y, &parts.pos.z);
+
+								// パーツの親がいないなら
+								if (parts.nParent == -1)
+								{// パーツ原点の保存
+									motion.posParent = parts.pos;
+								}
+
+							}
+							else if (strcmp(&cBffHead[0], "ROT") == 0)
+							{//回転(角度)
+								// 文字列の分析
+								sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.rot.x, &parts.rot.y, &parts.rot.z);
+							}
+							else if (strcmp(&cBffHead[0], "END_PARTSSET") == 0)
+							{// パーツ読み込み終了
+								parts.xFile = partsXFile[parts.nIndex];
+								// パーツ情報の保存
+								motion.aParts.push_back(parts);
+								break;
+							}
 						}
 					}
-				}
-				else if (strcmp(&cBffHead[0], "END_MOTIONSET") == 0)
-				{
-					// モーションの総数を加算
-					motion.nNumMotion++;
-					motion.aMotion.push_back(motionInfo);
-					break;
+					else if (strcmp(&cBffHead[0], "END_CHARACTERSET") == 0)
+					{//プレイヤー読み込み終了
+						break;
+					}
 				}
 			}
-		}
-		// テキストファイルを読み切った時
-		else if (strcmp(&cBffHead[0], "END_SCRIPT") == 0)
-		{
-			// モーション情報の格納
-			m_aMotion.push_back(motion);
-			break;
+			else if (strcmp(&cBffHead[0], "MOTIONSET") == 0)
+			{//モーション設定用
+
+				// モーション情報保存用
+				MotionSet motionInfo;
+
+				//モーション情報の読み取りループ処理
+				while (fgets(cBff, MAX_CHAR, pFile) != NULL)
+				{
+					//文字列の分析
+					sscanf(cBff, "%s", &cBffHead);
+
+					if (strcmp(&cBffHead[0], "LOOP") == 0)
+					{//ループ設定
+						//文字列の分析
+						sscanf(cBff, "%s = %d", &cBffHead, &motionInfo.nLoop);
+					}
+					else if (strcmp(&cBffHead[0], "NUM_KEY") == 0)
+					{//キーの数
+						//文字列の分析
+						sscanf(cBff, "%s = %d", &cBffHead, &motionInfo.nNumKey);
+					}
+					else if (strcmp(&cBffHead[0], "KEYSET") == 0)
+					{
+						// キー情報保存用
+						KeySet keyInfo;
+
+						//キーセット情報の読み取りループ処理
+						while (fgets(cBff, MAX_CHAR, pFile) != NULL)
+						{
+							//文字列の分析
+							sscanf(cBff, "%s", &cBffHead);
+
+							if (strcmp(&cBffHead[0], "FRAME") == 0)
+							{//ループ設定
+								//文字列の分析
+								sscanf(cBff, "%s = %d", &cBffHead, &keyInfo.nFrame);
+
+								if (keyInfo.nFrame == 0)
+								{//再生フレーム数が0の場合1にする
+									keyInfo.nFrame = 1;
+								}
+							}
+							if (strcmp(&cBffHead[0], "KEY") == 0)
+							{// ループ設定
+
+								// キー情報保存用
+								Key key;
+
+								// キー情報の読み取りループ処理
+								while (fgets(cBff, MAX_CHAR, pFile) != NULL)
+								{
+									//文字列の分析
+									sscanf(cBff, "%s", &cBffHead);
+
+									if (strcmp(&cBffHead[0], "POS") == 0)
+									{//モーション再生中の位置情報読み込み
+									 //文字列の分析
+										sscanf(cBff, "%s = %f%f%f", &cBffHead, &key.pos.x, &key.pos.y, &key.pos.z);
+									}
+									else if (strcmp(&cBffHead[0], "ROT") == 0)
+									{//モーション再生中の回転情報読み込み
+									 //文字列の分析
+										sscanf(cBff, "%s = %f%f%f", &cBffHead, &key.rot.x, &key.rot.y, &key.rot.z);
+									}
+									else if (strcmp(&cBffHead[0], "END_KEY") == 0)
+									{
+										keyInfo.aKey.push_back(key);
+										break;
+									}
+								}
+							}
+							else if (strcmp(&cBffHead[0], "END_KEYSET") == 0)
+							{
+								motionInfo.aKeyInfo.push_back(keyInfo);
+								break;
+							}
+						}
+					}
+					else if (strcmp(&cBffHead[0], "END_MOTIONSET") == 0)
+					{
+						// モーションの総数を加算
+						motion.nNumMotion++;
+						motion.aMotion.push_back(motionInfo);
+						break;
+					}
+				}
+			}
+			// テキストファイルを読み切った時
+			else if (strcmp(&cBffHead[0], "END_SCRIPT") == 0)
+			{
+				// モーション情報の格納
+				m_aMotion.push_back(motion);
+				break;
+			}
 		}
 	}
 

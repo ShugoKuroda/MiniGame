@@ -28,6 +28,7 @@ class CInputMouse;			// マウスクラス
 class CTexture;				// テクスチャクラス
 class CXFile;				// Xファイルクラス
 class CXFileMotion;			// モデルモーションクラス
+class CSetModel;			// モデル配置クラス
 
 //*****************************************************************************
 // クラス定義(基本クラス)
@@ -81,6 +82,7 @@ public:
 	CTexture *GetTexture() { return m_pTexture; }
 	CXFile *GetXFile() { return m_pXFile; }
 	CXFileMotion *GetMotion() { return m_pMotion; }
+	CSetModel *GetModelSet() { return m_pSetModel; }
 	
 	bool GetPause() { return m_bPause; }
 	void SetPause(bool bPause) { m_bPause = bPause; }
@@ -114,6 +116,7 @@ private:
 	CTexture *m_pTexture;				// テクスチャ情報のポインタ
 	CXFile *m_pXFile;					// Xファイル情報のポインタ
 	CXFileMotion *m_pMotion;			// モデルモーション情報のポインタ
+	CSetModel *m_pSetModel;				// モデル配置情報のポインタ
 	/**/
 
 	MODE m_mode;						// モード情報
