@@ -51,9 +51,9 @@ public:
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit();
 	void Update();
-	bool GetPress(int nKey);
-	bool GetTrigger(int nKey);
-	bool GetReleace(int nKey);
+	bool GetPress(int nKey){ return (m_aKeyState[m_aKeyInfo[nKey]] & 0x80) ? true : false; }
+	bool GetTrigger(int nKey){ return (m_aKeyStateTrigger[m_aKeyInfo[nKey]] & 0x80) ? true : false; }
+	bool GetReleace(int nKey){ return (m_aKeyStateReleace[m_aKeyInfo[nKey]] & 0x80) ? true : false; }
 
 private:
 	BYTE m_aKeyState[MAX_KEY];
