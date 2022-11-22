@@ -128,6 +128,17 @@ CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 //-----------------------------------------------------------------------------
 HRESULT CPlayer::Init()
 {
+	// タイトル画面
+	if (CManager::GetManager()->GetTitle() != nullptr)
+	{
+		// カメラ位置の取得
+		D3DXVECTOR3 rotCamera = CManager::GetManager()->GetTitle()->GetCamera()->GetRotation();
+		// 目的の角度設定
+		CMotion::SetRotation(D3DXVECTOR3(0.0f, rotCamera.y, 0.0f));
+		// 目的の角度設定
+		CMotion::SetRotDest(rotCamera);
+	}
+
 	// 移動力を取得
 	m_fMove = CMotion::GetMotion().fMove;
 	// ジャンプ力を取得
@@ -193,7 +204,7 @@ void CPlayer::Update()
 			{// SPACEキー押下
 
 				// ジャンプ力の設定
-				m_move.y = JUMP_POWER;
+				m_move.y = m_fJump;
 
 				// ジャンプフラグの設定
 				m_bIsJumping = true;
@@ -203,7 +214,7 @@ void CPlayer::Update()
 			{// Aボタン押下
 
 				// ジャンプ力の設定
-				m_move.y = JUMP_POWER;
+				m_move.y = m_fJump;
 
 				// ジャンプフラグの設定
 				m_bIsJumping = true;

@@ -95,21 +95,3 @@ void CInputKeyboard::Update()
 		m_pDevice->Acquire();
 	}
 }
-
-//--------------------------------------------------------------------------------------------------------------
-//	キーボード情報の取得
-//--------------------------------------------------------------------------------------------------------------
-bool CInputKeyboard::GetPress(int nKey)
-{
-	return (m_aKeyState[m_aKeyInfo[nKey]] & 0x80) ? true : false;
-}
-
-bool CInputKeyboard::GetTrigger(int nKey)
-{
-	return (m_aKeyStateTrigger[m_aKeyInfo[nKey]] & 0x80) ? true : false;
-}
-
-bool CInputKeyboard::GetReleace(int nKey)
-{
-	return (m_aKeyStateReleace[m_aKeyInfo[nKey]] & 0x80) ? true : false;
-}

@@ -22,7 +22,7 @@ LPDIRECT3DTEXTURE9 CPause::m_apTexture[TYPE_MAX] = {};
 CObject2D *CPause::m_apObject2D[TYPE_MAX] = {};
 
 //=============================================================================
-// CBulletのコンストラクタ
+// コンストラクタ
 //=============================================================================
 CPause::CPause() :m_bPause(false), m_nPauseSelect(0), m_bWait(false), m_nNumPlayer(0)
 {
@@ -36,7 +36,7 @@ CPause::CPause() :m_bPause(false), m_nPauseSelect(0), m_bWait(false), m_nNumPlay
 }
 
 //=============================================================================
-// CPlayerのデストラクタ
+// デストラクタ
 //=============================================================================
 CPause::~CPause()
 {
