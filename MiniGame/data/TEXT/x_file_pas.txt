@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // Xファイル最大数
 //==================================================
-XFILE_NUM = 8
+XFILE_NUM = 12
 
 //==================================================
 // Xファイル読み込み情報
@@ -61,5 +61,21 @@ XFILESET
 	PAS = data/MODEL/model/Crevasse.x
 	NAME = XFILE_TYPE_CREVASSE
 END_XFILESET
+
+//木 type 1
+	PAS = data/MODEL/model/木_type1.x
+	NAME = XFILE_TYPE_木1
+
+//木 type 2
+	PAS = data/MODEL/model/木_type2.x
+	NAME = XFILE_TYPE_木2
+
+//木 type 3
+	PAS = data/MODEL/model/木_type3.x
+	NAME = XFILE_TYPE_木3
+
+//木 type 4
+	PAS = data/MODEL/model/木_type4.x
+	NAME = XFILE_TYPE_木4
 
 END_SCRIPT		# この行は消さないこと！

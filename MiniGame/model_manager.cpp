@@ -106,8 +106,20 @@ void CModelManager::Update()
 
 			for (int nCntModel = 0; nCntModel < m_nNumCreate; nCntModel++)
 			{
-				// ¶¬ˆÊ’u‚ÌŽæ“¾
+				//2—ñ–Ø¶¬
 				float fRand = (float)GetRandNum(80, -80);
+
+				float fRand_tree = (float)GetRandNum(5, 1.5);
+
+				CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z*nCntModel - 50.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø1");
+				CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z*nCntModel - 100.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø2");
+				CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z*nCntModel - 150.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø3");
+				CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z*nCntModel - 200.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø4");
+
+				CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z*nCntModel - 50.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø1");
+				CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z*nCntModel - 100.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø2");
+				CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z*nCntModel - 150.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø3");
+				CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z*nCntModel - 200.0f), D3DXVECTOR3(0.0f, fRand, 0.0f), "XFILE_TYPE_–Ø4");
 
 				// áŠQ•¨¶¬
 				switch (GetRandNum(1, 0))
