@@ -18,7 +18,7 @@
 
 #include "player.h"
 #include "enemy.h"
-#include "enemy_boss.h"
+#include "boss.h"
 #include "explosion.h"
 
 //-----------------------------------------------------------------------------------------------

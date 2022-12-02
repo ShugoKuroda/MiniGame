@@ -34,9 +34,6 @@
     <ClCompile Include="enemy.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="enemy_boss.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="explosion.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -77,9 +74,6 @@
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="spray.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ui.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="title.cpp">
@@ -175,6 +169,12 @@
     <ClCompile Include="set_model.cpp">
       <Filter>ソースファイル\managers</Filter>
     </ClCompile>
+    <ClCompile Include="ui.cpp">
+      <Filter>ソースファイル\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>ソースファイル\motion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -211,9 +211,6 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy_boss.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="enemy_data.h">
@@ -259,9 +256,6 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="spray.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ui.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
@@ -360,6 +354,12 @@
     <ClInclude Include="set_model.h">
       <Filter>ソースファイル\managers</Filter>
     </ClInclude>
+    <ClInclude Include="ui.h">
+      <Filter>ソースファイル\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>ソースファイル\motion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -394,6 +394,9 @@
     </Filter>
     <Filter Include="ソースファイル\model">
       <UniqueIdentifier>{c062292f-c6e2-4aee-a0bf-c18f99959dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\ui">
+      <UniqueIdentifier>{00c6a5f4-58e3-4d1c-abd0-d1bd97075c81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

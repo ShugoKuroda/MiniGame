@@ -26,7 +26,7 @@
 #include "camera.h"
 #include "light.h"
 #include "player.h"
-#include "enemy_boss.h"
+#include "boss.h"
 #include "item.h"
 #include "model_obstacle.h"
 #include "model_manager.h"

@@ -15,7 +15,7 @@
 // 前方宣言
 //*****************************************************************************
 class CScore;
-class CEnemyBoss;
+class CBoss;
 class CItem;
 class CCamera;
 
@@ -52,7 +52,7 @@ public:		//メンバ関数
 	// プレイヤー情報の取得
 	CPlayer *GetPlayer(int nNum) { return m_pPlayer[nNum]; }
 	// 敵ボス情報
-	CEnemyBoss* GetEnemyBoss() { return m_pEnemyBoss; }
+	CBoss* GetEnemyBoss() { return m_pEnemyBoss; }
 	//Item 情報
 	CItem* GetItem() { return m_pItem; }
 	//カメラ情報
@@ -72,7 +72,7 @@ private:
 private:	//メンバ変数
 	// プレイヤー情報
 	CPlayer *m_pPlayer[CPlayer::PLAYER_MAX];
-	CEnemyBoss* m_pEnemyBoss;
+	CBoss* m_pEnemyBoss;
 	CItem* m_pItem;
 	CCamera* m_pCamera;
 

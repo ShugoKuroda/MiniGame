@@ -18,7 +18,7 @@
 #include "game.h"
 #include "enemy.h"
 #include "bg.h"
-#include "enemy_boss.h"
+#include "boss.h"
 
 //=======================================
 // 静的メンバ変数宣言
@@ -117,7 +117,7 @@ HRESULT CEffect::Init()
 	CObject2D::SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 
 	// テクスチャ座標の設定
-	CObject2D::SetAnimation(0, 0, CEnemyBoss::DIVISION_U, CEnemyBoss::DIVISION_V);
+	CObject2D::SetAnimation(0, 0, CBoss::DIVISION_U, CBoss::DIVISION_V);
 
     return S_OK;
 }

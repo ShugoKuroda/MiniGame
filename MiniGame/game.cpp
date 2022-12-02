@@ -26,7 +26,7 @@
 #include "bg.h"
 #include "cloud.h"
 #include "enemy.h"
-#include "enemy_boss.h"
+#include "boss.h"
 #include "bullet.h"
 #include "bullet_option.h"
 #include "item.h"
@@ -45,7 +45,7 @@
 #include "camera.h"
 #include "light.h"
 #include "player.h"
-#include "enemy_boss.h"
+#include "boss.h"
 #include "item.h"
 #include "model_obstacle.h"
 #include "model_manager.h"
@@ -107,10 +107,10 @@ HRESULT CGame::Init()
 	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
 
 	// “Gƒ{ƒX¶¬
-	m_pEnemyBoss = CEnemyBoss::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WASIZU");
+	m_pEnemyBoss = CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_BOSS");
 
 	// ƒJƒƒ‰¶¬
-	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 130.0f, -230.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 330.0f, -430.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	// ’Ç]‘ÎÛ‚ÌÝ’è
 	m_pCamera->SetTracking(true);
 	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());

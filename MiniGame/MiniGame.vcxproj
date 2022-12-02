@@ -170,7 +170,7 @@
     <ClCompile Include="continue.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="enemy_boss.cpp" />
+    <ClCompile Include="boss.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fade_scene.cpp" />
@@ -230,7 +230,7 @@
     <ClInclude Include="continue.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
-    <ClInclude Include="enemy_boss.h" />
+    <ClInclude Include="boss.h" />
     <ClInclude Include="enemy_data.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
