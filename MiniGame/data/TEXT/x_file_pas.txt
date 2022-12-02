@@ -63,19 +63,27 @@ XFILESET
 END_XFILESET
 
 //ñÿ type 1
+XFILESET
 	PAS = data/MODEL/model/ñÿ_type1.x
 	NAME = XFILE_TYPE_ñÿ1
+END_XFILESET
 
 //ñÿ type 2
+XFILESET
 	PAS = data/MODEL/model/ñÿ_type2.x
 	NAME = XFILE_TYPE_ñÿ2
+END_XFILESET
 
 //ñÿ type 3
+XFILESET
 	PAS = data/MODEL/model/ñÿ_type3.x
 	NAME = XFILE_TYPE_ñÿ3
+END_XFILESET
 
 //ñÿ type 4
+XFILESET
 	PAS = data/MODEL/model/ñÿ_type4.x
 	NAME = XFILE_TYPE_ñÿ4
+END_XFILESET
 
 END_SCRIPT		# Ç±ÇÃçsÇÕè¡Ç≥Ç»Ç¢Ç±Ç∆ÅI
