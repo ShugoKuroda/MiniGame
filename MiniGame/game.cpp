@@ -118,6 +118,25 @@ HRESULT CGame::Init()
 	// Item生成
 	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
+	//木を生成
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木1");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木2");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木3");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木4");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木1");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木2");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -380.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木1");
+	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木2");
+
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木1");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木2");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木3");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木4");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木1");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木2");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -380.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木1");
+	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_木2");
+
 	// モデルマネージャー生成
 	CModelManager::Create();
 
