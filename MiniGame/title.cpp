@@ -75,7 +75,7 @@ HRESULT CTitle::Init()
 	// カメラ生成
 	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 60.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//球体メッシュの配置
+	// 球体メッシュの配置
 	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
 
@@ -258,6 +258,11 @@ void CTitle::Update()
 				}
 				break;
 			}
+		}
+
+		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_2))
+		{
+			CModel* pModel = CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_BOSS");
 		}
 
 		// ゲーム開始の繰り返し防止

@@ -29,7 +29,7 @@ struct Model
 {
 	D3DXVECTOR3 pos;			// 位置
 	D3DXVECTOR3 rot;			// 回転
-	char* pName;				// 種類
+	char cName[MAX_CHAR];		// 種類
 	D3DXVECTOR2 shadowSize;		// 影のサイズ
 	int nShadow;				// 影を配置
 };
@@ -129,11 +129,11 @@ void CSetModel::Uninit()
 //-----------------------------------------------------------------------------
 // モーション情報の読み込み
 //-----------------------------------------------------------------------------
-bool CSetModel::LoadModel(char* pas)
+bool CSetModel::LoadModel(std::string name)
 {
 	// ファイルを開く
-	FILE *pFile = fopen(pas, "r");
-
+	FILE *pFile = fopen(m_aPas[m_texType[name]].c_str(), "r");
+	
 	if (pFile == NULL)
 	{// ファイルを開けなかった場合
 		return false;
@@ -172,7 +172,7 @@ bool CSetModel::LoadModel(char* pas)
 
 					if (strcmp(&cBffHead[0], "TYPE") == 0)
 					{//モデルの種類用
-						sscanf(cBff, "%s = %s", &cBffHead, model.pName);
+						sscanf(cBff, "%s = %s", &cBffHead, &model.cName[0]);
 					}
 					else if (strcmp(&cBffHead[0], "POS") == 0)
 					{//POS用
@@ -195,7 +195,7 @@ bool CSetModel::LoadModel(char* pas)
 						//}
 
 						// モデル配置
-						CModel::Create(model.pos, model.rot, model.pName);
+						CModel::Create(model.pos, model.rot, &model.cName[0]);
 
 						break;
 					}

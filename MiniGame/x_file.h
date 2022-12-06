@@ -32,7 +32,7 @@ public:
 	// 終了
 	void Uninit();
 	// Xファイルのテクスチャ読み込み
-	void LoadXFileTexture(SModelInfo& XFile);
+	void LoadXFileTexture(SModelInfo *XFile);
 
 	// Xファイル情報の取得(名前指定)
 	SModelInfo GetXFile(std::string texType) { return m_aXFile[m_texType[texType]]; }

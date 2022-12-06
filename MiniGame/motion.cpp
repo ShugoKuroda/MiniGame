@@ -199,8 +199,14 @@ void CMotion::Draw()
 			//マテリアルの設定
 			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
+			//テクスチャの設定
+			pDevice->SetTexture(0, m_motion.aParts[m_motion.aParts[nCntParts].nIndex].xFile.pTexture[nCntMat]);
+
 			//モデルパーツの描画
 			m_motion.aParts[m_motion.aParts[nCntParts].nIndex].xFile.pMesh->DrawSubset(nCntMat);
+
+			//テクスチャの設定を元に戻す
+			pDevice->SetTexture(0, NULL);
 		}
 
 		//保持していたマテリアルを戻す

@@ -118,23 +118,23 @@ void CXFile::Init()
 	for (int nCntXFile = 0; nCntXFile < m_nNumXFile; nCntXFile++)
 	{
 		// テクスチャ保存用
-		SModelInfo XFile;
+		SModelInfo xFile;
 
 		//Xファイルの読み込み
 		D3DXLoadMeshFromX(m_aPas[nCntXFile].c_str(),
 			D3DXMESH_SYSTEMMEM,
 			pDevice,
 			NULL,
-			&XFile.pBuffMat,
+			&xFile.pBuffMat,
 			NULL,
-			&XFile.nNumMat,
-			&XFile.pMesh);
+			&xFile.nNumMat,
+			&xFile.pMesh);
 
 		// テクスチャの読み込み処理
-		LoadXFileTexture(XFile);
+		LoadXFileTexture(&xFile);
 
 		// Xファイル情報の保存
-		m_aXFile.push_back(XFile);
+		m_aXFile.push_back(xFile);
 	}
 }
 
@@ -163,25 +163,23 @@ void CXFile::Uninit()
 //-----------------------------------------------------------------------------
 // テクスチャ読み込み
 //-----------------------------------------------------------------------------
-void CXFile::LoadXFileTexture(SModelInfo& XFile)
+void CXFile::LoadXFileTexture(SModelInfo* pXFile)
 {
-	//デバイスを取得する
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
-	//マテリアルデータへのポインタ
-	D3DXMATERIAL *pMat;
-
 	//マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)XFile.pBuffMat->GetBufferPointer();
+	D3DXMATERIAL *pMat = (D3DXMATERIAL*)pXFile->pBuffMat->GetBufferPointer();
 
-	for (int nCntMat = 0; nCntMat < (int)XFile.nNumMat; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)pXFile->nNumMat; nCntMat++)
 	{
+		//デバイスを取得する
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
+
 		//マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
 		//テクスチャがあった場合
 		if ((pMat[nCntMat].pTextureFilename != NULL) && (strcmp(pMat[nCntMat].pTextureFilename, "") != 0))
 		{//テクスチャの読み込み
-			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &XFile.pTexture[nCntMat]);
+			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &pXFile->pTexture[nCntMat]);
 		}
 	}
 }

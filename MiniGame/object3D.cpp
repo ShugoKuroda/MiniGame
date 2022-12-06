@@ -118,12 +118,12 @@ void CObject3D::Uninit()
 //======================================================
 void CObject3D::Update()
 {
-	CInputKeyboard* pInput = CManager::GetManager()->GetInputKeyboard();
+	//CInputKeyboard* pInput = CManager::GetManager()->GetInputKeyboard();
 
-	if (pInput->GetPress(CInputKeyboard::KEYINFO_2))
-	{
-		m_rot.x += 0.01f;
-	}
+	//if (pInput->GetPress(CInputKeyboard::KEYINFO_2))
+	//{
+	//	m_rot.x += 0.01f;
+	//}
 }
 
 //======================================================

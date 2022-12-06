@@ -65,25 +65,25 @@ END_XFILESET
 //–Ø type 1
 XFILESET
 	PAS = data/MODEL/model/–Ø_type1.x
-	NAME = XFILE_TYPE_–Ø1
+	NAME = XFILE_TYPE_WOOD_1
 END_XFILESET
 
 //–Ø type 2
 XFILESET
 	PAS = data/MODEL/model/–Ø_type2.x
-	NAME = XFILE_TYPE_–Ø2
+	NAME = XFILE_TYPE_WOOD_2
 END_XFILESET
 
 //–Ø type 3
 XFILESET
 	PAS = data/MODEL/model/–Ø_type3.x
-	NAME = XFILE_TYPE_–Ø3
+	NAME = XFILE_TYPE_WOOD_3
 END_XFILESET
 
 //–Ø type 4
 XFILESET
 	PAS = data/MODEL/model/–Ø_type4.x
-	NAME = XFILE_TYPE_–Ø4
+	NAME = XFILE_TYPE_WOOD_4
 END_XFILESET
 
 //–Ø type 4

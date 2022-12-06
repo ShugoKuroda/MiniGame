@@ -29,15 +29,15 @@ public:
 	// 終了
 	void Uninit();
 	// モーション情報の読み込み
-	bool LoadModel(char *pas);
+	bool LoadModel(std::string name);
 	// Xファイル情報の取得(名前指定)
-	char *GetPas(std::string texType) { return m_aPas[m_texType[texType]]; }
+	std::string GetPas(std::string texType) { return m_aPas[m_texType[texType]]; }
 	// Xファイル情報の取得(番号指定)
-	char *GetPas(int nCnt) { return m_aPas[nCnt]; }
+	std::string GetPas(int nCnt) { return m_aPas[nCnt]; }
 
 	// メンバ変数
 private:
-	std::vector<char*> m_aPas;				// Xファイルのパス
+	std::vector<std::string> m_aPas;		// Xファイルのパス
 	std::map<std::string, int> m_texType;	// Xファイルの種類
 	int m_nNumMotion;						// Xファイルの総数
 };

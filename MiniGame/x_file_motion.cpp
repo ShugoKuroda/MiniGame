@@ -416,22 +416,20 @@ SModelInfo CXFileMotion::LoadParts(const char* pas)
 //-----------------------------------------------------------------------------
 void CXFileMotion::LoadXFileTexture(SModelInfo* pXFile)
 {
-	//マテリアルデータへのポインタ
-	D3DXMATERIAL *pMat;
-
 	//マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)pXFile->pBuffMat->GetBufferPointer();
+	D3DXMATERIAL *pMat = (D3DXMATERIAL*)pXFile->pBuffMat->GetBufferPointer();
 
 	for (int nCntMat = 0; nCntMat < (int)pXFile->nNumMat; nCntMat++)
 	{
+		//デバイスを取得する
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
+
 		//マテリアルの設定
-		//pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
 		//テクスチャがあった場合
 		if ((pMat[nCntMat].pTextureFilename != NULL) && (strcmp(pMat[nCntMat].pTextureFilename, "") != 0))
 		{
-			//デバイスを取得する
-			LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 			//テクスチャの読み込み
 			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &pXFile->pTexture[nCntMat]);
 		}

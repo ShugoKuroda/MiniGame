@@ -14,17 +14,17 @@ NUM_MODEL = 12
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/boss/boss_body.x			# [0]体
-MODEL_FILENAME = data/MODEL/boss/boss_head.x			# [1]頭
+MODEL_FILENAME = data/MODEL/boss/boss_body.x				# [0]体
+MODEL_FILENAME = data/MODEL/boss/boss_head.x				# [1]頭
 MODEL_FILENAME = data/MODEL/boss/boss_Right_arm.x		# [2]右腕
 MODEL_FILENAME = data/MODEL/boss/boss_Right_arm_2.x		# [3]右腕2
 MODEL_FILENAME = data/MODEL/boss/boss_Right_hand.x		# [4]右手
-MODEL_FILENAME = data/MODEL/boss/boss_Left_arm.x		# [5]左腕
+MODEL_FILENAME = data/MODEL/boss/boss_Left_arm.x			# [5]左腕
 MODEL_FILENAME = data/MODEL/boss/boss_Left_arm_2.x		# [6]左腕2
 MODEL_FILENAME = data/MODEL/boss/boss_Left_hand.x		# [7]左手
 MODEL_FILENAME = data/MODEL/boss/boss_Right_leg.x		# [8]右腿
 MODEL_FILENAME = data/MODEL/boss/boss_Right_foot.x		# [9]右足
-MODEL_FILENAME = data/MODEL/boss/boss_Left_leg.x		# [10]左腿
+MODEL_FILENAME = data/MODEL/boss/boss_Left_leg.x			# [10]左腿
 MODEL_FILENAME = data/MODEL/boss/boss_Left_foot.x		# [11]左足
 
 #------------------------------------------------------------------------------
@@ -40,84 +40,84 @@ CHARACTERSET
 	PARTSSET						# [0]体
 		INDEX = 0
 		PARENT = -1					# (親)NULL
-		POS = 0.0 85.0 0.0
+		POS = 0.0 40.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [1]頭
 		INDEX = 1
 		PARENT = 0					# (親)体
-		POS = -7.5 185.0 10.0
-		ROT = 0.0 40.0 0.0
+		POS = -6.0 112.0 10.0
+		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [2]右腕
 		INDEX = 2
 		PARENT = 0					# (親)体
-		POS = 40.0 120.0 0.0
+		POS = 30.0 80.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 	
 	PARTSSET						# [3]右腕2
 		INDEX = 3
 		PARENT = 2					# (親)右腕
-		POS = 80.0 -10.0 0.0
+		POS = 48.0 -5.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [4]右手
 		INDEX = 4
 		PARENT = 3					# (親)右腕2
-		POS = 80.0 0.0 0.0
+		POS = 48.0 5.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [5]左腕
 		INDEX = 5
 		PARENT = 0					# (親)体
-		POS = -40.0 120.0 0.0
+		POS = -30.0 80.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 	
 	PARTSSET						# [6]左腕2
 		INDEX = 6
 		PARENT = 5					# (親)左腕
-		POS = -80.0 -10.0 0.0
+		POS = -48.0 -5.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [7]左手
 		INDEX = 7
 		PARENT = 6					# (親)左腕2
-		POS = -80.0 0.0 0.0
+		POS = -48.0 5.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [8]右腿
 		INDEX = 8
 		PARENT = 0					# (親)体
-		POS = -60.0 40.0 0.0
+		POS = -30.0 35.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [9]右足
 		INDEX = 9
 		PARENT = 8					# (親)右腿
-		POS = 0.0 -90.0 0.0
+		POS = 0.0 -55.5 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [10]左腿
 		INDEX = 10
 		PARENT = 0					# (親)体
-		POS = 60.0 40.0 0.0
+		POS = 30.0 35.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET						# [11]左足
 		INDEX = 11
 		PARENT = 10					# (親)左腿
-		POS = 0.0 -90.0 0.0
+		POS = 0.0 -55.5 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 END_CHARACTERSET
