@@ -175,6 +175,9 @@
     <ClCompile Include="boss.cpp">
       <Filter>ソースファイル\motion</Filter>
     </ClCompile>
+    <ClCompile Include="billboard.cpp">
+      <Filter>ソースファイル\billboard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="boss.h">
       <Filter>ソースファイル\motion</Filter>
     </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>ソースファイル\billboard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -397,6 +403,9 @@
     </Filter>
     <Filter Include="ソースファイル\ui">
       <UniqueIdentifier>{00c6a5f4-58e3-4d1c-abd0-d1bd97075c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\billboard">
+      <UniqueIdentifier>{36614ecd-aa9b-49e0-b90c-ec23a64ee82e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

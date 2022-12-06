@@ -14,6 +14,9 @@
 #include "object2D.h"
 #include "fade.h"
 
+#include "game.h"
+#include "camera.h"
+
 #include <assert.h>
 
 //=============================================================================
@@ -197,29 +200,59 @@ void CRenderer::DrawFPS()
 	// FPS描画
 	m_pFont->DrawTextA(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 
-	//オブジェクト情報の取得
-	for (int nCntObj = 0; nCntObj < CObject::MAX_OBJECT; nCntObj++)
+	if (CManager::GetManager()->GetGame() == nullptr)
 	{
-		CObject *pObject = CObject::GetObject(nCntObj);
-		if (pObject != nullptr && nCntObj != 1)
+		return;
+	}
+
+	// カメラ情報の取得
+	if (CManager::GetManager()->GetGame()->GetCamera() != nullptr)
+	{
+		D3DXVECTOR3 posCameraR = CManager::GetManager()->GetGame()->GetCamera()->GetPosR();
+
+		D3DXVECTOR3 posCameraV = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
+
+		D3DXVECTOR3 rotCamera = CManager::GetManager()->GetGame()->GetCamera()->GetRotation();
+
+		char strCamera[3][256];
+		RECT rectCamera[3];
+
+		sprintf(strCamera[0], _T("posCameraR : X=%.2f Y=%.2f Z=%.2f"), posCameraR.x, posCameraR.y, posCameraR.z);
+		sprintf(strCamera[1], _T("posCameraV : X=%.2f Y=%.2f Z=%.2f"), posCameraV.x, posCameraV.y, posCameraV.z);
+		sprintf(strCamera[2], _T("rotCamera : X=%.2f Y=%.2f Z=%.2f"), rotCamera.x, rotCamera.y, rotCamera.z);
+
+		for (int nCntCam = 0; nCntCam < 3; nCntCam++)
 		{
-			if (nCntObj > 35)
-			{
-				rectObj[nCntObj] = { 300, 20 * (nCntObj - 35), SCREEN_WIDTH, SCREEN_HEIGHT };
-			}
-			else
-			{
-				rectObj[nCntObj] = { 0, 20 * (nCntObj + 1), SCREEN_WIDTH, SCREEN_HEIGHT };
-			}
-
-			D3DXVECTOR3 pos = ((CObject2D*)pObject)->GetPosition();
-
-			sprintf(strObj[nCntObj], _T("OBJ[%d] : X=%.2f Y=%.2f Z=%.2f"), nCntObj, pos.x, pos.y, pos.z);
+			rectCamera[nCntCam] = { 0, 20 * (nCntCam + 2), SCREEN_WIDTH, SCREEN_HEIGHT };
 
 			//オブジェクトの位置描画
-			m_pFont->DrawTextA(NULL, strObj[nCntObj], -1, &rectObj[nCntObj], DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
+			m_pFont->DrawTextA(NULL, strCamera[nCntCam], -1, &rectCamera[nCntCam], DT_LEFT, D3DCOLOR_ARGB(0xff, 0x00, 0x00, 0x00));
 		}
 	}
+
+	////オブジェクト情報の取得
+	//for (int nCntObj = 0; nCntObj < CObject::MAX_OBJECT; nCntObj++)
+	//{
+	//	CObject *pObject = CObject::GetObject(nCntObj);
+	//	if (pObject != nullptr && nCntObj != 1)
+	//	{
+	//		if (nCntObj > 35)
+	//		{
+	//			rectObj[nCntObj] = { 300, 20 * (nCntObj - 35), SCREEN_WIDTH, SCREEN_HEIGHT };
+	//		}
+	//		else
+	//		{
+	//			rectObj[nCntObj] = { 0, 20 * (nCntObj + 1), SCREEN_WIDTH, SCREEN_HEIGHT };
+	//		}
+
+	//		D3DXVECTOR3 pos = ((CObject2D*)pObject)->GetPosition();
+
+	//		sprintf(strObj[nCntObj], _T("OBJ[%d] : X=%.2f Y=%.2f Z=%.2f"), nCntObj, pos.x, pos.y, pos.z);
+
+	//		//オブジェクトの位置描画
+	//		m_pFont->DrawTextA(NULL, strObj[nCntObj], -1, &rectObj[nCntObj], DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
+	//	}
+	//}
 }
 
 #endif // _DEBUG

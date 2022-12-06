@@ -210,7 +210,8 @@ void CPlayer::Update()
 				m_bIsJumping = true;
 			}
 			// ゲームパッド操作の場合
-			else if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
+			else if (m_bControlKeyboard == false &&
+				pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
 			{// Aボタン押下
 
 				// ジャンプ力の設定

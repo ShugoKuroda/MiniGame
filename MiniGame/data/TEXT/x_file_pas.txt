@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // Xファイル最大数
 //==================================================
-XFILE_NUM = 12
+XFILE_NUM = 13
 
 //==================================================
 // Xファイル読み込み情報
@@ -84,6 +84,12 @@ END_XFILESET
 XFILESET
 	PAS = data/MODEL/model/木_type4.x
 	NAME = XFILE_TYPE_木4
+END_XFILESET
+
+//木 type 4
+XFILESET
+	PAS = data/MODEL/model/boss_test.x
+	NAME = XFILE_TYPE_BOSS
 END_XFILESET
 
 END_SCRIPT		# この行は消さないこと！

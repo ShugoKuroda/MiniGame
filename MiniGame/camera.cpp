@@ -194,10 +194,10 @@ void CCamera::Update()
 	{
 		// 追従
 		m_posRDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y);
-		m_posRDest.z = (m_pPosTracking->z - 70.0f) + sinf(m_rot.x) * cosf(m_rot.y);
+		m_posRDest.z = (m_pPosTracking->z - 200.0f) + sinf(m_rot.x) * cosf(m_rot.y);
 		m_posRDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x);
 		m_posVDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
-		m_posVDest.z = (m_pPosTracking->z - 70.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+		m_posVDest.z = (m_pPosTracking->z - 200.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
 		m_posVDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x) * m_fDistance;
 
 		// カメラ位置の更新

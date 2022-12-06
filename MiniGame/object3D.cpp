@@ -10,6 +10,8 @@
 
 #include "object3D.h"
 
+#include "input_keyboard.h"
+
 //======================================================
 //	コンストラクタ
 //======================================================
@@ -60,9 +62,6 @@ HRESULT CObject3D::Init()
 		&m_pVtxBuff,
 		NULL);
 
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_11.jpg", &m_pTexture);
-
 	VERTEX_3D *pVtx = nullptr;
 
 	//頂点バッファをロックし、頂点情報へのポインタを取得
@@ -109,6 +108,9 @@ void CObject3D::Uninit()
 		m_pVtxBuff->Release();
 		m_pVtxBuff = nullptr;
 	}
+
+	// オブジェクトの破棄
+	Release();
 }
 
 //======================================================
@@ -116,6 +118,12 @@ void CObject3D::Uninit()
 //======================================================
 void CObject3D::Update()
 {
+	CInputKeyboard* pInput = CManager::GetManager()->GetInputKeyboard();
+
+	if (pInput->GetPress(CInputKeyboard::KEYINFO_2))
+	{
+		m_rot.x += 0.01f;
+	}
 }
 
 //======================================================

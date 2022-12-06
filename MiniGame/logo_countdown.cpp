@@ -119,8 +119,13 @@ void CLogoCountDown::Update()
 		{
 			// ゲーム開始ロゴの追加
 			CLogo::Create(m_apNumber->GetPosition(), D3DXVECTOR2(200.0f, 80.0f), "TEX_TYPE_START_UI", 90);
+
 			// ボスを動かす
-			CManager::GetManager()->GetGame()->GetEnemyBoss()->SetPattern(CBoss::PATTERN_NORMAL);
+			if (CManager::GetManager()->GetGame()->GetEnemyBoss() != nullptr)
+			{
+				CManager::GetManager()->GetGame()->GetEnemyBoss()->SetPattern(CBoss::PATTERN_NORMAL);
+			}
+
 			// ゲームの開始フラグを立てる
 			CManager::GetManager()->GetGame()->SetStart(true);
 		}

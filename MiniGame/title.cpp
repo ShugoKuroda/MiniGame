@@ -33,6 +33,8 @@
 #include "mesh_sphere.h"
 //#include "avalanche.h"
 
+#include "set_model.h"
+
 #include "motion.h"
 
 //-----------------------------------------------------------------------------------------------
@@ -108,6 +110,9 @@ HRESULT CTitle::Init()
 			}
 		}
 	}
+
+	// モデルの配置
+	CManager::GetManager()->GetModelSet()->LoadModel("MODEL_TITLE");
 
 	//// テクスチャのロード
 	//CTitle::Load();

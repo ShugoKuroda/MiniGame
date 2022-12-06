@@ -13,13 +13,13 @@ SCRIPT		# この行は消さないこと！
 # ビル
 #------------------
 MODELSET
-	TYPE = 0
+	TYPE = XFILE_TYPE_木1
 	POS = 300.0 0.0 570.0
 	ROT = 0.0 0.0 0.0
 END_MODELSET
 
 MODELSET
-	TYPE = 0
+	TYPE = XFILE_TYPE_木2
 	POS = -150.0 0.0 570.0
 	ROT = 0.0 0.0 0.0
 END_MODELSET

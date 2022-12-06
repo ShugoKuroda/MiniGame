@@ -105,15 +105,16 @@ HRESULT CGame::Init()
 
 	// ÉÇÉfÉãê∂ê¨
 	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ITEM_METAL");
+	CModel* pModel= CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_BOSS");
 
 	// ìGÉ{ÉXê∂ê¨
-	m_pEnemyBoss = CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_BOSS");
+	//m_pEnemyBoss = CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_BOSS");
 
 	// ÉJÉÅÉâê∂ê¨
-	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 330.0f, -630.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 230.0f, -630.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	// í«è]ëŒè€ÇÃê›íË
 	m_pCamera->SetTracking(true);
-	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());
+	m_pCamera->SetPosTracking(pModel->GetpPosition());
 
 	// Itemê∂ê¨
 	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");

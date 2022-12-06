@@ -46,10 +46,14 @@ public:
 		MODE_MAX,
 	};
 
+	// プレイヤーの参加情報
 	struct SEntryInfo
-	{// プレイヤーの参加情報
+	{
+		// エントリーしているかどうか
 		bool bEntry;
+		// ゲームパッドの番号
 		int nGamePadNum;
+		// キーボードで参加しているかどうか
 		bool bEntryKeyboard;
 	};
 

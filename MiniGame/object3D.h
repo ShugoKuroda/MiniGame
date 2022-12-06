@@ -51,11 +51,16 @@ public:
 	void BindTexture(LPDIRECT3DTEXTURE9 Texture) { m_pTexture = Texture; }
 
 private:
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = nullptr;	//頂点バッファへのポインタ
-	LPDIRECT3DTEXTURE9 m_pTexture = nullptr;		//テクスチャへのポインタ
-	D3DXVECTOR3 m_pos;		//位置
-	D3DXVECTOR3 m_rot;		//向き
-	D3DXMATRIX	m_mtxWorld;	//ワールドマトリックス
+	// 頂点バッファへのポインタ
+	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = nullptr;
+	// テクスチャへのポインタ
+	LPDIRECT3DTEXTURE9 m_pTexture = nullptr;
+	// 位置
+	D3DXVECTOR3 m_pos;
+	// 向き
+	D3DXVECTOR3 m_rot;
+	// ワールドマトリックス
+	D3DXMATRIX m_mtxWorld;
 };
 
 #endif

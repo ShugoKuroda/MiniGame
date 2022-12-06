@@ -60,7 +60,7 @@ HRESULT CObject2D::Init()
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
-	//頂点バッファの生成
+	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * MAX_VERTEX,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
@@ -68,13 +68,13 @@ HRESULT CObject2D::Init()
 		&m_pVtxBuff,
 		NULL);
 
-	//頂点情報ポインタを宣言
+	// 頂点情報ポインタを宣言
 	VERTEX_2D *pVtx;
 
-	//頂点バッファをロックし、頂点情報へのポインタを取得
+	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	//頂点座標の設定
+	// 頂点座標の設定
 	pVtx[0].pos.x = m_pos.x + sinf(m_fRot + (-D3DX_PI + m_fAngle)) * m_fLength;
 	pVtx[0].pos.y = m_pos.y + cosf(m_fRot + (-D3DX_PI + m_fAngle)) * m_fLength;
 	pVtx[0].pos.z = 0.0f;
@@ -91,7 +91,7 @@ HRESULT CObject2D::Init()
 	pVtx[3].pos.y = m_pos.y + cosf(m_fRot + (0.0f + m_fAngle)) * m_fLength;
 	pVtx[3].pos.z = 0.0f;
 
-	//rhwの設定
+	// rhwの設定
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
