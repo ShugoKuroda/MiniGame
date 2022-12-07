@@ -129,8 +129,6 @@ public:
 private:
 	// ˆÚ“®
 	bool Move();
-	// ƒWƒƒƒ“ƒv
-	void Jump();
 	// ó‘ÔŠÇ—
 	void State();
 	// €–Sˆ—

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------------------------
 //
-// 敵ボスの処理[enemy_boss.cpp]
+// 敵ボスの処理[boss.cpp]
 // Author : SHUGO kURODA
 //
 //-----------------------------------------------------------------------------------------------
@@ -29,6 +29,7 @@
 
 // 追加
 #include "x_file_motion.h"
+#include "motion_data.h"
 
 //-----------------------------------------------------------------------------------------------
 // 定数宣言
@@ -49,8 +50,9 @@ const int CBoss::RUSH_OPERATION = 60;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CBoss::CBoss() :m_pattern(PATTERN_ENTRY), m_nCounter(0), m_fAttackRot(0.0f), m_bSizeChange(false),
-						m_nCountObject(0), m_PosOld(0.0f, 0.0f, 0.0f)
+CBoss::CBoss()
+	:m_move(0.0f, 0.0f, 0.0f), m_pattern(PATTERN_ENTRY), m_nCounter(0), m_fAttackRot(0.0f),
+	m_bSizeChange(false), m_nCountObject(0)
 {
 }
 
@@ -146,27 +148,37 @@ void CBoss::Update()
 
 	// 各行動
 	Pattern(pos);
+
+	// 移動処理
+	if (m_pattern == PATTERN_NORMAL)
+	{// 移動モーション
+		CMotion::Set(1);
+	}
+	else
+	{// 待機モーション
+		CMotion::Set(0);
+	}
+
+	// 移動量の加算
+	pos += m_move;
+
+	// 移動量の減衰
+	m_move.x -= m_move.x * 0.2f;
+	m_move.z -= m_move.z * 0.2f;
 	
-	//当たり判定
+	// 当たり判定
 	Collision(pos);
 
-	//位置情報更新
+	// 位置情報更新
 	CMotion::SetPosition(pos);
 
-	//}
+	// 角度の正規化
+	CMotion::NormalizeRot();
 
-	////移動量更新
-	//CEnemy::SetMove(move);
-	////アニメーション処理
-	//SetAnim();
-	////状態管理
-	//State();
-	//// 位置の更新
-	//CObject2D::SetPosition(pos);
-	//// サイズの更新
-	//CObject2D::SetSize(size);
-	////頂点座標の設定
-	//CObject2D::SetVertex();
+	// モーション再生
+	CMotion::Motion();
+
+	//}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -214,48 +226,6 @@ bool CBoss::Collision(D3DXVECTOR3 posStart)
 }
 
 //-----------------------------------------------------------------------------------------------
-// ダメージ処理
-//-----------------------------------------------------------------------------------------------
-void CBoss::Damage(int nDamage, CPlayer* pPlayer)
-{
-	//// ボスの死亡フラグ取得
-	//bool bDie = CGame::GetDieBoss();
-
-	//// ボスが死亡していなければ
-	//if (bDie == false)
-	//{
-	//	CEnemy::Damage(nDamage, pPlayer);
-	//}
-}
-
-//-----------------------------------------------------------------------------------------------
-// 状態
-//-----------------------------------------------------------------------------------------------
-void CBoss::State()
-{
-	//CEnemy::State();
-}
-
-//-----------------------------------------------------------------------------------------------
-// 敵ごとにアニメーション,挙動を設定
-//-----------------------------------------------------------------------------------------------
-void CBoss::SetAnim()
-{
-	//switch (GetType())
-	//{
-	//case CEnemy::TYPE_RING_BOSS:
-
-	//	break;
-
-	//case CEnemy::TYPE_DARK_BOSS:
-
-	//	break;
-
-	//default:
-	//	break;
-	//}
-}
-//-----------------------------------------------------------------------------------------------
 // 行動パターン管理
 //-----------------------------------------------------------------------------------------------
 bool CBoss::Pattern(D3DXVECTOR3& pos)
@@ -269,15 +239,13 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		// 登場
 		//=================================
 	case CBoss::PATTERN_ENTRY:
-		//pos += D3DXVECTOR3(-0.5f, -2.0f, 0.0f);
 
-		//if (pos.y <= 250.0f)
-		//{
-		//	m_pattern = PATTERN_NORMAL;
-		//}
+		// ゲームが始まったら
+		if (CManager::GetManager()->GetGame()->GetStart())
+		{// 通常状態にする
+			m_pattern = PATTERN_NORMAL;
+		}
 
-		////拡縮させる
-		//ChangeSize(&size, 0.5f);
 		break;
 
 		//=================================
@@ -285,7 +253,8 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		//=================================
 	case CBoss::PATTERN_NORMAL:
 
-		pos.z -= 1.0f;
+		// 移動量の加算
+		m_move.z -= GetMotion().fMove;
 
 		////移動量の加算
 		//move += D3DXVECTOR3(0.1f, 0.05f, 0.0f);
