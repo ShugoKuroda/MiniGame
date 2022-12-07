@@ -110,7 +110,7 @@ HRESULT CTitle::Init()
 			}
 		}
 	}
-
+	
 	// ƒ‚ƒfƒ‹‚Ì”z’u
 	CManager::GetManager()->GetModelSet()->LoadModel("MODEL_TITLE");
 
