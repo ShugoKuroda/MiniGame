@@ -176,6 +176,8 @@ void CPlayer::Update()
 	D3DXVECTOR3 pos = CMotion::GetPosition();
 	// サイズの取得
 	D3DXVECTOR3 size = GetSizeMax();
+	// 
+	State();
 
 	// 操作できる状態なら && 死亡していないなら
 	if (m_bControl == true && m_state != STATE_DIE)
@@ -183,15 +185,19 @@ void CPlayer::Update()
 		// 移動処理
 		if (Move())
 		{// 移動モーション
-			Set(1);
+			CMotion::Set(1);
 		}
 		else
 		{// 待機モーション
-			Set(0);
+			CMotion::Set(0);
 		}
 
+		// ジャンプしていれば
+		if (m_bIsJumping == true)
+		{
+		}
 		// ジャンプしていなければ
-		if (m_bIsJumping == false)
+		else if (m_bIsJumping == false)
 		{
 			// キーボード情報の取得
 			CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
@@ -208,6 +214,8 @@ void CPlayer::Update()
 
 				// ジャンプフラグの設定
 				m_bIsJumping = true;
+
+				CMotion::Set(3);
 			}
 			// ゲームパッド操作の場合
 			else if (m_bControlKeyboard == false &&
@@ -219,6 +227,8 @@ void CPlayer::Update()
 
 				// ジャンプフラグの設定
 				m_bIsJumping = true;
+
+				CMotion::Set(3);
 			}
 		}
 
@@ -519,14 +529,6 @@ bool CPlayer::Move()
 	}
 
 	return bMove;
-}
-
-//-----------------------------------------------------------------------------
-// ジャンプ
-//-----------------------------------------------------------------------------
-void CPlayer::Jump()
-{
-
 }
 
 //-----------------------------------------------------------------------------

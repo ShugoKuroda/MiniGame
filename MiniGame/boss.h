@@ -1,11 +1,11 @@
 //===================================================================
 //
-//	敵ボスの処理[enemy_boss.h]
-//	Author:SHUGO KURODA
+//	敵ボスの処理[boss.h]
+//	Author : SHUGO KURODA
 //
 //===================================================================
-#ifndef _ENEMY_BOSS_H_
-#define _ENEMY_BOSS_H_
+#ifndef _BOSS_H_
+#define _BOSS_H_
 
 #include "motion.h"
 
@@ -66,9 +66,6 @@ public:
 	void Update() override;
 	void Draw() override;
 	bool Collision(D3DXVECTOR3 posStart);
-	void Damage(int nDamage, CPlayer* pPlayer);
-	void State();
-	void SetAnim();
 	bool Pattern(D3DXVECTOR3& pos);
 	void ChangeSize(D3DXVECTOR2 *pSize, const float& fSize);
 	void StateReset();
@@ -77,13 +74,20 @@ public:
 	void SetPattern(PATTERN pattern) { m_pattern = pattern; }
 
 private:
-	D3DXVECTOR3 m_PosOld;	//前回の位置
-	PATTERN m_pattern;		//行動パターン
-	int m_nCounter;			//行動変化までのカウンター
-	int m_nCountOperation;	//突進前の予備動作の間隔
-	float m_fAttackRot;		//突進攻撃、弾発射の角度
-	bool m_bSizeChange;		//大きさの変更
-	int m_nCountObject;		//オブジェクトを生成した数
+	// 移動量
+	D3DXVECTOR3 m_move;
+	// 行動パターン
+	PATTERN m_pattern;
+	// 行動変化までのカウンター
+	int m_nCounter;			
+	// 突進前の予備動作の間隔
+	int m_nCountOperation;
+	// 突進攻撃、弾発射の角度
+	float m_fAttackRot;
+	// 大きさの変更
+	bool m_bSizeChange;
+	// オブジェクトを生成した数
+	int m_nCountObject;
 };
 
-#endif	// _ENEMY_BOSS_H_
+#endif	// _BOSS_H_
