@@ -84,8 +84,9 @@ const int CPlayer::DEFAULT_LIFE = 2;
 // コンストラクタ
 //-----------------------------------------------------------------------------
 CPlayer::CPlayer() :
-	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_fMove(0.0f), m_fJump(0.0f), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0), m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0),
-	m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0), m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
+	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0),
+	m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0), m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0),
+	m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_PLAYER);
@@ -139,11 +140,6 @@ HRESULT CPlayer::Init()
 		CMotion::SetRotDest(rotCamera);
 	}
 
-	// 移動力を取得
-	m_fMove = CMotion::GetMotion().fMove;
-	// ジャンプ力を取得
-	m_fJump = CMotion::GetMotion().fJump;
-
 	// スコアの生成
 	CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 
@@ -176,25 +172,20 @@ void CPlayer::Update()
 	D3DXVECTOR3 pos = CMotion::GetPosition();
 	// サイズの取得
 	D3DXVECTOR3 size = GetSizeMax();
-	// 
-	State();
 
 	// 操作できる状態なら && 死亡していないなら
 	if (m_bControl == true && m_state != STATE_DIE)
 	{
-		// 移動処理
-		if (Move())
-		{// 移動モーション
-			CMotion::Set(1);
-		}
-		else
-		{// 待機モーション
-			CMotion::Set(0);
+		// 移動していなければ
+		if (Move() == false)
+		{
+			m_state = STATE_NORMAL;
 		}
 
 		// ジャンプしていれば
 		if (m_bIsJumping == true)
 		{
+			m_state = STATE_JUMP;
 		}
 		// ジャンプしていなければ
 		else if (m_bIsJumping == false)
@@ -204,18 +195,19 @@ void CPlayer::Update()
 			// ジョイパッド情報の取得
 			CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
+			// ジャンプ力を取得
+			float fJump = CMotion::GetMotion().fJump;
+
 			// キーボード操作の場合
 			if (m_bControlKeyboard == true &&
 				pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
 			{// SPACEキー押下
 
 				// ジャンプ力の設定
-				m_move.y = m_fJump;
+				m_move.y = fJump;
 
 				// ジャンプフラグの設定
 				m_bIsJumping = true;
-
-				CMotion::Set(3);
 			}
 			// ゲームパッド操作の場合
 			else if (m_bControlKeyboard == false &&
@@ -223,18 +215,16 @@ void CPlayer::Update()
 			{// Aボタン押下
 
 				// ジャンプ力の設定
-				m_move.y = m_fJump;
+				m_move.y = fJump;
 
 				// ジャンプフラグの設定
 				m_bIsJumping = true;
-
-				CMotion::Set(3);
 			}
 		}
-
-		// 重力負荷をかける
-		m_move.y -= GRAVITY;
 	}
+
+	// 重力負荷をかける
+	m_move.y -= GRAVITY;
 	
 	//プレイヤーが雪崩に巻き込まれていたら
 	if (m_state == STATE_INAVALANCHE)
@@ -302,7 +292,7 @@ void CPlayer::Update()
 	}
 
 	if (pos.y <= 0.0f)
-	{//床
+	{// 床
 		pos.y = 0.0f;
 		m_bIsJumping = false;
 		m_move.y = 0.0f;			//移動量Yの初期化
@@ -314,8 +304,8 @@ void CPlayer::Update()
 	// 角度の正規化
 	CMotion::NormalizeRot();
 
-	//状態管理
-	//State();
+	// 状態管理
+	State();
 
 	// モーション再生
 	CMotion::Motion();
@@ -342,6 +332,9 @@ bool CPlayer::Move()
 	// カメラ位置の取得
 	D3DXVECTOR3 rotCamera = { 0,0,0 };
 
+	// 移動力を取得
+	float fMove = CMotion::GetMotion().fMove;
+
 	if (m_bStart == false)
 	{
 		// カメラ位置の取得
@@ -359,22 +352,22 @@ bool CPlayer::Move()
 			if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true)
 			{// 下キー押下
 				//移動量加算
-				m_move.x += -GetSinVec(-4.0f, rotCamera.y, m_fMove);
-				m_move.z += -GetCosVec(-4.0f, rotCamera.y, m_fMove);
+				m_move.x += -GetSinVec(-4.0f, rotCamera.y, fMove);
+				m_move.z += -GetCosVec(-4.0f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (D3DX_PI / 4.0f) + rotCamera.y;
 			}
 			else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true)
 			{// 上キー押下
-				m_move.x += -GetSinVec(-1.5f, rotCamera.y, m_fMove);
-				m_move.z += -GetCosVec(-1.5f, rotCamera.y, m_fMove);
+				m_move.x += -GetSinVec(-1.5f, rotCamera.y, fMove);
+				m_move.z += -GetCosVec(-1.5f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (D3DX_PI / 1.5f) + rotCamera.y;
 			}
 			else
 			{// 左移動
-				m_move.x += GetSinVec(2.0f, rotCamera.y, m_fMove);
-				m_move.z += GetCosVec(2.0f, rotCamera.y, m_fMove);
+				m_move.x += GetSinVec(2.0f, rotCamera.y, fMove);
+				m_move.z += GetCosVec(2.0f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (D3DX_PI / 2.0f) + rotCamera.y;
 			}
@@ -386,22 +379,22 @@ bool CPlayer::Move()
 		{//右キー押下
 			if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true)
 			{//上キー押下
-				m_move.x += -GetSinVec(4.0f, rotCamera.y, m_fMove);
-				m_move.z += -GetCosVec(4.0f, rotCamera.y, m_fMove);
+				m_move.x += -GetSinVec(4.0f, rotCamera.y, fMove);
+				m_move.z += -GetCosVec(4.0f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (-D3DX_PI / 4) + rotCamera.y;
 			}
 			else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true)
 			{//下キー押下
-				m_move.x += -GetSinVec(1.5f, rotCamera.y, m_fMove);
-				m_move.z += -GetCosVec(1.5f, rotCamera.y, m_fMove);
+				m_move.x += -GetSinVec(1.5f, rotCamera.y, fMove);
+				m_move.z += -GetCosVec(1.5f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (-D3DX_PI / 1.5f) + rotCamera.y;
 			}
 			else
 			{
-				m_move.x += GetSinVec(-2.0f, rotCamera.y, m_fMove);
-				m_move.z += GetCosVec(-2.0f, rotCamera.y, m_fMove);
+				m_move.x += GetSinVec(-2.0f, rotCamera.y, fMove);
+				m_move.z += GetCosVec(-2.0f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (-D3DX_PI / 2.0f) + rotCamera.y;
 			}
@@ -411,8 +404,8 @@ bool CPlayer::Move()
 		}
 		else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true)
 		{// 上キー押下
-			m_move.x += -GetSinVec(1.0f, rotCamera.y, m_fMove);
-			m_move.z += -GetCosVec(1.0f, rotCamera.y, m_fMove);
+			m_move.x += -GetSinVec(1.0f, rotCamera.y, fMove);
+			m_move.z += -GetCosVec(1.0f, rotCamera.y, fMove);
 			// 目的の角度設定
 			rotDest.y = D3DX_PI + rotCamera.y;
 
@@ -421,8 +414,8 @@ bool CPlayer::Move()
 		}
 		else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true)
 		{// 下キー押下
-			m_move.x += GetSinVec(1.0f, rotCamera.y, m_fMove);
-			m_move.z += GetCosVec(1.0f, rotCamera.y, m_fMove);
+			m_move.x += GetSinVec(1.0f, rotCamera.y, fMove);
+			m_move.z += GetCosVec(1.0f, rotCamera.y, fMove);
 			// 目的の角度設定
 			rotDest.y = 0.0f + rotCamera.y;
 
@@ -443,23 +436,23 @@ bool CPlayer::Move()
 				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 			{// 上キー押下
 			 // 移動量加算
-				m_move.x += GetSinVec(-0.75f, m_fMove);
-				m_move.z += GetCosVec(-0.75f, m_fMove);
+				m_move.x += GetSinVec(-0.75f, fMove);
+				m_move.z += GetCosVec(-0.75f, fMove);
 				// 目的の角度設定
 				rotDest.y = D3DX_PI / 4;
 			}
 			else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nGamePadNum) == true ||
 				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y <= JOYKEY_LEFT_STICK_UP)
 			{// 下キー押下
-				m_move.x += GetSinVec(-0.25f, m_fMove);
-				m_move.z += GetCosVec(-0.25f, m_fMove);
+				m_move.x += GetSinVec(-0.25f, fMove);
+				m_move.z += GetCosVec(-0.25f, fMove);
 				// 目的の角度設定
 				rotDest.y = D3DX_PI / 1.5f;
 			}
 			else
 			{
-				m_move.x += GetSinVec(-0.5f, m_fMove);
-				m_move.z += GetCosVec(-0.5f, m_fMove);
+				m_move.x += GetSinVec(-0.5f, fMove);
+				m_move.z += GetCosVec(-0.5f, fMove);
 				// 目的の角度設定
 				rotDest.y = D3DX_PI / 2;
 			}
@@ -473,23 +466,23 @@ bool CPlayer::Move()
 			if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nGamePadNum) == true ||
 				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 			{// 上キー押下
-				m_move.x += GetSinVec(0.75f, m_fMove);
-				m_move.z += GetCosVec(0.75f, m_fMove);
+				m_move.x += GetSinVec(0.75f, fMove);
+				m_move.z += GetCosVec(0.75f, fMove);
 				// 目的の角度設定
 				rotDest.y = -D3DX_PI / 4;
 			}
 			else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nGamePadNum) == true ||
 				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y <= JOYKEY_LEFT_STICK_UP)
 			{// 下キー押下
-				m_move.x += GetSinVec(0.25f, m_fMove);
-				m_move.z += GetCosVec(0.25f, m_fMove);
+				m_move.x += GetSinVec(0.25f, fMove);
+				m_move.z += GetCosVec(0.25f, fMove);
 				// 目的の角度設定
 				rotDest.y = -D3DX_PI / 1.5f;
 			}
 			else
 			{
-				m_move.x += GetSinVec(0.5f, m_fMove);
-				m_move.z += GetCosVec(0.5f, m_fMove);
+				m_move.x += GetSinVec(0.5f, fMove);
+				m_move.z += GetCosVec(0.5f, fMove);
 				// 目的の角度設定
 				rotDest.y = -D3DX_PI / 2;
 			}
@@ -500,8 +493,8 @@ bool CPlayer::Move()
 		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nGamePadNum) == true ||
 			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 		{// 上キー押下
-			m_move.x += GetSinVec(1.0f, m_fMove);
-			m_move.z += GetCosVec(1.0f, m_fMove);
+			m_move.x += GetSinVec(1.0f, fMove);
+			m_move.z += GetCosVec(1.0f, fMove);
 			// 目的の角度設定
 			rotDest.y = 0.0f;
 
@@ -511,8 +504,8 @@ bool CPlayer::Move()
 		else if (pJoypad->GetPress(CInputJoypad::JOYKEY_UP, m_nGamePadNum) == true ||
 			pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y <= JOYKEY_LEFT_STICK_UP)
 		{// 下キー押下
-			m_move.x += GetSinVec(0.0f, m_fMove);
-			m_move.z += GetCosVec(0.0f, m_fMove);
+			m_move.x += GetSinVec(0.0f, fMove);
+			m_move.z += GetCosVec(0.0f, fMove);
 			// 目的の角度設定
 			rotDest.y = D3DX_PI;
 
@@ -526,6 +519,8 @@ bool CPlayer::Move()
 	{
 		// 角度設定
 		CMotion::SetRotDest(rotDest);
+		// 状態の設定
+		m_state = STATE_RUN;
 	}
 
 	return bMove;
@@ -540,18 +535,30 @@ void CPlayer::State()
 	{
 		// 通常
 	case CPlayer::STATE_NORMAL:
+
+		// 待機モーション
+		CMotion::Set(0);
+
 		break;
 
 		// 走る
 	case CPlayer::STATE_RUN:
-		break;
 
-		// ジャンプ
-	case CPlayer::STATE_JUMP:
+		// 移動モーション
+		CMotion::Set(1);
+
 		break;
 
 		// 攻撃
 	case CPlayer::STATE_ATTACK:
+		break;
+
+		// ジャンプ
+	case CPlayer::STATE_JUMP:
+
+		// ジャンプモーション
+		CMotion::Set(3);
+
 		break;
 
 		// 死亡

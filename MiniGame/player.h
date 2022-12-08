@@ -59,8 +59,8 @@ public:
 	{
 		STATE_NORMAL = 0,	// 通常
 		STATE_RUN,			// 走る
-		STATE_JUMP,			// ジャンプ
 		STATE_ATTACK,		// 攻撃
+		STATE_JUMP,			// ジャンプ
 		STATE_DIE,			// 死亡状態
 		STATE_INAVALANCHE,	// 雪崩に巻き込まれている状態
 		STATE_MAX
@@ -147,10 +147,6 @@ private:
 	D3DXVECTOR3 m_posOld;
 	//状態
 	STATE m_state;
-	// 移動力
-	float m_fMove;
-	// ジャンプ力
-	float m_fJump;
 	//状態カウンター
 	int m_nCntState;
 	//攻撃カウンター

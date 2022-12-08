@@ -183,7 +183,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\MiniGame\\‚»‚´‚¢\\logHouse\\Tex\\Wood_Floor.jpg";
+    "data\\MODEL\\model\\Tex\\Wood_Floor.jpg";
    }
   }
   Material {
@@ -246,7 +246,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.600000;0.600000;0.600000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\MiniGame\\‚»‚´‚¢\\logHouse\\Tex\\Wood_Floor.jpg";
+    "data\\MODEL\\model\\Tex\\Wood_Floor.jpg";
    }
   }
   Material {
