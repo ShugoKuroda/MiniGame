@@ -22,27 +22,28 @@
 #define CAMERA_ROT_MOVE		(0.03f)		//回転の移動量
 
 //======================================================
-//	コンストラクタ
+// コンストラクタ
 //======================================================
-CCamera::CCamera() :m_move(0.0f, 0.0f, 0.0f), m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
-					m_pPosTracking(nullptr), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_bTracking(false)
+CCamera::CCamera() :
+	m_move(0.0f, 0.0f, 0.0f), m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
+	m_pPosTracking(nullptr), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_fNear(0.0f)
 {
 }
 
 //======================================================
-//	デストラクタ
+// デストラクタ
 //======================================================
 CCamera::~CCamera()
 {
 }
 
 //======================================================
-//	生成処理
-//	const D3DXVECTOR3& posV → 生成する視点位置
-//	const D3DXVECTOR3& posR → 生成する注視点位置
-//	const D3DXVECTOR3& rot → 生成する視点角度
+// 生成処理
+// const D3DXVECTOR3& posV → 生成する視点位置
+// const D3DXVECTOR3& posR → 生成する注視点位置
+// const D3DXVECTOR3& rot → 生成する視点角度
 //======================================================
-CCamera *CCamera::Create(const D3DXVECTOR3& posV, const D3DXVECTOR3& posR, const D3DXVECTOR3& rot)
+CCamera *CCamera::Create(const D3DXVECTOR3& posV, const D3DXVECTOR3& posR, const D3DXVECTOR3& rot, float fNear)
 {
 	//インスタンス生成
 	CCamera *pCamera = new CCamera;
@@ -55,6 +56,9 @@ CCamera *CCamera::Create(const D3DXVECTOR3& posV, const D3DXVECTOR3& posR, const
 
 	// 視点角度設定
 	pCamera->m_rot = rot;
+
+	// 視野角の設定
+	pCamera->m_fNear = fNear;
 
 	// 初期化
 	pCamera->Init();
@@ -190,7 +194,7 @@ void CCamera::Update()
 	m_posR.y = m_posV.y - cosf(m_rot.x) * m_fDistance;
 
 	// カメラが追従中の場合
-	if (m_bTracking == true)
+	if (m_pPosTracking != nullptr)
 	{
 		// 追従
 		m_posRDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y);
@@ -228,6 +232,7 @@ void CCamera::Update()
 	//	m_posR.z = m_posV.z - sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
 	//	m_posR.y = m_posV.y - cosf(m_rot.x) * m_fDistance;
 	//}
+
 	if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_R) == true)
 	{//上移動
 		m_posV.y -= sinf(m_rot.x) * CAMERA_POS_MOVE;
@@ -282,7 +287,7 @@ void CCamera::Draw()
 	D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
 		D3DXToRadian(45.0f),
 		(float)CRenderer::SCREEN_WIDTH / (float)CRenderer::SCREEN_HEIGHT,
-		10.0f,				// 視野角の設定
+		m_fNear,			// 視野角の設定
 		6400.0f);			// 視界の設定
 
 	//プロジェクションマトリックスの設定

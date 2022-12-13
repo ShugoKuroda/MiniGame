@@ -30,8 +30,9 @@ struct Model
 	D3DXVECTOR3 pos;			// 位置
 	D3DXVECTOR3 rot;			// 回転
 	char cName[MAX_CHAR];		// 種類
+	int8_t nCollision;			// 当たり判定の有無
 	D3DXVECTOR2 shadowSize;		// 影のサイズ
-	int nShadow;				// 影を配置
+	int8_t nShadow;				// 影を配置
 };
 
 //=============================================================================
@@ -139,14 +140,14 @@ bool CSetModel::LoadModel(std::string name)
 		return false;
 	}
 
-	char cBff[MAX_CHAR];			//一行分読み取る変数
-	char cBffHead[MAX_CHAR];		//頭の文字を読み取る変数
-	bool bReadScript = false;		//スクリプトを読み込むかどうか
+	char cBff[MAX_CHAR];			// 一行分読み取る変数
+	char cBffHead[MAX_CHAR];		// 頭の文字を読み取る変数
+	bool bReadScript = false;		// スクリプトを読み込むかどうか
 
-	//文字列の読み取りループ処理
+	// 文字列の読み取りループ処理
 	while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 	{
-		//文字列の分析
+		// 文字列の分析
 		sscanf(cBff, "%s", &cBffHead);
 
 		if (!bReadScript && strcmp(&cBffHead[0], "SCRIPT") == 0)
@@ -159,40 +160,43 @@ bool CSetModel::LoadModel(std::string name)
 			if (strcmp(&cBffHead[0], "MODELSET") == 0)
 			{//モデルの配置用
 
-				//モデル配置情報の保存用
+				// モデル配置情報の保存用
 				Model model;
 				// 文字読み込み用変数の初期化
 				memset(&model, 0, sizeof(Model));
 
-				//モデル配置に必要な情報読み取りループ処理
+				// モデル配置に必要な情報読み取りループ処理
 				while (fgets(cBff, MAX_CHAR, pFile) != NULL)
 				{
-					//文字列の分析
+					// 文字列の分析
 					sscanf(cBff, "%s", &cBffHead);
 
 					if (strcmp(&cBffHead[0], "TYPE") == 0)
-					{//モデルの種類用
+					{// モデルの種類用
 						sscanf(cBff, "%s = %s", &cBffHead, &model.cName[0]);
 					}
 					else if (strcmp(&cBffHead[0], "POS") == 0)
-					{//POS用
+					{// 位置
 						sscanf(cBff, "%s = %f%f%f", &cBffHead, &model.pos.x, &model.pos.y, &model.pos.z);
 					}
 					else if (strcmp(&cBffHead[0], "ROT") == 0)
-					{//ROT用
+					{// 角度
 						sscanf(cBff, "%s = %f%f%f", &cBffHead, &model.rot.x, &model.rot.y, &model.rot.z);
 					}
+					else if (strcmp(&cBffHead[0], "COLLISION") == 0)
+					{// 当たり判定
+						sscanf(cBff, "%s = %hhd", &cBffHead, &model.nCollision);
+					}
 					else if (strcmp(&cBffHead[0], "SHADOW") == 0)
-					{//影のセット
-						sscanf(cBff, "%s = %d%f%f", &cBffHead, &model.nShadow, &model.shadowSize.x, &model.shadowSize.y);
+					{// 影のセット
+						sscanf(cBff, "%s = %hhd%f%f", &cBffHead, &model.nShadow, &model.shadowSize.x, &model.shadowSize.y);
 					}
 					else if (strcmp(&cBffHead[0], "END_MODELSET") == 0)
-					{//モデルのセットに必要な情報を読み切った時
+					{// モデルのセットに必要な情報を読み切った時
 
 						//if (Model.bShadow == true)
 						//{//nCheckが1以上の場合、影を設定する
 						//	Model.nIdxShadow = SetShadow(D3DXVECTOR3(Model.pos.x, 0.1f, Model.pos.z), Model.rot, fShadowX, fShadowZ);
-						//}
 
 						// モデル配置
 						CModel::Create(model.pos, model.rot, &model.cName[0]);

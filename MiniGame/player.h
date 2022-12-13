@@ -84,7 +84,7 @@ public:
 	~CPlayer() override;
 
 	// 生成
-	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name, int nPlayryNum);	//インスタンス生成処理
+	static CPlayer *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name, int nPlayerNum);
 
 	// 初期化
 	HRESULT Init() override;

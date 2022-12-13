@@ -46,12 +46,13 @@ public:
 	//行動パターン
 	enum PATTERN
 	{
-		PATTERN_ENTRY = 0,	//登場
-		PATTERN_NORMAL,		//通常
-		PATTERN_RUSH,		//連続突進攻撃
-		PATTERN_CREATE,		//雑魚敵の生成攻撃
-		PATTERN_BARRAGE,	//弾幕攻撃
-		PATTERN_DIE,		//死亡
+		PATTERN_ENTRY = 0,	// 登場
+		PATTERN_NORMAL,		// 通常
+		PATTERN_RUN,		// 移動
+		PATTERN_SNOWBALL,	// 雪玉投擲攻撃
+		PATTERN_POW,		// 地震攻撃
+		PATTERN_BARRAGE,	// 弾幕攻撃
+		PATTERN_DIE,		// 死亡
 		PATTERN_MAX
 	};
 
@@ -79,7 +80,7 @@ private:
 	// 行動パターン
 	PATTERN m_pattern;
 	// 行動変化までのカウンター
-	int m_nCounter;			
+	int8_t m_nCounter;			
 	// 突進前の予備動作の間隔
 	int m_nCountOperation;
 	// 突進攻撃、弾発射の角度

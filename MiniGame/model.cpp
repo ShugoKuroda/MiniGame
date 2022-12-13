@@ -88,7 +88,7 @@ HRESULT CModel::Init()
 		D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
 
 		if (m_vtxMax.x < vtx.x)
-		{//X
+		{// X
 			m_vtxMax.x = vtx.x;
 		}
 		else if (m_vtxMin.x > vtx.x)
@@ -97,7 +97,7 @@ HRESULT CModel::Init()
 		}
 
 		if (m_vtxMax.y < vtx.y)
-		{//Y
+		{// Y
 			m_vtxMax.y = vtx.y;
 		}
 		else if (m_vtxMin.y > vtx.y)
@@ -106,7 +106,7 @@ HRESULT CModel::Init()
 		}
 
 		if (m_vtxMax.z < vtx.z)
-		{//Z
+		{// Z
 			m_vtxMax.z = vtx.z;
 		}
 		else if (m_vtxMin.z > vtx.z)

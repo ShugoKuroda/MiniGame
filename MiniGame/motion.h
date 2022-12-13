@@ -50,6 +50,8 @@ public:
 	void SetRotation(const D3DXVECTOR3& rot) { m_rot = rot; }
 	// 目的の角度設定
 	void SetRotDest(const D3DXVECTOR3& rotDest) { m_rotDest = rotDest; }
+	// 全体の色設定
+	void SetColor(const D3DXCOLOR& col) { m_col = col; }
 	// 位置取得
 	D3DXVECTOR3 GetPosition() { return m_pos; }
 	// 位置取得
@@ -89,6 +91,8 @@ private:
 	D3DXVECTOR3 m_rotDest;
 	// モデルの最大サイズ,最小サイズ
 	D3DXVECTOR3 m_vtxMax, m_vtxMin;
+	// 全体の色
+	D3DXCOLOR m_col;
 	// ワールドマトリックス
 	D3DXMATRIX m_mtxWorld;
 };
