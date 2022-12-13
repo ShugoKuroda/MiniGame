@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 73.8610 -427.7995 34028.3281
+	pos 73.8610 -427.7995 100000.0000
 	lookat 0.0000 0.0000 0.0000
-	head -131.6654
-	pich 0.4592
+	head -132.0257
+	pich 0.1808
 	bank 0.0000
 	ortho 0
-	zoom2 1.5253
+	zoom2 0.5190
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -24,7 +24,7 @@ Material 4 {
 	"足" col(1.000 0.400 0.000 1.000) dif(0.800) amb(0.600) emi(0.340) spc(0.480) power(5.00)
 }
 Object "顔の全体" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -190,7 +190,7 @@ Object "顔の全体" {
 	}
 }
 Object "嘴" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -266,7 +266,7 @@ Object "嘴" {
 	}
 }
 Object "目" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -641,7 +641,7 @@ Object "目" {
 	}
 }
 Object "目（２）" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -781,7 +781,7 @@ Object "目（２）" {
 	}
 }
 Object "黒目" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -896,8 +896,8 @@ Object "黒目" {
 	}
 }
 Object "身体" {
-	visible 15
-	locking 0
+	visible 0
+	locking 1
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1109,8 +1109,8 @@ Object "身体" {
 	}
 }
 Object "身体（白部分）" {
-	visible 15
-	locking 0
+	visible 0
+	locking 1
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1216,7 +1216,7 @@ Object "身体（白部分）" {
 	}
 }
 Object "左のひれ" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -1382,7 +1382,7 @@ Object "左のひれ" {
 	}
 }
 Object "右のひれ" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -1625,8 +1625,8 @@ Object "右のひれ" {
 	}
 }
 Object "足" {
-	visible 15
-	locking 0
+	visible 0
+	locking 1
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1799,8 +1799,8 @@ Object "足" {
 	}
 }
 Object "足2" {
-	visible 15
-	locking 0
+	visible 0
+	locking 1
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
