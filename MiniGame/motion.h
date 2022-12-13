@@ -69,7 +69,7 @@ public:
 
 protected:
 	// モーション再生
-	void Motion();
+	bool Motion();
 	// モーション設定
 	void Set(const int& nNum);
 

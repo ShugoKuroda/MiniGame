@@ -256,7 +256,7 @@ void CMotion::NormalizeRot()
 //-----------------------------------------------------------------------------
 // モーション再生
 //-----------------------------------------------------------------------------
-void CMotion::Motion()
+bool CMotion::Motion()
 {
 	int nMotion = m_animIdx.nMotionIdx;
 	int nKey = m_animIdx.nKeySetIdx;
@@ -303,9 +303,13 @@ void CMotion::Motion()
 			{//現在再生中のモーションからニュートラルモーションに変更
 				m_animIdx.nKeySetIdx = 0;
 				m_animIdx.nMotionIdx = 0;
+
+				return true;
 			}
 		}
 	}
+
+	return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -316,12 +320,25 @@ void CMotion::Set(const int& nNum)
 	// 現在のモーションが再生するモーション以外
 	if (m_animIdx.nMotionIdx != nNum)
 	{// モーションの設定
-		m_animIdx.nMotionIdx = nNum;
-		m_animIdx.nKeySetIdx = 1;
-		m_animIdx.nFrame = 0;
 
-		// モーションの初期化
-		Change(nNum, 0);
+		//モーション再生処理
+		for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
+		{
+			//位置更新（ローカル座標）
+			m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].pos) / (float)m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
+
+			//角度更新
+			m_motion.aParts[nCntParts].rot += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].rot - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].rot) / (float)m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
+		}
+
+		{
+			m_animIdx.nMotionIdx = nNum;
+			m_animIdx.nKeySetIdx = 1;
+			m_animIdx.nFrame = 0;
+
+			// モーションの初期化
+			Change(nNum, 0);
+		}
 	}
 }
 
