@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // Xファイル最大数
 //==================================================
-XFILE_NUM = 13
+XFILE_NUM = 22
 
 //==================================================
 // Xファイル読み込み情報
@@ -86,10 +86,64 @@ XFILESET
 	NAME = XFILE_TYPE_WOOD_4
 END_XFILESET
 
-//木 type 4
+//boss_test
 XFILESET
 	PAS = data/MODEL/model/boss_test.x
 	NAME = XFILE_TYPE_BOSS
+END_XFILESET
+
+//House_wall_door
+XFILESET
+	PAS = data/MODEL/model/House_wall_door.x
+	NAME = XFILE_TYPE_HOUSE_WALL_DOOR
+END_XFILESET
+
+//House_wall_window
+XFILESET
+	PAS = data/MODEL/model/House_wall_window.x
+	NAME = XFILE_TYPE_HOUSE_WALL_WINDOW
+END_XFILESET
+
+//House_floor
+XFILESET
+	PAS = data/MODEL/model/House_floor.x
+	NAME = XFILE_TYPE_HOUSE_FLOOR
+END_XFILESET
+
+//House_wall_roof
+XFILESET
+	PAS = data/MODEL/model/House_roof.x
+	NAME = XFILE_TYPE_HOUSE_ROOF
+END_XFILESET
+
+//House_bed
+XFILESET
+	PAS = data/MODEL/model/House_bed.x
+	NAME = XFILE_TYPE_HOUSE_BED
+END_XFILESET
+
+//House_テレビ
+XFILESET
+	PAS = data/MODEL/model/House_テレビ.x
+	NAME = XFILE_TYPE_HOUSE_TV
+END_XFILESET
+
+//House_下机
+XFILESET
+	PAS = data/MODEL/model/House_下机.x
+	NAME = XFILE_TYPE_HOUSE_UNDERSHELF
+END_XFILESET
+
+//House_上机
+XFILESET
+	PAS = data/MODEL/model/House_上机.x
+	NAME = XFILE_TYPE_HOUSE_UPPERSHELF
+END_XFILESET
+
+//House_冷蔵庫
+XFILESET
+	PAS = data/MODEL/model/House_冷蔵庫.x
+	NAME = XFILE_TYPE_HOUSE_FRIDGE
 END_XFILESET
 
 END_SCRIPT		# この行は消さないこと！

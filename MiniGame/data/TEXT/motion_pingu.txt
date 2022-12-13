@@ -2445,4 +2445,310 @@ MOTIONSET
 	END_KEYSET
 END_MOTIONSET
 
+#---------------------------------------
+# 登場時(驚愕)モーション
+#---------------------------------------
+MOTIONSET
+	LOOP = 0						# ループするかどうか[0:ループしない / 1:ループする]
+	NUM_KEY = 9						# キー数
+
+KEYSET			# --- << KEY : 0 / 8 >> ---
+		FRAME = 5					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+
+	KEYSET			# --- << KEY : 1 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 15.0 0.0
+			ROT = 0.2 0.0 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.7
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -0.7
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.3 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.3 0.0 0.0
+		END_KEY
+	END_KEYSET
+
+	KEYSET			# --- << KEY : 2 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+	KEYSET			# --- << KEY : 3 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+	KEYSET			# --- << KEY : 4 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.5 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.5 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+	KEYSET			# --- << KEY : 5 / 8 >> ---
+		FRAME = 5					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.5 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.7 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.5 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+	KEYSET			# --- << KEY : 6 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.5 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.7 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+	KEYSET			# --- << KEY : 7 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 5.0 0.0
+			ROT = 0.0 0.5 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.7 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+	KEYSET			# --- << KEY :8 / 8 >> ---
+		FRAME = 10					# キー再生フレーム数
+		KEY							# [0]体
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [1]頭
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [2]右腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 -1.0
+		END_KEY
+
+		KEY							# [3]左腕
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 1.0
+		END_KEY
+
+		KEY							# [4]右足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+
+		KEY							# [5]左足
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
+	END_KEYSET
+	
+END_MOTIONSET
+
 END_SCRIPT		# この行は絶対消さないこと！

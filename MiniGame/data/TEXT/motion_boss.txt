@@ -1,6 +1,6 @@
 #==============================================================================
 #
-# 『モーションビューワ』スクリプトファイル [motion.txt]
+# 『モーションビューワ』スクリプトファイル [motion_boss.txt]
 # Author : AKIRA TANAKA
 #
 #==============================================================================
@@ -14,17 +14,17 @@ NUM_MODEL = 12
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/boss/boss_body.x				# [0]体
-MODEL_FILENAME = data/MODEL/boss/boss_head.x				# [1]頭
+MODEL_FILENAME = data/MODEL/boss/boss_body.x			# [0]体
+MODEL_FILENAME = data/MODEL/boss/boss_head.x			# [1]頭
 MODEL_FILENAME = data/MODEL/boss/boss_Right_arm.x		# [2]右腕
 MODEL_FILENAME = data/MODEL/boss/boss_Right_arm_2.x		# [3]右腕2
 MODEL_FILENAME = data/MODEL/boss/boss_Right_hand.x		# [4]右手
-MODEL_FILENAME = data/MODEL/boss/boss_Left_arm.x			# [5]左腕
+MODEL_FILENAME = data/MODEL/boss/boss_Left_arm.x		# [5]左腕
 MODEL_FILENAME = data/MODEL/boss/boss_Left_arm_2.x		# [6]左腕2
 MODEL_FILENAME = data/MODEL/boss/boss_Left_hand.x		# [7]左手
 MODEL_FILENAME = data/MODEL/boss/boss_Right_leg.x		# [8]右腿
 MODEL_FILENAME = data/MODEL/boss/boss_Right_foot.x		# [9]右足
-MODEL_FILENAME = data/MODEL/boss/boss_Left_leg.x			# [10]左腿
+MODEL_FILENAME = data/MODEL/boss/boss_Left_leg.x		# [10]左腿
 MODEL_FILENAME = data/MODEL/boss/boss_Left_foot.x		# [11]左足
 
 #------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ MODEL_FILENAME = data/MODEL/boss/boss_Left_foot.x		# [11]左足
 #------------------------------------------------------------------------------
 CHARACTERSET
 	NUM_PARTS = 12					# パーツ数
-	MOVE = 3.0						# 移動量
+	MOVE = 0.3						# 移動量
 	JUMP = 10.25					# ジャンプ量
 	RADIUS = 40.0					# 半径
 	HEIGHT = 40.0					# 高さ
