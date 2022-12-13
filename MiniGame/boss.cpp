@@ -146,9 +146,6 @@ void CBoss::Update()
 	// Šp“x‚Ì³‹K‰»
 	CMotion::NormalizeRot();
 
-	// ƒ‚[ƒVƒ‡ƒ“Ä¶
-	CMotion::Motion();
-
 	//}
 }
 
@@ -204,6 +201,9 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 	//G‹›“G¶¬î•ñ‚Ìæ“¾
 	//ParentEnemyInfo *pBossInfo = LoadSpace::GetParentEnemy();
 
+	// ƒ‚[ƒVƒ‡ƒ“Ä¶
+	bool bEnd = CMotion::Motion();
+
 	switch (m_pattern)
 	{
 		//=================================
@@ -216,6 +216,14 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		{// ’Êíó‘Ô‚É‚·‚é
 			m_pattern = PATTERN_RUN;
 		}
+
+		//if (bEnd == true)
+		//{
+		//	m_pattern = PATTERN_NORMAL;
+		//	break;
+		//}
+
+		CMotion::Set(0);
 
 		break;
 
@@ -230,7 +238,7 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 			m_pattern = PATTERN_RUN;
 		}
 
-		CMotion::Set(0);
+		CMotion::Set(1);
 
 		break;
 
@@ -242,7 +250,7 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		// ˆÚ“®—Ê‚Ì‰ÁZ
 		m_move.z -= GetMotion().fMove;
 
-		CMotion::Set(1);
+		CMotion::Set(2);
 
 		m_nCounter++;
 
