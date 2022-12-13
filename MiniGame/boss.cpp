@@ -117,34 +117,6 @@ void CBoss::Update()
 {
 	// 位置の取得
 	D3DXVECTOR3 pos = CMotion::GetPosition();
-	// 
-	//// サイズの取得
-	//D3DXVECTOR2 size = CEnemy::GetSize();
-	//// 移動量の取得
-	//D3DXVECTOR3 move = CEnemy::GetMove();
-
-	//// 行動パターン管理
-	//if (Pattern(pos, size, move) == true)
-	//{// 破棄された場合
-	//	return;
-	//}
-
-	//// ボスの死亡フラグ取得
-	//bool bDie = CGame::GetDieBoss();
-
-	//if (GetLife() <= 0 && bDie == false)
-	//{// ライフが0
-
-	//	// 変数のリセット
-	//	StateReset();
-
-	//	//死亡アニメーションを再生する
-	//	m_pattern = PATTERN_DIE;
-	//}
-
-	//// 死亡していなければ
-	//if (bDie == false)
-	//{
 
 	// 各行動
 	Pattern(pos);
@@ -152,11 +124,10 @@ void CBoss::Update()
 	// 移動処理
 	if (m_pattern == PATTERN_NORMAL)
 	{// 移動モーション
-		CMotion::Set(1);
+		
 	}
 	else
-	{// 待機モーション
-		CMotion::Set(0);
+	{
 	}
 
 	// 移動量の加算
@@ -243,7 +214,7 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		// ゲームが始まったら
 		if (CManager::GetManager()->GetGame()->GetStart())
 		{// 通常状態にする
-			m_pattern = PATTERN_NORMAL;
+			m_pattern = PATTERN_RUN;
 		}
 
 		break;
@@ -253,30 +224,35 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		//=================================
 	case CBoss::PATTERN_NORMAL:
 
+		// ゲームが始まったら
+		if (CManager::GetManager()->GetGame()->GetStart())
+		{// 通常状態にする
+			m_pattern = PATTERN_RUN;
+		}
+
+		CMotion::Set(0);
+
+		break;
+
+		//=================================
+		// 通常
+		//=================================
+	case CBoss::PATTERN_RUN:
+
 		// 移動量の加算
 		m_move.z -= GetMotion().fMove;
 
-		////移動量の加算
-		//move += D3DXVECTOR3(0.1f, 0.05f, 0.0f);
+		CMotion::Set(1);
 
-		//// 移動量の更新
-		//pos = D3DXVECTOR3((CRenderer::SCREEN_WIDTH - 200.0f) - sinf(move.x) * 100,
-		//	(CRenderer::SCREEN_HEIGHT / 2) - cosf(move.y) * 100,
-		//	0.0f);
+		m_nCounter++;
 
-		////次の行動に移すまでのカウンター加算
-		//m_nCounter++;
-
-		//if (m_nCounter >= 300)
-		//{
-		//	//カウンターリセット
-		//	m_nCounter = 0;
-		//	//次の行動をランダムで決める
-		//	m_pattern = (PATTERN)LibrarySpace::GetRandNum(PATTERN_BARRAGE, PATTERN_RUSH);
-		//}
-
-		////拡縮させる
-		//ChangeSize(&size, 0.5f);
+		if (m_nCounter >= 300)
+		{
+			//カウンターリセット
+			m_nCounter = 0;
+			//次の行動をランダムで決める
+			m_pattern = (PATTERN)LibrarySpace::GetRandNum(PATTERN_BARRAGE, PATTERN_SNOWBALL);
+		}
 
 		break;
 

@@ -41,7 +41,7 @@
 #define JOYKEY_LEFT_STICK_UP		(-0.2f)
 #define JOYKEY_LEFT_STICK_DOWN		(0.2f)
 
-#define FIELD_SIZE_WIDTH			(130.0f)
+#define FIELD_SIZE_WIDTH			(280.0f)
 #define FIELD_SIZE_HEIGHT			(250.0f)
 #define FIELD_SIZE_HEIGHT_CAMERA	(70.0f)
 
