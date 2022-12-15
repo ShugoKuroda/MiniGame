@@ -255,7 +255,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.550000;0.394900;0.237050;;
    TextureFilename {
-    "C:\\Users\\student\\Pictures\\Saved Pictures\\wood01.jpg";
+    "data\\MODEL\\model\\Tex\\wood01.jpg";
    }
   }
   Material {
@@ -264,7 +264,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Pictures\\Saved Pictures\\wood01.jpg";
+    "data\\MODEL\\model\\Tex\\wood01.jpg";
    }
   }
  }

@@ -253,12 +253,12 @@ bool CXFileMotion::LoadMotion(char* pas)
 								{// パーツ原点の保存
 									motion.posParent = parts.pos;
 								}
-
 							}
 							else if (strcmp(&cBffHead[0], "ROT") == 0)
 							{//回転(角度)
 								// 文字列の分析
 								sscanf(cBff, "%s = %f%f%f", &cBffHead, &parts.rot.x, &parts.rot.y, &parts.rot.z);
+								parts.baseRot = parts.rot;
 							}
 							else if (strcmp(&cBffHead[0], "END_PARTSSET") == 0)
 							{// パーツ読み込み終了

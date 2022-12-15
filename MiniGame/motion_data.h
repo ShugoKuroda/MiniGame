@@ -26,6 +26,8 @@ typedef struct
 	D3DXVECTOR3 pos;
 	// 回転
 	D3DXVECTOR3 rot;
+	// 基本の角度
+	D3DXVECTOR3 baseRot;
 	// ワールドマトリックス
 	D3DXMATRIX mtxWorld;
 	// このパーツの番号

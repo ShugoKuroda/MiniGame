@@ -95,6 +95,8 @@ private:
 	D3DXCOLOR m_col;
 	// ワールドマトリックス
 	D3DXMATRIX m_mtxWorld;
+	// モーション切り替え中かどうか
+	bool m_bChange;
 };
 
 #endif		// _MOTION_H_

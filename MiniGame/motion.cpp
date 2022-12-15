@@ -26,7 +26,7 @@
 // コンストラクタ
 //-----------------------------------------------------------------------------
 CMotion::CMotion() :
-	m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_rotDest(0.0f, 0.0f, 0.0f),
+	m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_rotDest(0.0f, 0.0f, 0.0f), m_bChange(false),
 	m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f)
 {
 	//初期化
@@ -258,53 +258,58 @@ void CMotion::NormalizeRot()
 //-----------------------------------------------------------------------------
 bool CMotion::Motion()
 {
-	int nMotion = m_animIdx.nMotionIdx;
-	int nKey = m_animIdx.nKeySetIdx;
-	int nFrame = m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
-	int nNumKey = m_motion.aMotion[nMotion].nNumKey;
-
-	if (nFrame <= 0)
-	{//テキストで設定されたフレーム数が0以下だった場合
-		nFrame = 1;
-	}
-
-	//モーション再生処理
-	for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
+	// モーション切り替え中はモーション再生を行わない
+	if (m_bChange != true)
 	{
-		//位置更新（ローカル座標）
-		m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].pos) / (float)m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
+		int nMotion = m_animIdx.nMotionIdx;
+		int nKey = m_animIdx.nKeySetIdx;
+		int nFrame = m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
+		int nNumKey = m_motion.aMotion[nMotion].nNumKey;
 
-		//角度更新
-		m_motion.aParts[nCntParts].rot += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].rot - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].rot) / (float)m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
-	}
+		if (nFrame <= 0)
+		{//テキストで設定されたフレーム数が0以下だった場合
+			nFrame = 1;
+		}
 
-	//フレームの加算
-	m_animIdx.nFrame++;
+		//モーション再生処理
+		for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
+		{
+			//位置更新（ローカル座標）
+			m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].pos) / (float)nFrame;
 
-	if (m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame <= m_animIdx.nFrame)
-	{//フレーム数が設定の値を超えたら
+			//角度更新
+			m_motion.aParts[nCntParts].rot += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].rot - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].rot) / (float)nFrame;
+		}
 
-		// モーション変更
-		//Change(nMotion, nKey);
+		//フレームの加算
+		m_animIdx.nFrame++;
 
-		//再生中のキー数の加算
-		m_animIdx.nKeySetIdx++;
+		if (m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame <= m_animIdx.nFrame)
+		{//フレーム数が設定の値を超えたら
 
-		//フレームの初期化
-		m_animIdx.nFrame = 0;
+			// モーション変更
+			//Change(nMotion, nKey);
 
-		if (m_motion.aMotion[nMotion].nNumKey <= m_animIdx.nKeySetIdx)
-		{//再生中のキー数が設定の値を超えたら
-			if (m_motion.aMotion[nMotion].nLoop == 1)
-			{
-				m_animIdx.nKeySetIdx = 0;
-			}
-			else
-			{//現在再生中のモーションからニュートラルモーションに変更
-				m_animIdx.nKeySetIdx = 0;
-				m_animIdx.nMotionIdx = 0;
+			//再生中のキー数の加算
+			m_animIdx.nKeySetIdx++;
 
-				return true;
+			//フレームの初期化
+			m_animIdx.nFrame = 0;
+
+			if (m_motion.aMotion[nMotion].nNumKey <= m_animIdx.nKeySetIdx)
+			{//再生中のキー数が設定の値を超えたら
+				if (m_motion.aMotion[nMotion].nLoop == 1)
+				{
+					m_animIdx.nKeySetIdx = 0;
+				}
+				else
+				{//現在再生中のモーションからニュートラルモーションに変更
+					m_animIdx.nKeySetIdx = 0;
+					m_animIdx.nMotionIdx = 0;
+
+					// 再生終了
+					return true;
+				}
 			}
 		}
 	}
@@ -313,7 +318,7 @@ bool CMotion::Motion()
 }
 
 //-----------------------------------------------------------------------------
-// モーション設定
+// モーション設定(切り替え)
 //-----------------------------------------------------------------------------
 void CMotion::Set(const int& nNum)
 {
@@ -321,23 +326,51 @@ void CMotion::Set(const int& nNum)
 	if (m_animIdx.nMotionIdx != nNum)
 	{// モーションの設定
 
-		//モーション再生処理
-		for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
+		// フレーム数の初期化
+		if (m_bChange == false)
 		{
-			//位置更新（ローカル座標）
-			m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].pos) / (float)m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
-
-			//角度更新
-			m_motion.aParts[nCntParts].rot += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].rot - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].rot) / (float)m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
+			m_animIdx.nFrame = 0;
 		}
 
+		// モーション切り替え中
+		m_bChange = true;
+
+		int nMotion = m_animIdx.nMotionIdx;
+		int nKey = m_animIdx.nKeySetIdx;
+
+		//// モーション再生処理
+		//for (int nCnt = 0; nCnt < m_motion.nNumParts; nCnt++)
+		//{
+		//	// 位置更新（ローカル座標）
+		//	m_motion.aParts[nCnt].pos += m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCnt].pos / (float)5;
+
+		//	// 角度更新
+		//	m_motion.aParts[nCnt].rot += (m_motion.aParts[nCnt].baseRot + m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCnt].rot - m_motion.aParts[nCnt].rot) / (float)5;
+		//}
+
+		// モーション再生処理
+		for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
+		{
+			// 位置更新（ローカル座標）
+			m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos ) / (float)5;
+
+			// 角度更新
+			m_motion.aParts[nCntParts].rot += (m_motion.aParts[nCntParts].baseRot + m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCntParts].rot - m_motion.aParts[nCntParts].rot) / (float)5;
+		}
+
+		m_animIdx.nFrame++;
+
+		if (5 <= m_animIdx.nFrame)
 		{
 			m_animIdx.nMotionIdx = nNum;
 			m_animIdx.nKeySetIdx = 1;
 			m_animIdx.nFrame = 0;
 
+			// モーション切り替え終了
+			m_bChange = false;
+
 			// モーションの初期化
-			Change(nNum, 0);
+			//Change(nNum, 0);
 		}
 	}
 }
