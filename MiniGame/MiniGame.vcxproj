@@ -169,6 +169,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cloud.cpp" />
     <ClCompile Include="continue.cpp" />
+    <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="boss.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="cloud.h" />
     <ClInclude Include="continue.h" />
+    <ClInclude Include="debugproc.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="boss.h" />

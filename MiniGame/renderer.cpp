@@ -13,6 +13,7 @@
 #include "object.h"
 #include "object2D.h"
 #include "fade.h"
+#include "debugproc.h"
 
 #include "game.h"
 #include "camera.h"
@@ -176,6 +177,9 @@ void CRenderer::Draw()
 		DrawFPS();
 #endif // _DEBUG
 
+		// デバック表示の描画
+		//CDebugProc::Draw();
+
 		//描画終了
 		m_pD3DDevice->EndScene();
 	}
@@ -229,6 +233,8 @@ void CRenderer::DrawFPS()
 			m_pFont->DrawTextA(NULL, strCamera[nCntCam], -1, &rectCamera[nCntCam], DT_LEFT, D3DCOLOR_ARGB(0xff, 0x00, 0x00, 0x00));
 		}
 	}
+
+
 
 	////オブジェクト情報の取得
 	//for (int nCntObj = 0; nCntObj < CObject::MAX_OBJECT; nCntObj++)

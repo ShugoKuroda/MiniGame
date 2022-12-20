@@ -20,9 +20,9 @@ private:
 	//モーション番号情報
 	struct AnimIdx
 	{
-		int nFrame;			// 現在のフレーム数
-		int nKeySetIdx;		// 再生中のキーセット番号
-		int nMotionIdx;		// 再生中のモーション番号
+		int nFrame;				// 現在のフレーム数
+		int nKeySetIdx;			// 再生中のキーセット番号
+		int nMotionIdx;			// 再生中のモーション番号
 	};
 
 	// メンバ関数

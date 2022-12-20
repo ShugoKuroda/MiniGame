@@ -28,6 +28,10 @@ typedef struct
 	D3DXVECTOR3 rot;
 	// 基本の角度
 	D3DXVECTOR3 baseRot;
+	// モーションブレンド用pos
+	D3DXVECTOR3 changePos;
+	// モーションブレンド用rot
+	D3DXVECTOR3 changeRot;
 	// ワールドマトリックス
 	D3DXMATRIX mtxWorld;
 	// このパーツの番号

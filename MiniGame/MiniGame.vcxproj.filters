@@ -178,6 +178,9 @@
     <ClCompile Include="billboard.cpp">
       <Filter>ソースファイル\billboard</Filter>
     </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>ソースファイル\renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -365,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="billboard.h">
       <Filter>ソースファイル\billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>ソースファイル\renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

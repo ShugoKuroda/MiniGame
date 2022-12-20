@@ -17,8 +17,8 @@ class CModel : public CObject
 {
 public:
 	//メンバ関数
-	CModel();						//コンストラクタ
-	virtual ~CModel() override;		//デストラクタ
+	CModel();						// コンストラクタ
+	virtual ~CModel() override;		// デストラクタ
 
 	// 生成
 	static CModel* Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* name);
