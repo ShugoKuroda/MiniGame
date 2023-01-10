@@ -88,7 +88,7 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	}
 
 	//レンダーステートの設定
-	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);					//カリング
+	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);					// カリング
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);					// αブレンドを行う
 	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);			// αソースカラーの指定
 	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);		// αデスティネーションカラー
@@ -100,9 +100,9 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);		// テクスチャV値の繰り返し設定
 
 	//テクスチャステージステートパラメータの設定
-	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);		//αブレンディング処理設定
-	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);		//最初のα引数
-	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);		//２番目のα引数
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);		// αブレンディング処理設定
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);		// 最初のα引数
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);		// ２番目のα引数
 
 #ifdef _DEBUG
 	// デバッグ情報表示用フォントの生成
@@ -174,11 +174,11 @@ void CRenderer::Draw()
 
 #ifdef _DEBUG
 		// FPS表示
-		DrawFPS();
+		//DrawFPS();
 #endif // _DEBUG
 
 		// デバック表示の描画
-		//CDebugProc::Draw();
+		CManager::GetManager()->GetDebugProc()->Draw();
 
 		//描画終了
 		m_pD3DDevice->EndScene();
@@ -200,7 +200,9 @@ void CRenderer::DrawFPS()
 	char strObj[CObject::MAX_OBJECT][256];
 
 	int nCntFPS = GetCounterFPS();
+
 	wsprintf(str, _T("FPS : %d\n"), nCntFPS);
+
 	// FPS描画
 	m_pFont->DrawTextA(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 

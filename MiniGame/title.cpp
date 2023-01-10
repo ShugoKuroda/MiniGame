@@ -101,6 +101,8 @@ HRESULT CTitle::Init()
 				// ƒvƒŒƒCƒ„[¶¬
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
+
+
 			}
 			else
 			{

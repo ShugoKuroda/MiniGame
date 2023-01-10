@@ -64,6 +64,8 @@ public:
 	D3DXVECTOR3 GetSizeMin() { return m_vtxMin; }
 	// モーション情報の取得
 	ModelMotion GetMotion() { return m_motion; }
+	// モーション切り替え情報の取得
+	bool GetChange() { return m_bChange; }
 	// モーション情報の設定
 	void BindMotion(const ModelMotion& motion) { m_motion = motion; }
 

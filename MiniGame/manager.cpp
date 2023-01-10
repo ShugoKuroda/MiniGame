@@ -16,6 +16,7 @@
 #include "x_file.h"
 #include "x_file_motion.h"
 #include "set_model.h"
+#include "debugproc.h"
 /**/
 
 #include "input_keyboard.h"
@@ -41,7 +42,7 @@ CManager *CManager::m_pManager = nullptr;		// マネージャーのポインタ
 //-----------------------------------------------------------------------------
 CManager::CManager()
 	:m_pTitle(), m_pGame(), m_pResult(), m_pRenderer(), m_pInputKeyboard(), m_pInputJoypad(), m_pInputMouse(), m_pSound(), m_pTexture(),
-	m_pXFile(), m_pMotion(), m_pSetModel(), m_pFade(), m_bPause(false), m_mode(MODE_TITLE)
+	m_pXFile(), m_pMotion(), m_pSetModel(), m_pFade(), m_pDebugProc(), m_bPause(false), m_mode(MODE_TITLE), m_nCounter(0)
 {
 	// 初期化
 	ZeroMemory(&m_EntryInfo, sizeof(m_EntryInfo));
@@ -124,6 +125,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	if (m_pSetModel != nullptr)
 	{
 		m_pSetModel->Init(hWnd);
+	}
+
+	// デバック表示の生成
+	m_pDebugProc = new CDebugProc;
+
+	if (m_pDebugProc != nullptr)
+	{
+		m_pDebugProc->Init();
 	}
 
 	// サウンドの初期化処理
@@ -215,6 +224,14 @@ void CManager::Uninit()
 		m_pSetModel = nullptr;
 	}
 
+	// デバック表示情報の破棄
+	if (m_pDebugProc != nullptr)
+	{
+		m_pDebugProc->Uninit();
+		delete m_pDebugProc;
+		m_pDebugProc = nullptr;
+	}
+
 	// キーボードの終了処理
 	if (m_pInputKeyboard != nullptr)
 	{
@@ -263,6 +280,18 @@ void CManager::Update()
 		m_pInputMouse->Update();
 	}
 
+//#ifdef _DEBUG
+//
+//	if (m_pInputKeyboard != nullptr)
+//	{
+//		if (m_pInputKeyboard->GetTrigger(CInputKeyboard::KEYINFO_3)
+//		{
+//
+//		}
+//	}
+//
+//#endif // _DEBUG
+
 	// フェードの更新
 	if (m_pFade != nullptr)
 	{
@@ -296,6 +325,7 @@ void CManager::Update()
 	{
 		m_pRenderer->Update();
 	}
+
 }
 
 //-----------------------------------------------------------------------------

@@ -66,7 +66,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false)
+CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false), m_StartCnt(0)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
@@ -120,23 +120,23 @@ HRESULT CGame::Init()
 	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
 	// 木を生成
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -380.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-	CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -380.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
+	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
 
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -380.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-	CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, -380.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
+	CModel::Create(D3DXVECTOR3(200.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
 
 	// モデルマネージャー生成
 	CModelManager::Create();
@@ -144,8 +144,8 @@ HRESULT CGame::Init()
 	// モデル生成
 	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
 
-	// カウントダウンの開始
-	CLogoCountDown::Create(5);
+	// 逃走喚起ロゴの生成
+	CLogoExtend::Create(D3DXVECTOR2(200.0f, 140.0f), "TEX_TYPE_LOGO_ESCAPE", 180);
 
 	// プレイヤー参加情報の取得
 	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
@@ -275,6 +275,19 @@ void CGame::Update()
 		// ゲームが終了したかどうかを判定
 		CheckGameEnd();
 	}
+
+	// カウンター加算
+	m_StartCnt++;
+
+	if (m_StartCnt == 180)
+	{// カウントダウン生成
+		CLogoCountDown::Create(5);
+	}
+	else if (m_StartCnt >= 182)
+	{// カウンターのオーバーフロー防止
+		m_StartCnt = m_StartCnt - 1;
+	}
+
 	//// キーボード情報の取得
 	//CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
 	//// ゲームパッド情報の取得
@@ -421,7 +434,7 @@ bool CGame::CheckGameEnd()
 		// ゲーム終了フラグを立てる
 		m_bEnd = true;
 		// ゲーム終了ロゴの生成
-		CLogoExtend::Create(D3DXVECTOR2(250.0f, 80.0f), "TEX_TYPE_END_UI", 180);
+		CLogoExtend::Create(D3DXVECTOR2(250.0f, 80.0f), "TEX_TYPE_END_UI", 180)->SetSceneChange(true);
 		return true;
 	}
 

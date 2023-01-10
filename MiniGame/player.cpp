@@ -115,10 +115,10 @@ CPlayer *CPlayer::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 		pPlayer->SetRotation(rot);
 		// Xファイルの設定
 		pPlayer->BindMotion(CManager::GetManager()->GetMotion()->GetMotion(name));
-		// 生成処理
-		pPlayer->Init();
 		// プレイヤー番号の設定
 		pPlayer->m_nPlayerNum = nPlayerNum;
+		// 生成処理
+		pPlayer->Init();
 	}
 
 	return pPlayer;
@@ -146,6 +146,25 @@ HRESULT CPlayer::Init()
 	// 操作可能状態にする
 	m_bControl = true;
 
+	// 色の設定
+	switch (m_nPlayerNum)
+	{
+	case 0:
+		CMotion::SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.0f));
+		break;
+	case 1:
+		CMotion::SetColor(D3DXCOLOR(0.0f, 0.0f, 1.0f, 0.0f));
+		break;
+	case 2:
+		CMotion::SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.0f));
+		break;
+	case 3:
+		CMotion::SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.0f));
+		break;
+	default:
+		break;
+	}
+
 	// 初期化
 	CMotion::Init();
 
@@ -171,7 +190,7 @@ void CPlayer::Update()
 	// 位置情報を取得
 	D3DXVECTOR3 pos = CMotion::GetPosition();
 	// サイズの取得
-	D3DXVECTOR3 size = GetSizeMax();
+	D3DXVECTOR3 size = CMotion::GetSizeMax();
 
 	// 操作できる状態なら && 死亡していないなら
 	if (m_bControl == true && m_state != STATE_DIE)
@@ -182,45 +201,8 @@ void CPlayer::Update()
 			m_state = STATE_NORMAL;
 		}
 
-		// ジャンプしていれば
-		if (m_bIsJumping == true)
-		{
-			m_state = STATE_JUMP;
-		}
-		// ジャンプしていなければ
-		else if (m_bIsJumping == false)
-		{
-			// キーボード情報の取得
-			CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
-			// ジョイパッド情報の取得
-			CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
-
-			// ジャンプ力を取得
-			float fJump = CMotion::GetMotion().fJump;
-
-			// キーボード操作の場合
-			if (m_bControlKeyboard == true &&
-				pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
-			{// SPACEキー押下
-
-				// ジャンプ力の設定
-				m_move.y = fJump;
-
-				// ジャンプフラグの設定
-				m_bIsJumping = true;
-			}
-			// ゲームパッド操作の場合
-			else if (m_bControlKeyboard == false &&
-				pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
-			{// Aボタン押下
-
-				// ジャンプ力の設定
-				m_move.y = fJump;
-
-				// ジャンプフラグの設定
-				m_bIsJumping = true;
-			}
-		}
+		// ジャンプ
+		Jump();
 	}
 
 	// 重力負荷をかける
@@ -259,11 +241,11 @@ void CPlayer::Update()
 
 	//壁・床の当たり判定処理
 	if (pos.x - (size.x / 2) <= -FIELD_SIZE_WIDTH / 2)
-	{//左壁
+	{// 左壁
 		pos.x = (-FIELD_SIZE_WIDTH / 2) + (size.x / 2);
 	}
 	else if (pos.x + (size.x / 2) >= FIELD_SIZE_WIDTH / 2)
-	{//右壁
+	{// 右壁
 		pos.x = (FIELD_SIZE_WIDTH / 2) - (size.x / 2);
 	}
 	//if (g_Player.pos.z + (PLAYER_WIDTH / 2) >= 400.0f / 2)
@@ -278,7 +260,7 @@ void CPlayer::Update()
 		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
 		if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT_CAMERA)
-		{//手前壁
+		{// 手前壁
 			pos.z = (posCamera.z + FIELD_SIZE_HEIGHT_CAMERA) + (size.z / 2);
 		}
 	}
@@ -286,7 +268,7 @@ void CPlayer::Update()
 	else
 	{
 		if (pos.z - (size.z / 2) <= -FIELD_SIZE_HEIGHT / 2)
-		{//手前壁
+		{// 手前壁
 			pos.z = (-FIELD_SIZE_HEIGHT / 2) + (size.z / 2);
 		}
 	}
@@ -295,7 +277,8 @@ void CPlayer::Update()
 	{// 床
 		pos.y = 0.0f;
 		m_bIsJumping = false;
-		m_move.y = 0.0f;			//移動量Yの初期化
+		// 移動量Yの初期化
+		m_move.y = 0.0f;
 	}
 
 	// 位置情報更新
@@ -351,7 +334,7 @@ bool CPlayer::Move()
 		{// 左キー押下
 			if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true)
 			{// 下キー押下
-				//移動量加算
+				// 移動量加算
 				m_move.x += -GetSinVec(-4.0f, rotCamera.y, fMove);
 				m_move.z += -GetCosVec(-4.0f, rotCamera.y, fMove);
 				// 目的の角度設定
@@ -376,16 +359,16 @@ bool CPlayer::Move()
 			bMove = true;
 		}
 		else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_RIGHT) == true)
-		{//右キー押下
+		{// 右キー押下
 			if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_DOWN) == true)
-			{//上キー押下
+			{// 上キー押下
 				m_move.x += -GetSinVec(4.0f, rotCamera.y, fMove);
 				m_move.z += -GetCosVec(4.0f, rotCamera.y, fMove);
 				// 目的の角度設定
 				rotDest.y = (-D3DX_PI / 4) + rotCamera.y;
 			}
 			else if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_UP) == true)
-			{//下キー押下
+			{// 下キー押下
 				m_move.x += -GetSinVec(1.5f, rotCamera.y, fMove);
 				m_move.z += -GetCosVec(1.5f, rotCamera.y, fMove);
 				// 目的の角度設定
@@ -435,7 +418,7 @@ bool CPlayer::Move()
 			if (pJoypad->GetPress(CInputJoypad::JOYKEY_DOWN, m_nGamePadNum) == true ||
 				pJoypad->GetStick(CInputJoypad::JOYKEY_LEFT_STICK, m_nGamePadNum).y >= JOYKEY_LEFT_STICK_DOWN)
 			{// 上キー押下
-			 // 移動量加算
+				// 移動量加算
 				m_move.x += GetSinVec(-0.75f, fMove);
 				m_move.z += GetCosVec(-0.75f, fMove);
 				// 目的の角度設定
@@ -524,6 +507,52 @@ bool CPlayer::Move()
 	}
 
 	return bMove;
+}
+
+//-----------------------------------------------------------------------------
+// ジャンプ
+//-----------------------------------------------------------------------------
+void CPlayer::Jump()
+{
+	// ジャンプしていれば
+	if (m_bIsJumping == true)
+	{
+		m_state = STATE_JUMP;
+	}
+	// ジャンプしていなければ
+	else if (m_bIsJumping == false)
+	{
+		// キーボード情報の取得
+		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
+		// ジョイパッド情報の取得
+		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
+
+		// ジャンプ力を取得
+		float fJump = CMotion::GetMotion().fJump;
+
+		// キーボード操作の場合
+		if (m_bControlKeyboard == true &&
+			pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
+		{// SPACEキー押下
+
+		 // ジャンプ力の設定
+			m_move.y = fJump;
+
+			// ジャンプフラグの設定
+			m_bIsJumping = true;
+		}
+		// ゲームパッド操作の場合
+		else if (m_bControlKeyboard == false &&
+			pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
+		{// Aボタン押下
+
+		 // ジャンプ力の設定
+			m_move.y = fJump;
+
+			// ジャンプフラグの設定
+			m_bIsJumping = true;
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------

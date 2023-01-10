@@ -30,6 +30,10 @@ public:
 		KEYINFO_ATTACK,				// 攻撃
 		KEYINFO_1,					// 1
 		KEYINFO_2,					// 2
+		KEYINFO_3,					// 3
+		KEYINFO_4,					// 4
+		KEYINFO_5,					// 5
+		KEYINFO_6,					// 6
 
 		// テスト用
 		KEYINFO_Q,
@@ -71,6 +75,10 @@ private:
 		DIK_SPACE,		// 攻撃
 		DIK_1,			// 1
 		DIK_2,			// 2
+		DIK_3,			// 3
+		DIK_4,			// 4
+		DIK_5,			// 5
+		DIK_6,			// 6
 
 		// テスト用
 		DIK_Q,

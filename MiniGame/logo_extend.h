@@ -46,6 +46,9 @@ public:
 	// •`‰æ
 	void Draw() override;
 
+	// ”jŠü‚Ì‰æ–Ê‘JˆÚ”»’è‚Ìİ’è
+	void SetSceneChange(bool bScene) { m_bSceneChange = bScene; }
+
 	// “®‚«•û‚Ìİ’è
 	void Pattern();
 
@@ -55,6 +58,8 @@ private:
 	D3DXVECTOR2 m_DefaultSize;
 	// “®‚«•û‚Ìí—Ş
 	EAnim m_anim;
+	// ”jŠü‚É‰æ–Ê‘JˆÚ‚·‚é‚©‚Ç‚¤‚©
+	bool m_bSceneChange;
 };
 
 #endif		// _LOGO_EXTEND_H_

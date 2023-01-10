@@ -217,11 +217,11 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 			m_pattern = PATTERN_RUN;
 		}
 
-		//if (bEnd == true)
-		//{
-		//	m_pattern = PATTERN_NORMAL;
-		//	break;
-		//}
+		if (bEnd == true)
+		{
+			m_pattern = PATTERN_NORMAL;
+			break;
+		}
 
 		CMotion::Set(0);
 

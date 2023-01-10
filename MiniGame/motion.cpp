@@ -21,11 +21,12 @@
 
 // 追加
 #include "x_file_motion.h"
+#include "debugproc.h"
 
 //-----------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------
-#define BLEND_NUM		(5)		// モーションブレンドにかかるフレーム数
+#define BLEND_NUM		(20)		// モーションブレンドにかかるフレーム数
 
 //-----------------------------------------------------------------------------
 // コンストラクタ
@@ -65,7 +66,7 @@ CMotion* CMotion::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const c
 	// 角度設定
 	pMotion->SetRotation(rot);
 
-	// モーション情報の割り当て
+	// モーション情報の割り3当て
 	pMotion->BindMotion(CManager::GetManager()->GetMotion()->GetMotion(name));
 
 	// 初期化
@@ -125,8 +126,10 @@ void CMotion::Draw()
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetManager()->GetRenderer()->GetDevice();
 
-	D3DXMATRIX mtxWorldParent;		// 親のワールドマトリックス
-	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
+	// 親のワールドマトリックス
+	D3DXMATRIX mtxWorldParent;
+	// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;
 
 	// ワールドマトリックスの初期化（親）
 	D3DXMatrixIdentity(&mtxWorldParent);
@@ -142,20 +145,6 @@ void CMotion::Draw()
 		m_pos.x, m_pos.y, m_pos.z);
 
 	D3DXMatrixMultiply(&mtxWorldParent, &mtxWorldParent, &mtxTrans);
-
-	//switch (g_Player.Weapon)
-	//{
-	//case PLAYERWEAPON_GUN:			//プレイヤーが銃を所持している場合
-	//								//剣の描画をやめ、銃を描画する
-	//	g_Player.aParts[15].bUse = false;
-	//	g_Player.aParts[16].bUse = true;
-	//	break;
-	//case PLAYERWEAPON_SWORD:		//プレイヤーが剣を所持している場合
-	//								//銃の描画をやめ、剣を描画する
-	//	g_Player.aParts[15].bUse = true;
-	//	g_Player.aParts[16].bUse = false;
-	//	break;
-	//}
 
 	for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
 	{
@@ -205,10 +194,14 @@ void CMotion::Draw()
 
 		for (int nCntMat = 0; nCntMat < (int)m_motion.aParts[m_motion.aParts[nCntParts].nIndex].xFile.nNumMat; nCntMat++)
 		{
+			// 色保存用
+			D3DCOLORVALUE diffuse = pMat[nCntMat].MatD3D.Diffuse;
+
+			// 色が黒かったら
 			if (pMat[nCntMat].MatD3D.Diffuse.r <= 0.0f &&
 				pMat[nCntMat].MatD3D.Diffuse.g <= 0.0f &&
 				pMat[nCntMat].MatD3D.Diffuse.b <= 0.0f)
-			{
+			{// 特定の色を設定
 				pMat[nCntMat].MatD3D.Diffuse = (D3DCOLORVALUE)m_col;
 			}
 
@@ -223,6 +216,9 @@ void CMotion::Draw()
 
 			// テクスチャの設定を元に戻す
 			pDevice->SetTexture(0, NULL);
+
+			// 色を元に戻す
+			pMat[nCntMat].MatD3D.Diffuse = diffuse;
 		}
 
 		// 保持していたマテリアルを戻す
@@ -263,6 +259,9 @@ void CMotion::NormalizeRot()
 //-----------------------------------------------------------------------------
 bool CMotion::Motion()
 {
+	// デバック表示
+	//CManager::GetManager()->GetDebugProc()->Print("%f%f%f", m_motion.aParts[0].pos.x, m_motion.aParts[0].pos.y, m_motion.aParts[0].pos.z);
+
 	// モーション切り替え中はモーション再生を行わない
 	if (m_bChange == true)
 	{
@@ -279,36 +278,36 @@ bool CMotion::Motion()
 		nFrame = 1;
 	}
 
-	//モーション再生処理
+	// モーション再生処理
 	for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
 	{
-		//位置更新（ローカル座標）
+		// 位置更新（ローカル座標）
 		m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].pos) / (float)nFrame;
 
-		//角度更新
+		// 角度更新
 		m_motion.aParts[nCntParts].rot += (m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].rot - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].rot) / (float)nFrame;
 	}
 
-	//フレームの加算
+	// フレームの加算
 	m_animIdx.nFrame++;
 
 	if (m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame <= m_animIdx.nFrame)
-	{//フレーム数が設定の値を超えたら
+	{// フレーム数が設定の値を超えたら
 
-		//再生中のキー数の加算
+		// 再生中のキー数の加算
 		m_animIdx.nKeySetIdx++;
 
-		//フレームの初期化
+		// フレームの初期化
 		m_animIdx.nFrame = 0;
 
 		if (m_motion.aMotion[nMotion].nNumKey <= m_animIdx.nKeySetIdx)
-		{//再生中のキー数が設定の値を超えたら
+		{// 再生中のキー数が設定の値を超えたら
 			if (m_motion.aMotion[nMotion].nLoop == 1)
 			{
 				m_animIdx.nKeySetIdx = 0;
 			}
 			else
-			{//現在再生中のモーションからニュートラルモーションに変更
+			{// 現在再生中のモーションからニュートラルモーションに変更
 				m_animIdx.nKeySetIdx = 0;
 				m_animIdx.nMotionIdx = 0;
 
@@ -323,19 +322,19 @@ bool CMotion::Motion()
 
 //-----------------------------------------------------------------------------
 // モーション設定(切り替え)
+// const int& nNum → 再生するモーション番号
 //-----------------------------------------------------------------------------
 void CMotion::Set(const int& nNum)
 {
+	if (m_bChange == true && m_animIdx.nMotionIdx == nNum)
+	{
+		// モーションの初期化
+		Change(nNum, 0);
+		m_bChange = false;
+	}
 	// 現在のモーションが再生するモーション以外
-	if (m_animIdx.nMotionIdx != nNum)
+	else if (m_animIdx.nMotionIdx != nNum)
 	{// モーションの設定
-
-		//m_animIdx.nMotionIdx = nNum;
-		//m_animIdx.nKeySetIdx = 1;
-		//m_animIdx.nFrame = 0;
-
-		//// モーションの初期化
-		//Change(nNum, 0);
 
 		// フレーム数の初期化
 		if (m_bChange == false)
@@ -345,14 +344,13 @@ void CMotion::Set(const int& nNum)
 			int nFrame = m_motion.aMotion[nMotion].aKeyInfo[nKey].nFrame;
 			int nNumKey = m_motion.aMotion[nMotion].nNumKey;
 
+			// 体(親パーツ)のローカル座標を戻す
+			m_motion.aParts[0].pos = m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[0].pos + m_motion.posParent;
+
 			// 各パーツのローカル座標を保存
 			for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
 			{
-				m_motion.aParts[nCntParts].changePos = ((m_motion.aMotion[nMotion].aKeyInfo[nKey].aKey[nCntParts].pos - m_motion.aMotion[nMotion].aKeyInfo[((nKey - 1) + nNumKey) % nNumKey].aKey[nCntParts].pos) / (float)nFrame) * m_animIdx.nFrame;
-
 				m_motion.aParts[nCntParts].changeRot = m_motion.aParts[nCntParts].rot;
-
-				//m_motion.aParts[nCntParts].changeRot =
 			}
 
 			// フレーム数の初期化
@@ -362,25 +360,9 @@ void CMotion::Set(const int& nNum)
 			m_bChange = true;
 		}
 
-		//// モーション再生処理
-		//for (int nCnt = 0; nCnt < m_motion.nNumParts; nCnt++)
-		//{
-		//	// 位置更新（ローカル座標）
-		//	m_motion.aParts[nCnt].pos += m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCnt].pos / (float)5;
-
-		//	// 角度更新
-		//	m_motion.aParts[nCnt].rot += (m_motion.aParts[nCnt].baseRot + m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCnt].rot - m_motion.aParts[nCnt].rot) / (float)5;
-		//}
-
-		// 体(親パーツ)の位置を戻す
-		//m_motion.aParts[0].pos += m_motion.aMotion[nNum].aKeyInfo[0].aKey[0].pos - m_motion.posParent / (float)5;
-
 		// モーション再生処理
 		for (int nCntParts = 0; nCntParts < m_motion.nNumParts; nCntParts++)
 		{
-			// 位置更新（ローカル座標）
-			m_motion.aParts[nCntParts].pos += (m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCntParts].pos - m_motion.aParts[nCntParts].changePos) / (float)BLEND_NUM;
-
 			// 角度更新
 			m_motion.aParts[nCntParts].rot += (m_motion.aMotion[nNum].aKeyInfo[0].aKey[nCntParts].rot - m_motion.aParts[nCntParts].changeRot) / (float)BLEND_NUM;
 		}

@@ -28,7 +28,7 @@
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CLogoExtend::CLogoExtend() :m_DefaultSize(0.0f, 0.0f), m_anim(ANIM_NONE)
+CLogoExtend::CLogoExtend() :m_DefaultSize(0.0f, 0.0f), m_anim(ANIM_NONE), m_bSceneChange(false)
 {
 	SetType(EObject::OBJ_LOGO);
 }
@@ -110,8 +110,12 @@ void CLogoExtend::Update()
 	// 表示カウンターが0以下
 	if (nCountUninit <= 0)
 	{
-		// モードの設定
-		CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+		// 画面遷移判定がONなら
+		if (m_bSceneChange == true)
+		{
+			// モードの設定
+			CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+		}
 
 		// 破棄
 		Uninit();

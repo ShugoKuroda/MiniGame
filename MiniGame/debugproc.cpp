@@ -14,13 +14,13 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXFONT CDebugProc::m_pFont = NULL;
-char CDebugProc::m_aStr[1024] = {};
+//LPD3DXFONT CDebugProc::m_pFont = NULL;
+//char CDebugProc::m_aStr[1024] = {};
 
 //=============================================================================
 // CDebugProcのコンストラクタ
 //=============================================================================
-CDebugProc::CDebugProc()
+CDebugProc::CDebugProc() :m_pFont(), m_aStr{}
 {
 }
 
@@ -34,7 +34,7 @@ CDebugProc::~CDebugProc()
 //=============================================================================
 // 初期化処理
 //=============================================================================
-void CDebugProc::Init(void)
+void CDebugProc::Init()
 {
 	// フォントの生成
 	D3DXCreateFont(CManager::GetManager()->GetRenderer()->GetDevice(), 18, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,
@@ -47,7 +47,7 @@ void CDebugProc::Init(void)
 //=============================================================================
 // 終了処理
 //=============================================================================
-void CDebugProc::Uninit(void)
+void CDebugProc::Uninit()
 {
 	// フォントの破棄
 	if (m_pFont != NULL)
@@ -60,7 +60,7 @@ void CDebugProc::Uninit(void)
 //=============================================================================
 // 描画処理
 //=============================================================================
-void CDebugProc::Draw(void)
+void CDebugProc::Draw()
 {
 	RECT rect = { 0, 0, CRenderer::SCREEN_WIDTH, CRenderer::SCREEN_HEIGHT };
 
@@ -98,6 +98,7 @@ void CDebugProc::Print(const char *fmt, ...)
 		else
 		{
 			fmt++;
+
 			switch (*fmt)
 			{
 			case 'd':
@@ -117,8 +118,10 @@ void CDebugProc::Print(const char *fmt, ...)
 				break;
 			}
 		}
-		nCnt += wsprintf(&aStr[nCnt], "%s",&aWard[0]);
+
+		nCnt += wsprintf(&aStr[nCnt], "%s", &aWard[0]);
 	}
+
 	// 識別を終える
 	va_end(arg);
 

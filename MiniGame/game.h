@@ -83,6 +83,9 @@ private:	//メンバ変数
 
 	// 敵のセット情報
 	EnemySetInfo m_EnemyInfo;
+
+	// カウントダウンを始めるまでのカウンター
+	int m_StartCnt;
 };
 
 #endif	//_GAME_H_

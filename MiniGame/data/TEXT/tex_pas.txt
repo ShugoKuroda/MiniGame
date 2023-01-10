@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 5
+TEX_NUM = 6
 
 //==================================================
 // テクスチャ読み込み情報
@@ -42,6 +42,12 @@ END_TEXSET
 TEXSET
 	PAS = data/TEXTURE/sky000.jpg
 	NAME = TEX_TYPE_GAME_BG
+END_TEXSET
+
+// 逃走ロゴ
+TEXSET
+	PAS = data/TEXTURE/escape.png
+	NAME = TEX_TYPE_LOGO_ESCAPE
 END_TEXSET
 
 END_SCRIPT		# この行は消さないこと！

@@ -21,6 +21,7 @@ public:
 	enum LOGOTYPE
 	{//ロゴの種類
 		TYPE_NONE = 0,		// 何もなし
+		TYPE_ESCAPE,		// 逃走喚起ロゴ
 		TYPE_WARNING,		// ボス接近ロゴ
 		TYPE_WARNING_SUB,	// ボス接近の説明ロゴ
 		TYPE_REMINDER,		// 注意喚起標識のロゴ

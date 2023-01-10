@@ -18,16 +18,23 @@
 class CDebugProc
 {
 public:
+	// コンストラクタ
 	CDebugProc();
+	// デストラクタ
 	~CDebugProc();
-	void Init(void);
-	void Uninit(void);
-	static void Print(const char *fmt, ...);
-	static void Draw(void);
+
+	// 初期化
+	void Init();
+	// 終了
+	void Uninit();
+	// 表示
+	void Print(const char *fmt, ...);
+	// 描画
+	void Draw();
 
 private:
-	static LPD3DXFONT m_pFont;		// フォントのポインタ
-	static char m_aStr[1024];		// 文字数を格納するバッファ
+	LPD3DXFONT m_pFont;		// フォントのポインタ
+	char m_aStr[1024];		// 文字数を格納するバッファ
 };
 
 #endif
