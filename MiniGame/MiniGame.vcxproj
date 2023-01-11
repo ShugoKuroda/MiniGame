@@ -163,6 +163,7 @@
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="bg_move.cpp" />
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="billboard_player.cpp" />
     <ClCompile Include="bubble.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="bullet_option.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="bg.h" />
     <ClInclude Include="bg_move.h" />
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="billboard_player.h" />
     <ClInclude Include="bubble.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="bullet_option.h" />

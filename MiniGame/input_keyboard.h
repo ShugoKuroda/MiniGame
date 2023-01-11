@@ -27,6 +27,7 @@ public:
 		KEYINFO_RIGHT,				// 右移動
 		KEYINFO_LEFT,				// 左移動
 		KEYINFO_PAUSE,				// ポーズ
+		KEYINFO_JUMP,				// ジャンプ
 		KEYINFO_ATTACK,				// 攻撃
 		KEYINFO_1,					// 1
 		KEYINFO_2,					// 2
@@ -72,7 +73,8 @@ private:
 		DIK_D,			// 右移動
 		DIK_A,			// 左移動
 		DIK_P,			// ポーズ
-		DIK_SPACE,		// 攻撃
+		DIK_SPACE,		// ジャンプ
+		DIK_L,			// 攻撃
 		DIK_1,			// 1
 		DIK_2,			// 2
 		DIK_3,			// 3

@@ -61,6 +61,7 @@ public:
 		STATE_RUN,			// 走る
 		STATE_ATTACK,		// 攻撃
 		STATE_JUMP,			// ジャンプ
+		STATE_DAMAGE,		// 被弾
 		STATE_DIE,			// 死亡状態
 		STATE_INAVALANCHE,	// 雪崩に巻き込まれている状態
 		STATE_MAX
@@ -94,8 +95,8 @@ public:
 	void Update() override;
 	// 描画
 	void Draw() override;
-	// ダメージ処理
-	void Damage();
+	// 死亡処理
+	void Die();
 
 	// 状態の取得
 	STATE GetState() { return m_state; }
@@ -116,6 +117,8 @@ public:
 	void SetMoveY(const float& fmove) { m_move.y = fmove; }
 	// 状態の設定
 	void SetState(const STATE& inState) { m_state = inState; }
+	// 被弾ベクトルの設定
+	void SetVec(const D3DXVECTOR3& vec) { m_knockBack = vec; }
 
 	// ジャンプフラグの設定
 	void SetJumping(const bool& bJumping) { m_bIsJumping = bJumping; }
@@ -131,10 +134,12 @@ private:
 	bool Move();
 	// ジャンプ
 	void Jump();
+	// 攻撃
+	void Attack();
+	// 被弾処理
+	void Damage();
 	// 状態管理
 	void State();
-	// 死亡処理
-	void Die();
 
 	//メンバ変数
 private:	
@@ -177,6 +182,17 @@ private:
 	bool m_bControlKeyboard;
 	//海に入ったかどうか
 	bool m_bInSea;
+
+	// 攻撃中かどうか
+	bool m_bAttack;
+	// 攻撃解除カウンター
+	int m_nAttackCnt;
+
+	// 被弾ベクトル
+	D3DXVECTOR3 m_knockBack;
+	// 被弾解除用カウンター
+	int m_nDamageCnt;
+
 	//雪崩を抜けるためのキー(ボタン)入力回数
 	int m_nPushButton;
 

@@ -45,7 +45,7 @@ public:
 	void Update();
 
 	// プレイヤー情報
-	CPlayer* GetPlayer() { return m_pPlayer[0]; }
+	CPlayer* GetPlayer(int nNum) { return m_pPlayer[nNum]; }
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
 

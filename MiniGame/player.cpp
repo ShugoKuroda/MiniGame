@@ -30,6 +30,7 @@
 #include "game.h"
 #include "camera.h"
 #include "x_file_motion.h"
+#include "billboard_player.h"
 
 //-----------------------------------------------------------------------------
 // マクロ定義
@@ -51,6 +52,8 @@
 #define GRAVITY			(0.1f)
 // ジャンプ力
 #define JUMP_POWER		(2.0f)
+// 当たり判定の範囲
+#define ATTACK_LENGTH	(30.0f)
 
 //-----------------------------------------------------------------------------
 // using宣言
@@ -86,7 +89,8 @@ const int CPlayer::DEFAULT_LIFE = 2;
 CPlayer::CPlayer() :
 	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0),
 	m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0), m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0),
-	m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false)
+	m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false),
+	m_knockBack(0.0f, 0.0f, 0.0f), m_nDamageCnt(0), m_nAttackCnt(0)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_PLAYER);
@@ -140,26 +144,86 @@ HRESULT CPlayer::Init()
 		CMotion::SetRotDest(rotCamera);
 	}
 
-	// スコアの生成
-	CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
-
 	// 操作可能状態にする
 	m_bControl = true;
 
 	// 色の設定
 	switch (m_nPlayerNum)
 	{
+		// 1P
 	case 0:
+
+		// ゲーム中なら
+		if (CManager::GetManager()->GetGame() != nullptr)
+		{
+			// スコアの生成
+			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			// 色の設定
+			m_pScore->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		}
+
+		// 色の設定
 		CMotion::SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.0f));
+
+		// プレイヤー表記の生成
+		CBillboardPlayer::Create(GetpPosition(), "TEX_TYPE_BILLBOARD_1P");
 		break;
+
+		// 2P
 	case 1:
+
+		// ゲーム中なら
+		if (CManager::GetManager()->GetGame() != nullptr)
+		{
+			// スコアの生成
+			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			// 色の設定
+			m_pScore->SetColor(D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+		}
+
+		// 色の設定
 		CMotion::SetColor(D3DXCOLOR(0.0f, 0.0f, 1.0f, 0.0f));
+
+		// プレイヤー表記の生成
+		CBillboardPlayer::Create(&GetPosition(), "TEX_TYPE_BILLBOARD_2P");
 		break;
+
+		// 3P
 	case 2:
+
+		// ゲーム中なら
+		if (CManager::GetManager()->GetGame() != nullptr)
+		{
+			// スコアの生成
+			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			// 色の設定
+			m_pScore->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+		}
+
+		// 色の設定
 		CMotion::SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.0f));
+
+		// プレイヤー表記の生成
+		CBillboardPlayer::Create(&GetPosition(), "TEX_TYPE_BILLBOARD_3P");
 		break;
+
+		// 4P
 	case 3:
+
+		// ゲーム中なら
+		if (CManager::GetManager()->GetGame() != nullptr)
+		{
+			// スコアの生成
+			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			// 色の設定
+			m_pScore->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+		}
+
+		// 色の設定
 		CMotion::SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.0f));
+
+		// プレイヤー表記の生成
+		CBillboardPlayer::Create(&GetPosition(), "TEX_TYPE_BILLBOARD_3P");
 		break;
 	default:
 		break;
@@ -203,6 +267,9 @@ void CPlayer::Update()
 
 		// ジャンプ
 		Jump();
+
+		// 攻撃
+		Attack();
 	}
 
 	// 重力負荷をかける
@@ -256,6 +323,12 @@ void CPlayer::Update()
 	// ゲーム参加中であれば
 	if (m_bStart == true)
 	{
+		// ゲームが始まったら
+		if (CManager::GetManager()->GetGame()->GetStart() == true)
+		{
+			m_pScore->Add(1);
+		}
+
 		// カメラ位置の取得
 		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
@@ -532,10 +605,10 @@ void CPlayer::Jump()
 
 		// キーボード操作の場合
 		if (m_bControlKeyboard == true &&
-			pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true)
+			pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_JUMP) == true)
 		{// SPACEキー押下
 
-		 // ジャンプ力の設定
+			// ジャンプ力の設定
 			m_move.y = fJump;
 
 			// ジャンプフラグの設定
@@ -546,11 +619,93 @@ void CPlayer::Jump()
 			pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nGamePadNum) == true)
 		{// Aボタン押下
 
-		 // ジャンプ力の設定
+			// ジャンプ力の設定
 			m_move.y = fJump;
 
 			// ジャンプフラグの設定
 			m_bIsJumping = true;
+		}
+	}
+}
+
+//-----------------------------------------------------------------------------
+// 攻撃処理
+//-----------------------------------------------------------------------------
+void CPlayer::Attack()
+{
+	// キーボード情報の取得
+	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
+	// ジョイパッド情報の取得
+	CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
+
+	if (m_bAttack)
+	{
+		m_state = STATE_ATTACK;
+		
+		m_nAttackCnt++;
+
+		if (m_nAttackCnt >= 55)
+		{
+			m_bAttack = false;
+			m_nAttackCnt = 0;
+		}
+	}
+	else if (GetChange() == false)
+	{
+		// キーボード操作の場合
+		if (m_bControlKeyboard == true && pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true ||
+			m_bControlKeyboard == false && pJoypad->GetTrigger(CInputJoypad::JOYKEY_B, m_nGamePadNum) == true)
+		{// SPACEキー押下
+
+			m_bAttack = true;
+
+			//腕先の位置情報を取得(ワールドマトリックスからワールド座標を取得)
+			D3DXVECTOR3 AttackPos = D3DXVECTOR3(
+				CMotion::GetMotion().aParts[2].mtxWorld._41,
+				CMotion::GetMotion().aParts[2].mtxWorld._42,
+				CMotion::GetMotion().aParts[2].mtxWorld._43);
+
+			for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+			{
+				// 攻撃対象が自分自身なら
+				if (nCntPlayer == m_nPlayerNum)
+				{
+					continue;
+				}
+
+				CTitle *pTitle = CManager::GetManager()->GetTitle();
+
+				// タイトルのnullチェック
+				if (pTitle != nullptr)
+				{
+					CPlayer *pPlayer = pTitle->GetPlayer(nCntPlayer);
+
+					// プレイヤーのnullチェック
+					if (pPlayer != nullptr)
+					{
+						if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision2D(AttackPos, pPlayer->GetPosition(), ATTACK_LENGTH, pPlayer->GetSizeMax().x))
+						{//弾と当たったら(球体の当たり判定)
+
+							// 被弾音
+							CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+
+							//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
+							D3DXVECTOR3 vecToPlayer = pPlayer->GetPosition() - AttackPos;
+
+							//敵からプレイヤーへのベクトル(移動量)に変換する
+							D3DXVec3Normalize(&vecToPlayer, &vecToPlayer);
+
+							// ダメージ状態にする
+							pPlayer->SetState(STATE_DAMAGE);
+
+							// ベクトルを保存
+							pPlayer->SetVec(vecToPlayer);
+
+							//return true;	//当たった
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -580,6 +735,10 @@ void CPlayer::State()
 
 		// 攻撃
 	case CPlayer::STATE_ATTACK:
+
+		// 移動モーション
+		CMotion::Set(2);
+
 		break;
 
 		// ジャンプ
@@ -587,6 +746,20 @@ void CPlayer::State()
 
 		// ジャンプモーション
 		CMotion::Set(3);
+
+		break;
+
+		// 被弾
+	case CPlayer::STATE_DAMAGE:
+
+		// 操作不能状態にする
+		m_bControl = false;
+
+		// 被弾モーション
+		CMotion::Set(7);
+
+		//ダメージ処理
+		Damage();
 
 		break;
 
@@ -608,11 +781,28 @@ void CPlayer::State()
 //-----------------------------------------------------------------------------
 void CPlayer::Damage()
 {
+	// 位置の取得
+	D3DXVECTOR3 pos = GetPosition();
+
+	// 被弾ベクトルの加算
+	pos += m_knockBack;
+
+	// 位置の設定
+	SetPosition(pos);
+
+	m_nDamageCnt++;
+
+	if (m_nDamageCnt >= 30)
+	{
+		m_state = STATE_NORMAL;
+		m_nDamageCnt = 0;
+	}
+
 	//if (m_BarrierLevel == CBarrier::LEVEL_NONE)
 	//{
 
 	// 死亡処理
-	Die();
+	//Die();
 
 	// プレイヤー死亡音
 	//CSound::Play(CSound::SOUND_LABEL_SE_DIE_PLAYER);

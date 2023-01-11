@@ -183,7 +183,7 @@ bool CBoss::Collision(D3DXVECTOR3 posStart)
 				//“G‚Æ“–‚½‚Á‚½‚ç(‹…‘Ì‚Ì“–‚½‚è”»’è)
 				if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
 				{//ƒ_ƒ[ƒWˆ—
-					pPlayer->Damage();
+					pPlayer->Die();
 					return true;	//“–‚½‚Á‚½
 				}
 			}

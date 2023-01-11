@@ -97,14 +97,17 @@ void CLogo::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CLogo::Update()
 {
-	// カウントを減らす
-	m_nCountUninit--;
-
 	// 表示カウンターが0以下
-	if (m_nCountUninit <= 0)
+	if (m_nCountUninit == 0)
 	{// 破棄
 		Uninit();
 		return;
+	}
+	// カウンターが0より大きい
+	else if(m_nCountUninit > 0)
+	{
+		// カウントを減らす
+		m_nCountUninit--;
 	}
 }
 

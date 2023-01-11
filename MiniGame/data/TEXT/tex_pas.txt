@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 6
+TEX_NUM = 11
 
 //==================================================
 // テクスチャ読み込み情報
@@ -48,6 +48,36 @@ END_TEXSET
 TEXSET
 	PAS = data/TEXTURE/escape.png
 	NAME = TEX_TYPE_LOGO_ESCAPE
+END_TEXSET
+
+// newレコードUI
+TEXSET
+	PAS = data/TEXTURE/record.jpg
+	NAME = TEX_TYPE_UI_RECORD
+END_TEXSET
+
+// プレイヤー表記ロゴ1P
+TEXSET
+	PAS = data/TEXTURE/PP1player.png
+	NAME = TEX_TYPE_BILLBOARD_1P
+END_TEXSET
+
+// プレイヤー表記ロゴ2P
+TEXSET
+	PAS = data/TEXTURE/PP2player.png
+	NAME = TEX_TYPE_BILLBOARD_2P
+END_TEXSET
+
+// プレイヤー表記ロゴ3P
+TEXSET
+	PAS = data/TEXTURE/PP3player.png
+	NAME = TEX_TYPE_BILLBOARD_3P
+END_TEXSET
+
+// プレイヤー表記ロゴ4P
+TEXSET
+	PAS = data/TEXTURE/PP4player.png
+	NAME = TEX_TYPE_BILLBOARD_4P
 END_TEXSET
 
 END_SCRIPT		# この行は消さないこと！

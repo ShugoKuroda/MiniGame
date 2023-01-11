@@ -175,6 +175,9 @@ HRESULT CGame::Init()
 		}
 	}
 
+	// 新記録UIの生成
+	CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 30.0f, 0.0f), D3DXVECTOR2(200.0f, 40.0f), "TEX_TYPE_UI_RECORD", -1);
+
 	////敵情報読み込み
 	//m_EnemyInfo.pCreate = LoadSpace::GetEnemy();
 	////ウェーブ数の読み込み
