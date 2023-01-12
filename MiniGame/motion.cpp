@@ -33,7 +33,7 @@
 //-----------------------------------------------------------------------------
 CMotion::CMotion() :
 	m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_rotDest(0.0f, 0.0f, 0.0f), m_bChange(false),
-	m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f)
+	m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_fLength(0.0f)
 {
 	//èâä˙âª
 	memset(&m_animIdx, 0, sizeof(AnimIdx));

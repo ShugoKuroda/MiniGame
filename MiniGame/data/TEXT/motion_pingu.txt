@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 6
+NUM_MODEL = 7
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -20,12 +20,13 @@ MODEL_FILENAME = data/MODEL/pingu/pengu003_RightArm.x		# [2]
 MODEL_FILENAME = data/MODEL/pingu/pengu002_LeftArm.x		# [3]
 MODEL_FILENAME = data/MODEL/pingu/pengu004_RightLeg.x		# [4]
 MODEL_FILENAME = data/MODEL/pingu/pengu005_LeftLeg.x		# [5]
+MODEL_FILENAME = data/MODEL/pingu/pengu006_collision.x		# [6]
 
 #------------------------------------------------------------------------------
 # キャラクター情報
 #------------------------------------------------------------------------------
 CHARACTERSET
-	NUM_PARTS = 6					# パーツ数
+	NUM_PARTS = 7					# パーツ数
 	MOVE = 0.35						# 移動量
 	JUMP = 2.25						# ジャンプ量
 	RADIUS = 20.0					# 半径
@@ -66,10 +67,17 @@ CHARACTERSET
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 		
-PARTSSET
+	PARTSSET
 		INDEX = 5					# 足2
 		PARENT = 0					# (親)体
 		POS = -8.0 -0.5 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 6					# 右手の先
+		PARENT = 2					# (親)右手
+		POS = 20.0 0.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 END_CHARACTERSET
@@ -116,6 +124,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 15 >> ---
@@ -146,6 +159,11 @@ MOTIONSET
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
@@ -182,6 +200,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 3 / 15 >> ---
@@ -212,6 +235,11 @@ MOTIONSET
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
@@ -248,6 +276,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 5 / 15 >> ---
@@ -278,6 +311,11 @@ MOTIONSET
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
@@ -314,6 +352,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 7 / 15 >> ---
@@ -344,6 +387,11 @@ MOTIONSET
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
@@ -380,6 +428,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = -0.69 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 9 / 15 >> ---
@@ -412,6 +465,11 @@ MOTIONSET
 		KEY	# ----- [ 5 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = -0.69 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 
@@ -446,6 +504,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = -0.69 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 11 / 15 >> ---
@@ -478,6 +541,11 @@ MOTIONSET
 		KEY	# ----- [ 5 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = -0.69 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 
@@ -512,6 +580,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = -0.69 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 13 / 15 >> ---
@@ -545,6 +618,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = -0.69 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 14 / 15 >> ---
@@ -575,6 +653,11 @@ MOTIONSET
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
@@ -619,6 +702,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = 0.44 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 2 >> ---
@@ -651,6 +739,11 @@ MOTIONSET
 		KEY	# ----- [ 5 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = -0.32 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 END_MOTIONSET
@@ -693,6 +786,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = -0.63 0.19 -0.56
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 2 / 5 >> ---
@@ -726,6 +824,11 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = -2.14 0.19 -0.19
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 3 / 5 >> ---
@@ -756,6 +859,11 @@ MOTIONSET
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
@@ -792,11 +900,16 @@ MOTIONSET
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 END_MOTIONSET
 
 #---------------------------------------
-# ジャンプモーション
+# ジャンプモーション 3
 #---------------------------------------
 MOTIONSET
 	LOOP = 1						# ループするかどうか[0:ループしない / 1:ループする]
@@ -833,6 +946,12 @@ MOTIONSET
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.0 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
+		
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 1 / 2 >> ---
@@ -865,6 +984,11 @@ MOTIONSET
 		KEY							# [5]左足
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.0 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 
@@ -899,11 +1023,16 @@ MOTIONSET
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.0 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 END_MOTIONSET
 
 #---------------------------------------
-# 着地モーション
+# 着地モーション 4
 #---------------------------------------
 MOTIONSET
 	LOOP = 0						# ループするかどうか[0:ループしない / 1:ループする]
@@ -977,7 +1106,7 @@ MOTIONSET
 END_MOTIONSET
 
 #---------------------------------------
-# 足場空振りモーション
+# 足場空振りモーション 5
 #---------------------------------------
 MOTIONSET
 	LOOP = 0						# ループするかどうか[0:ループしない / 1:ループする]
@@ -1216,7 +1345,7 @@ MOTIONSET
 END_MOTIONSET
 
 #---------------------------------------
-# 落下モーション
+# 落下モーション 6
 #---------------------------------------
 MOTIONSET
 	LOOP = 1						# ループするかどうか[0:ループしない / 1:ループする]
@@ -1290,7 +1419,7 @@ MOTIONSET
 END_MOTIONSET
 
 #---------------------------------------
-# 被弾モーション
+# 被弾モーション 7
 #---------------------------------------
 MOTIONSET
 	LOOP = 0						# ループするかどうか[0:ループしない / 1:ループする]
@@ -1327,6 +1456,11 @@ MOTIONSET
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
 		END_KEY
+		
+		KEY							# [6]当たり判定
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 2 >> ---
@@ -1360,6 +1494,11 @@ MOTIONSET
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
 		END_KEY
+		
+		KEY							# [6]当たり判定
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
+		END_KEY
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 2 / 2 >> ---
@@ -1392,6 +1531,11 @@ MOTIONSET
 		KEY							# [5]左足
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
+		END_KEY
+		
+		KEY							# [6]当たり判定
+			POS = 0.0 0.0 0.0
+			ROT = 0.0 0.0 0.0
 		END_KEY
 	END_KEYSET
 END_MOTIONSET
@@ -1434,6 +1578,11 @@ MOTIONSET
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.5 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 5 >> ---
@@ -1466,6 +1615,11 @@ MOTIONSET
 		KEY							# [5]左足
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.5 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 	
@@ -1500,6 +1654,11 @@ MOTIONSET
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.5 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 3 / 5 >> ---
@@ -1532,6 +1691,11 @@ MOTIONSET
 		KEY							# [5]左足
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.5 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 	
@@ -1566,6 +1730,11 @@ MOTIONSET
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.5 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 5 / 5 >> ---
@@ -1598,6 +1767,11 @@ MOTIONSET
 		KEY							# [5]左足
 			POS = 0.0 0.0 0.0
 			ROT = 0.3 0.5 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 END_MOTIONSET
@@ -1640,6 +1814,11 @@ MOTIONSET
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 
 KEYSET			# --- << KEY : 1 / 7 >> ---
@@ -1672,6 +1851,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 		KEY							# [5]左足
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 
@@ -1706,6 +1890,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 3 / 7 >> ---
@@ -1738,6 +1927,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 		KEY							# [5]左足
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 	
@@ -1772,6 +1966,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 5 / 7 >> ---
@@ -1804,6 +2003,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 		KEY							# [5]左足
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 	
@@ -1838,6 +2042,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
 		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
+		END_KEY
 	END_KEYSET
 	
 	KEYSET			# --- << KEY : 7 / 7 >> ---
@@ -1870,6 +2079,11 @@ KEYSET			# --- << KEY : 1 / 7 >> ---
 		KEY							# [5]左足
 			POS = 0.0 0.0 -7.0
 			ROT = 1.0 0.0 0.0
+		END_KEY
+		
+		KEY	# ----- [ 6 ] -----
+			POS = 0.00 0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 	END_KEYSET
 END_MOTIONSET

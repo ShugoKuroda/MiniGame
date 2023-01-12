@@ -52,6 +52,10 @@ public:
 	void SetRotDest(const D3DXVECTOR3& rotDest) { m_rotDest = rotDest; }
 	// 全体の色設定
 	void SetColor(const D3DXCOLOR& col) { m_col = col; }
+	// 位置設定
+	void SetSizeMax(const D3DXVECTOR3& size) { m_vtxMax = size; }
+	// 当たり判定の設定
+	void SetCollision(const float& fLength) { m_fLength = fLength; }
 	// 位置取得
 	D3DXVECTOR3 GetPosition() { return m_pos; }
 	// 位置取得
@@ -93,6 +97,8 @@ private:
 	D3DXVECTOR3 m_rotDest;
 	// モデルの最大サイズ,最小サイズ
 	D3DXVECTOR3 m_vtxMax, m_vtxMin;
+	// モデルの当たり判定大きさ
+	float m_fLength;
 	// 全体の色
 	D3DXCOLOR m_col;
 	// ワールドマトリックス

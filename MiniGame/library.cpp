@@ -280,6 +280,21 @@ bool LibrarySpace::CylinderCollision3D(const D3DXVECTOR3 & posIn, const D3DXVECT
 }
 
 //-----------------------------------------------------------------------------------------------
+// •½–Ê‚Ì“–‚½‚è”»’è
+// const float & fsizeIn ¨ 
+// const float & fsizeOut ¨ 
+//-----------------------------------------------------------------------------------------------
+bool LibrarySpace::PlaneCollision(const float & fsizeIn, const float & fsizeOut)
+{
+	if (fsizeIn >= fsizeOut)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+//-----------------------------------------------------------------------------------------------
 // —”‚Ìæ“¾
 //-----------------------------------------------------------------------------------------------
 int LibrarySpace::GetRandNum(int nMax, int nMin)

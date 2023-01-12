@@ -119,6 +119,8 @@ public:
 	void SetState(const STATE& inState) { m_state = inState; }
 	// 被弾ベクトルの設定
 	void SetVec(const D3DXVECTOR3& vec) { m_knockBack = vec; }
+	// 操作状態の設定
+	void SetControl(const bool& bControl) { m_bControl = bControl; }
 
 	// ジャンプフラグの設定
 	void SetJumping(const bool& bJumping) { m_bIsJumping = bJumping; }

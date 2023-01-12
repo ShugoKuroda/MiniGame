@@ -49,9 +49,6 @@
     <ClCompile Include="item.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="library.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="life.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
     <ClCompile Include="billboard_player.cpp">
       <Filter>ソースファイル\billboard</Filter>
     </ClCompile>
+    <ClCompile Include="library.cpp">
+      <Filter>ソースファイル\便利</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -238,9 +238,6 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="library.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="life.h">
@@ -378,6 +375,9 @@
     <ClInclude Include="billboard_player.h">
       <Filter>ソースファイル\billboard</Filter>
     </ClInclude>
+    <ClInclude Include="library.h">
+      <Filter>ソースファイル\便利</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -418,6 +418,9 @@
     </Filter>
     <Filter Include="ソースファイル\billboard">
       <UniqueIdentifier>{36614ecd-aa9b-49e0-b90c-ec23a64ee82e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\便利">
+      <UniqueIdentifier>{185cd90f-278b-4e14-a0ce-c1c31f9cfaec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -31,6 +31,7 @@ namespace LibrarySpace
 	EStatePush BoxCollisionUnder3D(D3DXVECTOR3* pPosIn, const D3DXVECTOR3* pPosInOld, const D3DXVECTOR3* pPosOut, const D3DXVECTOR3* pSizeIn, const D3DXVECTOR3* pSizeOut);
 	bool SphereCollision2D(const D3DXVECTOR3& posIn, const D3DXVECTOR3& posOut, const float& fsizeIn, const float& fsizeOut);
 	bool CylinderCollision3D(const D3DXVECTOR3& posIn, const D3DXVECTOR3& posOut, const float& fsizeIn, const float& fsizeOut);
+	bool PlaneCollision(const float& fsizeIn, const float& fsizeOut);
 	int GetRandNum(int nMax, int nMin);
 	float GetRandFloat(int nMax, int nMin, int nNumDiv);
 	float GetSinVec(float fRot, float fNumMul);

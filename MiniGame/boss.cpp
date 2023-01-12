@@ -163,9 +163,6 @@ void CBoss::Draw()
 //-----------------------------------------------------------------------------------------------
 bool CBoss::Collision(D3DXVECTOR3 posStart)
 {
-	//サイズ取得
-	float fLength = GetSizeMax().x;
-
 	// プレイヤー生成
 	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
 	{
@@ -175,13 +172,13 @@ bool CBoss::Collision(D3DXVECTOR3 posStart)
 		if (pPlayer != nullptr)
 		{
 			// プレイヤーが通常状態だったら
-			if (pPlayer->GetState() == CPlayer::STATE_NORMAL)
+			if (pPlayer->GetState() != CPlayer::STATE_DIE)
 			{
 				// プレイヤー座標の取得
 				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
 
 				//敵と当たったら(球体の当たり判定)
-				if (LibrarySpace::CylinderCollision3D(posStart, posPlayer, fLength, pPlayer->GetSizeMax().x))
+				if (LibrarySpace::PlaneCollision(posPlayer.z, posStart.z))
 				{//ダメージ処理
 					pPlayer->Die();
 					return true;	//当たった

@@ -272,6 +272,12 @@ void CPlayer::Update()
 		Attack();
 	}
 
+	if (m_state == STATE_DAMAGE)
+	{
+		// 被弾処理
+		Damage();
+	}
+
 	// 重力負荷をかける
 	m_move.y -= GRAVITY;
 	
@@ -641,9 +647,64 @@ void CPlayer::Attack()
 	if (m_bAttack)
 	{
 		m_state = STATE_ATTACK;
+
+		//腕先の位置情報を取得(ワールドマトリックスからワールド座標を取得)
+		D3DXVECTOR3 AttackPos = D3DXVECTOR3(
+			CMotion::GetMotion().aParts[2].mtxWorld._41,
+			CMotion::GetMotion().aParts[2].mtxWorld._42,
+			CMotion::GetMotion().aParts[2].mtxWorld._43);
+
+		for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+		{
+			// 攻撃対象が自分自身なら
+			if (nCntPlayer == m_nPlayerNum)
+			{
+				continue;
+			}
+
+			CTitle *pTitle = CManager::GetManager()->GetTitle();
+
+			// タイトルのnullチェック
+			if (pTitle != nullptr)
+			{
+				CPlayer *pPlayer = pTitle->GetPlayer(nCntPlayer);
+
+				// プレイヤーのnullチェック
+				if (pPlayer != nullptr)
+				{
+					D3DXVECTOR3 OutPos = pPlayer->GetPosition();
+
+					if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision2D(AttackPos,
+						D3DXVECTOR3(OutPos.x, OutPos.y + 50.0f, OutPos.z), ATTACK_LENGTH, pPlayer->GetSizeMax().x))
+					{//弾と当たったら(球体の当たり判定)
+
+						// 被弾音
+						CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+
+						//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
+						D3DXVECTOR3 vecToPlayer = pPlayer->GetPosition() - AttackPos;
+
+						//敵からプレイヤーへのベクトル(移動量)に変換する
+						D3DXVec3Normalize(&vecToPlayer, &vecToPlayer);
+
+						// ダメージ状態にする
+						pPlayer->SetState(STATE_DAMAGE);
+
+						pPlayer->SetControl(false);
+
+						// ベクトルを保存
+						pPlayer->SetVec(vecToPlayer);
+
+						//return true;	//当たった
+					}
+				}
+			}
+		}
 		
+		// 攻撃カウンター加算
 		m_nAttackCnt++;
 
+		// 攻撃終了
 		if (m_nAttackCnt >= 55)
 		{
 			m_bAttack = false;
@@ -658,54 +719,6 @@ void CPlayer::Attack()
 		{// SPACEキー押下
 
 			m_bAttack = true;
-
-			//腕先の位置情報を取得(ワールドマトリックスからワールド座標を取得)
-			D3DXVECTOR3 AttackPos = D3DXVECTOR3(
-				CMotion::GetMotion().aParts[2].mtxWorld._41,
-				CMotion::GetMotion().aParts[2].mtxWorld._42,
-				CMotion::GetMotion().aParts[2].mtxWorld._43);
-
-			for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
-			{
-				// 攻撃対象が自分自身なら
-				if (nCntPlayer == m_nPlayerNum)
-				{
-					continue;
-				}
-
-				CTitle *pTitle = CManager::GetManager()->GetTitle();
-
-				// タイトルのnullチェック
-				if (pTitle != nullptr)
-				{
-					CPlayer *pPlayer = pTitle->GetPlayer(nCntPlayer);
-
-					// プレイヤーのnullチェック
-					if (pPlayer != nullptr)
-					{
-						if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision2D(AttackPos, pPlayer->GetPosition(), ATTACK_LENGTH, pPlayer->GetSizeMax().x))
-						{//弾と当たったら(球体の当たり判定)
-
-							// 被弾音
-							CSound::Play(CSound::SOUND_LABEL_SE_HIT);
-
-							//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
-							D3DXVECTOR3 vecToPlayer = pPlayer->GetPosition() - AttackPos;
-
-							//敵からプレイヤーへのベクトル(移動量)に変換する
-							D3DXVec3Normalize(&vecToPlayer, &vecToPlayer);
-
-							// ダメージ状態にする
-							pPlayer->SetState(STATE_DAMAGE);
-
-							// ベクトルを保存
-							pPlayer->SetVec(vecToPlayer);
-
-							//return true;	//当たった
-						}
-					}
-				}
-			}
 		}
 	}
 }
@@ -796,6 +809,7 @@ void CPlayer::Damage()
 	{
 		m_state = STATE_NORMAL;
 		m_nDamageCnt = 0;
+		m_bControl = true;
 	}
 
 	//if (m_BarrierLevel == CBarrier::LEVEL_NONE)
