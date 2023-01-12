@@ -172,15 +172,16 @@ bool CBoss::Collision(D3DXVECTOR3 posStart)
 		if (pPlayer != nullptr)
 		{
 			// プレイヤーが通常状態だったら
-			if (pPlayer->GetState() != CPlayer::STATE_DIE)
+			if (pPlayer->GetState() != CPlayer::STATE_DIE && pPlayer->GetState() != CPlayer::STATE_END)
 			{
 				// プレイヤー座標の取得
 				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
 
 				//敵と当たったら(球体の当たり判定)
-				if (LibrarySpace::PlaneCollision(posPlayer.z, posStart.z))
+				if (LibrarySpace::PlaneCollision(posPlayer.z, posStart.z - 50.0f))
 				{//ダメージ処理
 					pPlayer->Die();
+
 					return true;	//当たった
 				}
 			}

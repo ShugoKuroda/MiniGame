@@ -366,11 +366,18 @@ void CPlayer::Update()
 	// 角度の正規化
 	CMotion::NormalizeRot();
 
-	// 状態管理
-	State();
+	// プレイヤーが終了していなければ
+	if (m_state != STATE_END)
+	{
+		// 状態管理
+		State();
 
-	// モーション再生
-	CMotion::Motion();
+		// モーション再生
+		if (CMotion::Motion() == true && m_state == STATE_DIE)
+		{
+			m_state = STATE_END;
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -778,10 +785,18 @@ void CPlayer::State()
 
 		// 死亡
 	case CPlayer::STATE_DIE:
+
+		// 死亡モーション
+		CMotion::Set(8);
+
 		break;
 
 		// 雪崩に巻き込まれてる
 	case CPlayer::STATE_INAVALANCHE:
+		break;
+
+		// 終了
+	case CPlayer::STATE_END:
 		break;
 
 	default:
@@ -854,6 +869,13 @@ void CPlayer::Die()
 	m_bControl = false;
 	// プレイヤーを死亡状態にする
 	m_bDie = true;
+	m_state = STATE_DIE;
+
+	if (m_pScore != nullptr)
+	{
+		// スコアの色を変える
+		m_pScore->SetColor(D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f));
+	}
 
 	//// ライフが破棄されていなければ
 	//if (m_pLife != nullptr)

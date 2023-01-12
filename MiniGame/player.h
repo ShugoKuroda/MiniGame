@@ -64,6 +64,7 @@ public:
 		STATE_DAMAGE,		// ”í’e
 		STATE_DIE,			// Ž€–Só‘Ô
 		STATE_INAVALANCHE,	// á•ö‚ÉŠª‚«ž‚Ü‚ê‚Ä‚¢‚éó‘Ô
+		STATE_END,			// I—¹
 		STATE_MAX
 	};
 
