@@ -53,7 +53,7 @@
 // ジャンプ力
 #define JUMP_POWER		(2.0f)
 // 当たり判定の範囲
-#define ATTACK_LENGTH	(30.0f)
+#define ATTACK_LENGTH	(50.0f)
 
 //-----------------------------------------------------------------------------
 // using宣言
@@ -167,6 +167,7 @@ HRESULT CPlayer::Init()
 
 		// プレイヤー表記の生成
 		CBillboardPlayer::Create(GetpPosition(), "TEX_TYPE_BILLBOARD_1P");
+
 		break;
 
 		// 2P
@@ -176,7 +177,7 @@ HRESULT CPlayer::Init()
 		if (CManager::GetManager()->GetGame() != nullptr)
 		{
 			// スコアの生成
-			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			m_pScore = CScore::Create(D3DXVECTOR3(750.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
 			m_pScore->SetColor(D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
 		}
@@ -330,7 +331,7 @@ void CPlayer::Update()
 	if (m_bStart == true)
 	{
 		// ゲームが始まったら
-		if (CManager::GetManager()->GetGame()->GetStart() == true)
+		if (CManager::GetManager()->GetGame()->GetStart() == true && m_bDie == false)
 		{
 			m_pScore->Add(1);
 		}
@@ -657,9 +658,9 @@ void CPlayer::Attack()
 
 		//腕先の位置情報を取得(ワールドマトリックスからワールド座標を取得)
 		D3DXVECTOR3 AttackPos = D3DXVECTOR3(
-			CMotion::GetMotion().aParts[2].mtxWorld._41,
-			CMotion::GetMotion().aParts[2].mtxWorld._42,
-			CMotion::GetMotion().aParts[2].mtxWorld._43);
+			CMotion::GetMotion().aParts[6].mtxWorld._41,
+			CMotion::GetMotion().aParts[6].mtxWorld._42,
+			CMotion::GetMotion().aParts[6].mtxWorld._43);
 
 		for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
 		{
@@ -670,6 +671,7 @@ void CPlayer::Attack()
 			}
 
 			CTitle *pTitle = CManager::GetManager()->GetTitle();
+			CGame *pGame = CManager::GetManager()->GetGame();
 
 			// タイトルのnullチェック
 			if (pTitle != nullptr)
@@ -686,6 +688,41 @@ void CPlayer::Attack()
 					{//弾と当たったら(球体の当たり判定)
 
 						// 被弾音
+						CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+
+						//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
+						D3DXVECTOR3 vecToPlayer = pPlayer->GetPosition() - AttackPos;
+
+						//敵からプレイヤーへのベクトル(移動量)に変換する
+						D3DXVec3Normalize(&vecToPlayer, &vecToPlayer);
+
+						// ダメージ状態にする
+						pPlayer->SetState(STATE_DAMAGE);
+
+						pPlayer->SetControl(false);
+
+						// ベクトルを保存
+						pPlayer->SetVec(vecToPlayer);
+
+						//return true;	//当たった
+					}
+				}
+			}
+			// タイトルのnullチェック
+			if (pGame != nullptr)
+			{
+				CPlayer *pPlayer = pGame->GetPlayer(nCntPlayer);
+
+				// プレイヤーのnullチェック
+				if (pPlayer != nullptr)
+				{
+					D3DXVECTOR3 OutPos = pPlayer->GetPosition();
+
+					if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision2D(AttackPos,
+						D3DXVECTOR3(OutPos.x, OutPos.y + 50.0f, OutPos.z), ATTACK_LENGTH, pPlayer->GetSizeMax().x))
+					{//弾と当たったら(球体の当たり判定)
+
+					 // 被弾音
 						CSound::Play(CSound::SOUND_LABEL_SE_HIT);
 
 						//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
@@ -863,7 +900,7 @@ void CPlayer::Damage()
 //-----------------------------------------------------------------------------
 void CPlayer::Die()
 {
-	//CModel:.:Uninit();
+	//CModel::Uninit();
 
 	// 操作不能にする
 	m_bControl = false;
