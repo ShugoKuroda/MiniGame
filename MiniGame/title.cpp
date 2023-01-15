@@ -247,7 +247,7 @@ void CTitle::Update()
 			}
 			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) == true && m_bEntryKeyboard == false)
 			{// エンターキー押下 && キーボードで参加していなければ
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", m_nEntryNum);
+				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU_TYPE4", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetKeyboard(true);
 				m_bEntryKeyboard = true;
 				pEntry[m_nEntryNum].bEntryKeyboard = true;
