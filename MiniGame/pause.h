@@ -25,7 +25,7 @@ public:
 	enum TYPE
 	{//ポーズの種類
 		TYPE_FRAME = 0,		// ポーズ画面枠
-		TYPE_RESUME,		// 再開
+		//TYPE_RESUME,		// 再開
 		TYPE_RESTART,		// やり直し
 		TYPE_EXIT,			// タイトルに戻る
 		TYPE_SELECTOR,		// 選択カーソル
@@ -35,8 +35,6 @@ public:
 	CPause();
 	~CPause();
 
-	static HRESULT Load(void);		//テクスチャの読み込み
-	static void Unload(void);		//テクスチャの削除
 	static CPause *Create(int nNumPlayer);
 
 	HRESULT Init() override;
@@ -50,7 +48,6 @@ private:
 	int m_nPauseSelect;					// ポーズメニューから遷移する場所を保存
 	int m_nNumPlayer;					// ポーズメニューを開いたプレイヤー
 
-	static LPDIRECT3DTEXTURE9 m_apTexture[TYPE_MAX];	//テクスチャのポインタ
 	static CObject2D *m_apObject2D[TYPE_MAX];			//2Dポリゴンへのポインタ
 	bool m_bWait;		//連続ボタン押下防止用
 };

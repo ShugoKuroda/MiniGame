@@ -25,6 +25,26 @@ public:
 	void Update() override;
 	void Draw() override;
 
+	// 視点位置の設定
+	void SetPosV(D3DXVECTOR3 posV) 
+	{ 
+		m_posV = posV; 
+
+		//注視点までの距離
+		D3DXVECTOR3 Distance = D3DXVECTOR3((m_posV.x + m_posR.x), (m_posV.y + m_posR.y), (m_posV.z + m_posR.z));
+
+		//視点から注視点までの距離を初期化する
+		m_fDistance = sqrtf(Distance.x * Distance.x + Distance.z * Distance.z);
+		m_fDistance = sqrtf(Distance.y * Distance.y + m_fDistance * m_fDistance);
+	}
+
+	// 視点位置の設定
+	void SetPosR(D3DXVECTOR3 posR) { m_posR = posR; }
+
+	void SetTrackingSize(D3DXVECTOR2 size) { m_pTrackingSize = size; }
+
+	void SetDistance(float fDistance) { m_fDistance = fDistance; }
+		
 	// 視点位置の取得
 	D3DXVECTOR3 GetPosV() { return m_posV; }
 	// 注視点位置の取得
@@ -42,6 +62,7 @@ private:
 	D3DXVECTOR3 m_vecU;				// 上方向ベクトル
 	D3DXVECTOR3 m_rot;				// 向き
 	D3DXVECTOR3 *m_pPosTracking;	// 追従対象の位置
+	D3DXVECTOR2 m_pTrackingSize;	// 
 	D3DXVECTOR3 m_posVDest;			// 目的の視点
 	D3DXVECTOR3 m_posRDest;			// 目的の注視点
 	float m_fDistance;				// 視点から注視点までの距離

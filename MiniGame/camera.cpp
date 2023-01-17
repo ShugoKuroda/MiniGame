@@ -26,7 +26,7 @@
 //======================================================
 CCamera::CCamera() :
 	m_move(0.0f, 0.0f, 0.0f), m_posV(0.0f, 0.0f, 0.0f), m_posR(0.0f, 0.0f, 0.0f), m_vecU(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
-	m_pPosTracking(nullptr), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_fNear(0.0f)
+	m_pPosTracking(nullptr), m_posVDest(0.0f, 0.0f, 0.0f), m_posRDest(0.0f, 0.0f, 0.0f), m_fDistance(0.0f), m_fNear(0.0f), m_pTrackingSize(0.0f, 0.0f)
 {
 }
 
@@ -73,6 +73,8 @@ HRESULT CCamera::Init()
 {
 	//上方向ベクトルの設定
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);			//固定
+
+	m_pTrackingSize = D3DXVECTOR2(200.0f, 50.0f);
 
 	//注視点までの距離
 	D3DXVECTOR3 Distance = D3DXVECTOR3((m_posV.x + m_posR.x), (m_posV.y + m_posR.y), (m_posV.z + m_posR.z));
@@ -198,11 +200,11 @@ void CCamera::Update()
 	{
 		// 追従
 		m_posRDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y);
-		m_posRDest.z = (m_pPosTracking->z - 200.0f) + sinf(m_rot.x) * cosf(m_rot.y);
-		m_posRDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x);
+		m_posRDest.z = (m_pPosTracking->z - m_pTrackingSize.x) + sinf(m_rot.x) * cosf(m_rot.y);
+		m_posRDest.y = (m_pPosTracking->y - m_pTrackingSize.y) + cosf(m_rot.x);
 		m_posVDest.x = m_pPosTracking->x + sinf(m_rot.x) * sinf(m_rot.y) * m_fDistance;
-		m_posVDest.z = (m_pPosTracking->z - 200.0f) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
-		m_posVDest.y = (m_pPosTracking->y - 50.0f) + cosf(m_rot.x) * m_fDistance;
+		m_posVDest.z = (m_pPosTracking->z - m_pTrackingSize.x) + sinf(m_rot.x) * cosf(m_rot.y) * m_fDistance;
+		m_posVDest.y = (m_pPosTracking->y - m_pTrackingSize.y) + cosf(m_rot.x) * m_fDistance;
 
 		// カメラ位置の更新
 		m_posR.x += (m_posRDest.x - m_posR.x) * 0.3f;

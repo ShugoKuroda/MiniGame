@@ -48,6 +48,7 @@ public:		//メンバ関数
 
 	// ゲーム開始フラグを設定
 	void SetStart(bool bStart) { m_bStart = bStart; }
+	void SetCameraPlayer(bool bCamera);
 
 	// プレイヤー情報の取得
 	CPlayer *GetPlayer(int nNum) { return m_pPlayer[nNum]; }
@@ -58,9 +59,11 @@ public:		//メンバ関数
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
 
+	// 最後に死んだプレイヤー番号の取得
+	int GetPlayerDie() { return m_nPlayerDie; }
 	// ゲーム開始フラグを取得
 	bool GetStart() { return m_bStart; }
-	// プレイヤーのスコアをランキングに設定
+	// プレイヤーのスコアをランキングに設定1
 	void SetPlayerScore();
 
 private:
@@ -80,12 +83,18 @@ private:	//メンバ変数
 	bool m_bStart;
 	// ゲームが終了したかどうか
 	bool m_bEnd;
+	// プレイヤーにカメラを追従するかどうか
+	bool m_bCameraPlayer;
 
 	// 敵のセット情報
 	EnemySetInfo m_EnemyInfo;
 
 	// カウントダウンを始めるまでのカウンター
-	int m_StartCnt;
+	int m_nStartCnt;
+	// 最後に死んだプレイヤー番号
+	int m_nPlayerDie;
+	// 画面遷移するまでのカウンター
+	int m_nScene;
 };
 
 #endif	//_GAME_H_

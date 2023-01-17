@@ -19,9 +19,6 @@
     <ClCompile Include="bullet_option.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="cloud.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
     <ClCompile Include="library.cpp">
       <Filter>ソースファイル\便利</Filter>
     </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソースファイル\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -205,9 +205,6 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="bullet_option.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="cloud.h">
@@ -378,6 +375,9 @@
     <ClInclude Include="library.h">
       <Filter>ソースファイル\便利</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>ソースファイル\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -421,6 +421,9 @@
     </Filter>
     <Filter Include="ソースファイル\便利">
       <UniqueIdentifier>{185cd90f-278b-4e14-a0ce-c1c31f9cfaec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\camera">
+      <UniqueIdentifier>{3fda0b57-7f54-4df8-b0c0-062e93a77130}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

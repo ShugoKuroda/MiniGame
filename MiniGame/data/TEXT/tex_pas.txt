@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 11
+TEX_NUM = 19
 
 //==================================================
 // テクスチャ読み込み情報
@@ -79,5 +79,53 @@ TEXSET
 	PAS = data/TEXTURE/PP4player.png
 	NAME = TEX_TYPE_BILLBOARD_4P
 END_TEXSET
+
+// ポーズ画面枠
+TEXSET
+	PAS = data/TEXTURE/pause000.png
+	NAME = TEX_TYPE_PAUSE_FRAME
+END_TEXSET
+
+// やり直し(ポーズ)
+TEXSET
+	PAS = data/TEXTURE/pause001.png
+	NAME = TEX_TYPE_PAUSE_RETURN
+END_TEXSET
+
+// 終了(ポーズ)
+TEXSET
+	PAS = data/TEXTURE/pause002.png
+	NAME = TEX_TYPE_PAUSE_END
+END_TEXSET
+
+// 選択カーソル(ポーズ)
+TEXSET
+	PAS = data/TEXTURE/option000.png
+	NAME = TEX_TYPE_PAUSE_CURSOR
+END_TEXSE
+
+// 勝利ロゴ1P
+TEXSET
+	PAS = data/TEXTURE/win000.png
+	NAME = TEX_TYPE_LOGO_WIN1P
+END_TEXSET
+
+// 勝利ロゴ2P
+TEXSET
+	PAS = data/TEXTURE/win001.png
+	NAME = TEX_TYPE_LOGO_WIN2P
+END_TEXSET
+
+// 勝利ロゴ3P
+TEXSET
+	PAS = data/TEXTURE/win002.png
+	NAME = TEX_TYPE_LOGO_WIN3P
+END_TEXSET
+
+// 勝利ロゴ4P
+TEXSET
+	PAS = data/TEXTURE/win003.png
+	NAME = TEX_TYPE_LOGO_WIN4P
+END_TEXSETT
 
 END_SCRIPT		# この行は消さないこと！

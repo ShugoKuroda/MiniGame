@@ -52,6 +52,7 @@
 #include "logo_countdown.h"
 #include "logo_extend.h"
 #include "mesh_sphere.h"
+#include "fade.h"
 //#include "avalanche.h"
 
 //-----------------------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false), m_StartCnt(0)
+CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false), m_nStartCnt(0), m_nPlayerDie(0), m_bCameraPlayer(false)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
@@ -176,7 +177,8 @@ HRESULT CGame::Init()
 	}
 
 	// 新記録UIの生成
-	CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 30.0f, 0.0f), D3DXVECTOR2(200.0f, 40.0f), "TEX_TYPE_UI_RECORD", -1);
+	CLogo::Create(D3DXVECTOR3(100.0f, CRenderer::SCREEN_HEIGHT - 20.0f, 0.0f),
+		D3DXVECTOR2(200.0f, 40.0f), "TEX_TYPE_UI_RECORD", -1);
 
 	////敵情報読み込み
 	//m_EnemyInfo.pCreate = LoadSpace::GetEnemy();
@@ -278,17 +280,29 @@ void CGame::Update()
 		// ゲームが終了したかどうかを判定
 		CheckGameEnd();
 	}
+	else if (m_bCameraPlayer == true)
+	{
+		m_nScene++;
 
-	// カウンター加算
-	m_StartCnt++;
-
-	if (m_StartCnt == 180)
-	{// カウントダウン生成
-		CLogoCountDown::Create(5);
+		// 
+		if (m_nScene == 180)
+		{
+			// ポーズメニューを開く
+			CPause::Create(0);
+			// モードの設定
+			//CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+		}
 	}
-	else if (m_StartCnt >= 182)
-	{// カウンターのオーバーフロー防止
-		m_StartCnt = m_StartCnt - 1;
+
+	if (m_nStartCnt < 180)
+	{
+		// カウンター加算
+		m_nStartCnt++;
+
+		if (m_nStartCnt == 180)
+		{// カウントダウン生成
+			CLogoCountDown::Create(5);
+		}
 	}
 
 	//// キーボード情報の取得
@@ -423,6 +437,14 @@ bool CGame::CheckGameEnd()
 			if (m_pPlayer[nCntPlayer]->GetDie() == true)
 			{// プレイヤーの死亡数を加算
 				nNumDie++;
+				// 最後に死んだプレイヤー番号保存
+				m_nPlayerDie = nCntPlayer;
+			}
+
+			// プレイヤーが全員死亡していたら
+			if (CPlayer::PLAYER_MAX <= nNumDie)
+			{
+				nNumDie = 0;
 			}
 		}
 		else
@@ -438,6 +460,7 @@ bool CGame::CheckGameEnd()
 		m_bEnd = true;
 		// ゲーム終了ロゴの生成
 		CLogoExtend::Create(D3DXVECTOR2(250.0f, 80.0f), "TEX_TYPE_END_UI", 180)->SetSceneChange(true);
+
 		return true;
 	}
 
@@ -527,6 +550,45 @@ void CGame::CreateLogo(int nCounter)
 	//	// ボス接近時の薄暗いフェード
 	//	CFadeScene::Create(CFadeScene::TYPE_BLACK);
 	//}
+}
+
+void CGame::SetCameraPlayer(bool bCamera)
+{
+	m_bCameraPlayer = bCamera;
+
+	if (m_pPlayer[m_nPlayerDie] != nullptr)
+	{
+		// 最後に死亡したプレイヤーに注視点を設定
+		m_pCamera->SetPosTracking(m_pPlayer[m_nPlayerDie]->GetpPosition());
+
+		//if(m_nPlayerDie)
+
+		switch (m_nPlayerDie)
+		{
+		case 0:
+			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f),
+				D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 3, 100.0f), "TEX_TYPE_LOGO_WIN1P", 180);
+			break;
+		case 1:
+			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f),
+				D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 3, 100.0f), "TEX_TYPE_LOGO_WIN2P", 180);
+			break;
+		case 2:
+			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f),
+				D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 3, 100.0f), "TEX_TYPE_LOGO_WIN3P", 180);
+			break;
+		case 3:
+			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 500.0f, 0.0f),
+				D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 3, 100.0f), "TEX_TYPE_LOGO_WIN4P", 180);
+			break;
+		default:
+			break;
+		}
+	}
+
+	// 視点を近づける
+	m_pCamera->SetPosV(D3DXVECTOR3(0.0f, 45.0f, -40.0f));
+	m_pCamera->SetTrackingSize(D3DXVECTOR2(0.0f, 0.0f));
 }
 
 //-----------------------------------------------------------------------------------------------

@@ -16,6 +16,8 @@
 
 #include "texture.h"
 
+#include "camera.h"
+
 //-----------------------------------------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------------------------------------
@@ -114,7 +116,7 @@ void CLogoExtend::Update()
 		if (m_bSceneChange == true)
 		{
 			// モードの設定
-			CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
+			CManager::GetManager()->GetGame()->SetCameraPlayer(true);
 		}
 
 		// 破棄
