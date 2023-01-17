@@ -157,7 +157,7 @@ HRESULT CPlayer::Init()
 		if (CManager::GetManager()->GetGame() != nullptr)
 		{
 			// スコアの生成
-			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			m_pScore = CScore::Create(D3DXVECTOR3(150.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
 			m_pScore->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 		}
@@ -177,7 +177,7 @@ HRESULT CPlayer::Init()
 		if (CManager::GetManager()->GetGame() != nullptr)
 		{
 			// スコアの生成
-			m_pScore = CScore::Create(D3DXVECTOR3(750.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			m_pScore = CScore::Create(D3DXVECTOR3(450.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
 			m_pScore->SetColor(D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
 		}
@@ -196,7 +196,7 @@ HRESULT CPlayer::Init()
 		if (CManager::GetManager()->GetGame() != nullptr)
 		{
 			// スコアの生成
-			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			m_pScore = CScore::Create(D3DXVECTOR3(750.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
 			m_pScore->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
 		}
@@ -215,7 +215,7 @@ HRESULT CPlayer::Init()
 		if (CManager::GetManager()->GetGame() != nullptr)
 		{
 			// スコアの生成
-			m_pScore = CScore::Create(D3DXVECTOR3(250.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
+			m_pScore = CScore::Create(D3DXVECTOR3(1050.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
 			m_pScore->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 		}

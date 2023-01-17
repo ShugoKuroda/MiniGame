@@ -19,8 +19,8 @@ namespace LoadSpace
 	EnemyInfo *GetEnemy();
 	ParentEnemyInfo *GetParentEnemy();
 	int GetWave();
-	int *LoadScore();
-	void SaveScore(int *pScore);
+	int LoadScore();
+	void SaveScore(int nScore);
 }
 
 #endif

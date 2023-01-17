@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 19
+TEX_NUM = 20
 
 //==================================================
 // テクスチャ読み込み情報
@@ -126,6 +126,12 @@ END_TEXSET
 TEXSET
 	PAS = data/TEXTURE/win003.png
 	NAME = TEX_TYPE_LOGO_WIN4P
-END_TEXSETT
+END_TEXSET
+
+// ハイスコア更新ロゴ
+TEXSET
+	PAS = data/TEXTURE/HiScore000.png
+	NAME = TEX_TYPE_LOGO_HISCORE
+END_TEXSET
 
 END_SCRIPT		# この行は消さないこと！

@@ -21,8 +21,6 @@
 EnemyInfo g_aEnemyInfo[MAX_WAVE];	//敵情報の取得
 ParentEnemyInfo g_aParentEnemyInfo[MAX_WAVE];	//ボスが生成する敵情報の取得
 int g_nMaxWave;
-// スコア格納用
-int g_aScore[CRank::MAX_RANKING];
 
 //-----------------------------------------------------------------------------
 //	敵のセットロード
@@ -243,18 +241,16 @@ int LoadSpace::GetWave()
 //-----------------------------------------------------------------------------
 //	ランキングスコアのロード
 //-----------------------------------------------------------------------------
-int *LoadSpace::LoadScore()
+int LoadSpace::LoadScore()
 {
+	int nScore = 0;
+
 	//ファイルを開く
 	FILE *pFile = fopen("data/TEXT/Rank.txt", "r");			//ファイルポインター宣言
 
 	if (pFile != NULL)
 	{
-		// テキストからスコア数値を読み込み
-		for (int nCnt = 0; nCnt < CRank::MAX_RANKING; nCnt++)
-		{
-			fscanf(pFile, "%d", &g_aScore[nCnt]);
-		}
+		fscanf(pFile, "%d", &nScore);
 	}
 	else
 	{
@@ -262,26 +258,22 @@ int *LoadSpace::LoadScore()
 	}
 
 	//ファイルを閉じる
- 	fclose(pFile);
+	fclose(pFile);
 
-	return &g_aScore[0];
+	return nScore;
 }
 
 //-----------------------------------------------------------------------------
 //	ランキングスコアのセーブ
 //-----------------------------------------------------------------------------
-void LoadSpace::SaveScore(int *pScore)
+void LoadSpace::SaveScore(int nScore)
 {
 	//ファイルを開く
 	FILE *pFile = fopen("data/TEXT/Rank.txt", "w");			//ファイルポインター宣言
 
 	if (pFile != NULL)
 	{
-		// テキストへスコア数値を書き込み
-		for (int nCnt = 0; nCnt < CRank::MAX_RANKING; nCnt++)
-		{
-			fprintf(pFile, "%d\n", pScore[nCnt]);
-		}
+		fprintf(pFile, "%d\n", nScore);
 	}
 	else
 	{

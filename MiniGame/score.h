@@ -43,8 +43,6 @@ private:
 
 // メンバ変数 //
 private:
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = nullptr;	//頂点バッファのポインタ
-	static LPDIRECT3DTEXTURE9 m_pTexture;			//テクスチャのポインタ
 	CNumber *m_apNumber[MAX_SCORE];					//スコアに使用する数字
 	int m_nScore;									//スコアを格納
 };

@@ -102,13 +102,23 @@ HRESULT CTitle::Init()
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
 
-
+				// エントリー可能数が上限を超えるまで
+				if (m_nEntryNum < CPlayer::PLAYER_MAX)
+				{// エントリー番号の加算
+					m_nEntryNum++;
+				}
 			}
 			else
 			{
 				// プレイヤー生成
 				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
+
+				// エントリー可能数が上限を超えるまで
+				if (m_nEntryNum < CPlayer::PLAYER_MAX)
+				{// エントリー番号の加算
+					m_nEntryNum++;
+				}
 			}
 		}
 	}

@@ -52,21 +52,6 @@
     <ClCompile Include="light.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="load.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="number.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="pause.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="rank.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="spray.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -166,9 +151,6 @@
     <ClCompile Include="ui.cpp">
       <Filter>ソースファイル\ui</Filter>
     </ClCompile>
-    <ClCompile Include="boss.cpp">
-      <Filter>ソースファイル\motion</Filter>
-    </ClCompile>
     <ClCompile Include="billboard.cpp">
       <Filter>ソースファイル\billboard</Filter>
     </ClCompile>
@@ -183,6 +165,24 @@
     </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>ソースファイル\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソースファイル\num</Filter>
+    </ClCompile>
+    <ClCompile Include="rank.cpp">
+      <Filter>ソースファイル\num</Filter>
+    </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>ソースファイル\num</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソースファイル\pause</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>ソースファイル\motion</Filter>
+    </ClCompile>
+    <ClCompile Include="load.cpp">
+      <Filter>ソースファイル\便利</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,21 +241,6 @@
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="light.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="load.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="number.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="pause.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="rank.h">
-      <Filter>ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="score.h">
       <Filter>ソースファイル</Filter>
     </ClInclude>
     <ClInclude Include="spray.h">
@@ -378,6 +363,21 @@
     <ClInclude Include="camera.h">
       <Filter>ソースファイル\camera</Filter>
     </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ソースファイル\num</Filter>
+    </ClInclude>
+    <ClInclude Include="rank.h">
+      <Filter>ソースファイル\num</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>ソースファイル\num</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ソースファイル\pause</Filter>
+    </ClInclude>
+    <ClInclude Include="load.h">
+      <Filter>ソースファイル\便利</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -424,6 +424,12 @@
     </Filter>
     <Filter Include="ソースファイル\camera">
       <UniqueIdentifier>{3fda0b57-7f54-4df8-b0c0-062e93a77130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\num">
+      <UniqueIdentifier>{eaac4778-1ce1-476e-b09e-af789b1b333d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\pause">
+      <UniqueIdentifier>{a4af2800-1985-4b70-ab4c-dde4ddcc9966}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

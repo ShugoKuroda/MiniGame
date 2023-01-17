@@ -67,7 +67,9 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() :m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false), m_nStartCnt(0), m_nPlayerDie(0), m_bCameraPlayer(false)
+CGame::CGame() 
+	:m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false), m_nStartCnt(0), m_nPlayerDie(0),
+	m_bCameraPlayer(false), m_pRank(nullptr)
 {
 	//敵の生成情報を初期化
 	ZeroMemory(&m_EnemyInfo, sizeof(m_EnemyInfo));
@@ -177,8 +179,11 @@ HRESULT CGame::Init()
 	}
 
 	// 新記録UIの生成
-	CLogo::Create(D3DXVECTOR3(100.0f, CRenderer::SCREEN_HEIGHT - 20.0f, 0.0f),
-		D3DXVECTOR2(200.0f, 40.0f), "TEX_TYPE_UI_RECORD", -1);
+	CLogo::Create(D3DXVECTOR3(120.0f, CRenderer::SCREEN_HEIGHT - 30.0f, 0.0f),
+		D3DXVECTOR2(230.0f, 50.0f), "TEX_TYPE_UI_RECORD", -1);
+
+	// ハイスコアの生成
+	m_pRank = CRank::Create();
 
 	////敵情報読み込み
 	//m_EnemyInfo.pCreate = LoadSpace::GetEnemy();
@@ -438,7 +443,7 @@ bool CGame::CheckGameEnd()
 			{// プレイヤーの死亡数を加算
 				nNumDie++;
 				// 最後に死んだプレイヤー番号保存
-				m_nPlayerDie = nCntPlayer;
+				m_nPlayerDie = m_pPlayer[nCntPlayer]->GetPadNum();
 			}
 
 			// プレイヤーが全員死亡していたら
@@ -558,6 +563,18 @@ void CGame::SetCameraPlayer(bool bCamera)
 
 	if (m_pPlayer[m_nPlayerDie] != nullptr)
 	{
+		int nPlayer = m_pPlayer[m_nPlayerDie]->GetScore()->GetScore();
+
+		// プレイヤーのスコアがハイスコアより高かったら
+		if (nPlayer > m_pRank->GetScore()->GetScore())
+		{// スコアをセーブ＆表示
+			m_pRank->Save(nPlayer);
+
+			// ハイスコア更新ロゴの生成
+			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 300.0f, 0.0f),
+				D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 2, 100.0f), "TEX_TYPE_LOGO_HISCORE", 180);
+		}
+
 		// 最後に死亡したプレイヤーに注視点を設定
 		m_pCamera->SetPosTracking(m_pPlayer[m_nPlayerDie]->GetpPosition());
 
@@ -587,7 +604,7 @@ void CGame::SetCameraPlayer(bool bCamera)
 	}
 
 	// 視点を近づける
-	m_pCamera->SetPosV(D3DXVECTOR3(0.0f, 45.0f, -40.0f));
+	m_pCamera->SetPosV(D3DXVECTOR3(40.0f, -160.0f, 0.0f));
 	m_pCamera->SetTrackingSize(D3DXVECTOR2(0.0f, 0.0f));
 }
 

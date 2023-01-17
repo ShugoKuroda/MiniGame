@@ -18,6 +18,7 @@ class CScore;
 class CBoss;
 class CItem;
 class CCamera;
+class CRank;
 
 //-----------------------------------------------------------------------------
 // ゲーム画面クラス
@@ -78,6 +79,7 @@ private:	//メンバ変数
 	CBoss* m_pEnemyBoss;
 	CItem* m_pItem;
 	CCamera* m_pCamera;
+	CRank* m_pRank;
 
 	// ゲームが始まったかどうか
 	bool m_bStart;

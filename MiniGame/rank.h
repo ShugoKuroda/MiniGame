@@ -38,28 +38,19 @@ public:
 	~CRank();
 
 	static CRank *Create();
-	static HRESULT Load();		// テクスチャの読み込み
-	static void Unload();		// テクスチャの削除
 
 	HRESULT Init() override;
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
 
-	// プレイヤーのスコア設定
-	static void SetScore(int nScore, int nPlayer) { m_nScorePlayer[nPlayer] = nScore; }
+	void Save(int nHiScore);
+
+	CScore* GetScore() { return m_pScore; }
 
 private:
-	static LPDIRECT3DTEXTURE9 m_apTexture[TYPE_MAX];	//テクスチャのポインタ
-	static int m_nScorePlayer[MAX_PLAYER_SCORE];
 	// スコア格納用
-	CScore* m_pScore[MAX_RANKING + MAX_PLAYER_SCORE];
-	// オブジェクトのポインタ
-	CObject2D* m_apObject2D[TYPE_MAX];
-	// スコア格納用
-	int m_aScore[MAX_RANKING + MAX_PLAYER_SCORE];
-	bool m_bMyScoreFade[MAX_RANKING + MAX_PLAYER_SCORE];
-	bool m_bNextMode;
+	CScore* m_pScore;
 };
 
 #endif

@@ -107,6 +107,10 @@ public:
 	bool GetDie() { return m_bDie; }
 	// 過去の位置を取得
 	D3DXVECTOR3 GetPositionOld() { return m_posOld; }
+	// プレイヤー番号の取得
+	int GetNum() { return m_nPlayerNum; }
+	// プレイヤー番号の取得
+	int GetPadNum() { return m_nGamePadNum; }
 	
 	// 移動量の設定
 	void SetMove(const D3DXVECTOR3& move) { m_move = move; }

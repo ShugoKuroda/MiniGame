@@ -26,9 +26,10 @@ public:
 	void Draw() override;
 
 	// éãì_à íuÇÃê›íË
-	void SetPosV(D3DXVECTOR3 posV) 
-	{ 
-		m_posV = posV; 
+	void SetPosV(D3DXVECTOR3 posV)
+	{
+		m_posV = posV;
+		m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 		//íçéãì_Ç‹Ç≈ÇÃãóó£
 		D3DXVECTOR3 Distance = D3DXVECTOR3((m_posV.x + m_posR.x), (m_posV.y + m_posR.y), (m_posV.z + m_posR.z));
