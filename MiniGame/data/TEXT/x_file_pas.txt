@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // Xファイル最大数
 //==================================================
-XFILE_NUM = 22
+XFILE_NUM = 23
 
 //==================================================
 // Xファイル読み込み情報
@@ -102,6 +102,12 @@ END_XFILESET
 XFILESET
 	PAS = data/MODEL/model/House_wall_window.x
 	NAME = XFILE_TYPE_HOUSE_WALL_WINDOW
+END_XFILESET
+
+//House_wall_window
+XFILESET
+	PAS = data/MODEL/model/House_wall_window2.x
+	NAME = XFILE_TYPE_HOUSE_WALL_WINDOW2
 END_XFILESET
 
 //House_floor
