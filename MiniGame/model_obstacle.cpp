@@ -37,7 +37,7 @@
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CObstacle::CObstacle() :m_PosOld(0.0f, 0.0f, 0.0f)
+CObstacle::CObstacle() :m_PosOld(0.0f, 0.0f, 0.0f), m_nDel(0)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_OBSTACLE);
@@ -97,6 +97,12 @@ void CObstacle::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CObstacle::Update()
 {
+	m_nDel++;
+
+	if (1800 <= m_nDel)
+	{// 破棄
+		Uninit();
+	}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -151,7 +157,7 @@ bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer, int nNumPlayer)
 		// プレイヤーの過去の位置取得
 		D3DXVECTOR3 posPlayerOld = pPlayer->GetPositionOld();
 		// プレイヤーのサイズ取得
-		D3DXVECTOR3 sizePlayer = pPlayer->GetSizeMax();
+		//D3DXVECTOR3 sizePlayer = pPlayer->GetSizeMax();
 
 		// 位置取得
 		D3DXVECTOR3 pos = GetPosition();
@@ -159,7 +165,7 @@ bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer, int nNumPlayer)
 		D3DXVECTOR3 size = GetSizeMax();
 
 		// 押し出し判定
-		switch (LibrarySpace::BoxCollisionUnder3D(pPosPlayer, &posPlayerOld, &pos, &sizePlayer, &size))
+		switch (LibrarySpace::BoxCollisionUnder3D(pPosPlayer, &posPlayerOld, &pos, &PLAYER_SIZE, &size))
 		{
 		case LibrarySpace::PUSH_X:
 			pPlayer->SetMoveX(0.0f);

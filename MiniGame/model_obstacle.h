@@ -36,6 +36,7 @@ public:
 
 private:
 	D3DXVECTOR3 m_PosOld;	//‘O‰ñ‚ÌˆÊ’u
+	int m_nDel;
 };
 
 #endif	// _OBSTACLE_H_

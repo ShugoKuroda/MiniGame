@@ -184,6 +184,9 @@
     <ClCompile Include="load.cpp">
       <Filter>ソースファイル\便利</Filter>
     </ClCompile>
+    <ClCompile Include="logo_flash.cpp">
+      <Filter>ソースファイル\logo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -377,6 +380,9 @@
     </ClInclude>
     <ClInclude Include="load.h">
       <Filter>ソースファイル\便利</Filter>
+    </ClInclude>
+    <ClInclude Include="logo_flash.h">
+      <Filter>ソースファイル\logo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

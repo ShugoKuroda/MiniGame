@@ -15,7 +15,7 @@
 //======================================================
 //	コンストラクタ
 //======================================================
-CObject3D::CObject3D() : m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f)
+CObject3D::CObject3D() : m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_nDel(0)
 {
 }
 
@@ -124,6 +124,13 @@ void CObject3D::Update()
 	//{
 	//	m_rot.x += 0.01f;
 	//}
+
+	m_nDel++;
+
+	if (2400 <= m_nDel)
+	{// 破棄
+		Uninit();
+	}
 }
 
 //======================================================

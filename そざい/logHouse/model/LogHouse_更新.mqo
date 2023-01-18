@@ -4,8 +4,8 @@ Format Text Ver 1.0
 Scene {
 	pos -38.1135 -24.4069 2074.8889
 	lookat 0.0000 0.0000 0.0000
-	head 25.0860
-	pich 0.1408
+	head 27.9360
+	pich 0.0508
 	bank 0.0000
 	ortho 0
 	zoom2 3.6147
@@ -64,7 +64,7 @@ Object "Floor" {
 	}
 }
 Object "Wall_Door_1" {
-	visible 0
+	visible 15
 	locking 0
 	shading 1
 	facet 59.5
@@ -640,7 +640,7 @@ Object "Wall_Door_1" {
 	}
 }
 Object "Wall_Window_1" {
-	visible 0
+	visible 15
 	locking 0
 	shading 1
 	facet 59.5

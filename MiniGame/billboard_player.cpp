@@ -36,13 +36,13 @@ CBillboardPlayer::~CBillboardPlayer()
 // 生成
 // const D3DXVECTOR3& ParentPos → 追従対象
 //========================================================
-CBillboardPlayer * CBillboardPlayer::Create(D3DXVECTOR3* ParentPos, const char* name)
+CBillboardPlayer * CBillboardPlayer::Create(D3DXVECTOR3* pParentPos, const char* name)
 {
 	//インスタンス生成
 	CBillboardPlayer *pBillboard = new CBillboardPlayer;
 
 	// 追従対象の位置設定
-	pBillboard->m_pPosParent = ParentPos;
+	pBillboard->m_pPosParent = pParentPos;
 
 	// 初期化
 	pBillboard->Init();
@@ -59,7 +59,7 @@ CBillboardPlayer * CBillboardPlayer::Create(D3DXVECTOR3* ParentPos, const char* 
 HRESULT CBillboardPlayer::Init()
 {
 	// 位置の設定
-	CBillboard::SetPosition(D3DXVECTOR3(m_pPosParent->x, m_pPosParent->y + 500.0f, m_pPosParent->z));
+	CBillboard::SetPosition(D3DXVECTOR3(m_pPosParent->x, m_pPosParent->y + 200.0f, m_pPosParent->z));
 
 	// サイズの設定
 	CBillboard::SetSize(SIZE);
@@ -84,7 +84,7 @@ void CBillboardPlayer::Uninit()
 void CBillboardPlayer::Update()
 {
 	// 位置の設定
-	CBillboard::SetPosition(D3DXVECTOR3(m_pPosParent->x, m_pPosParent->y + 500.0f, m_pPosParent->z));
+	CBillboard::SetPosition(D3DXVECTOR3(m_pPosParent->x, m_pPosParent->y + 200.0f, m_pPosParent->z));
 }
 
 //========================================================

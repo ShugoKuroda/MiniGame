@@ -44,9 +44,7 @@
 
 #define FIELD_SIZE_WIDTH			(280.0f)
 #define FIELD_SIZE_HEIGHT			(250.0f)
-#define FIELD_SIZE_HEIGHT_CAMERA	(70.0f)
-
-#define PLAYER_SIZE					(16.0f)
+#define FIELD_SIZE_HEIGHT_CAMERA	(200.0f)
 
 // èdóÕ
 #define GRAVITY			(0.1f)

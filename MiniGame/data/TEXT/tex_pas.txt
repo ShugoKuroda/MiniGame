@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 20
+TEX_NUM = 22
 
 //==================================================
 // テクスチャ読み込み情報
@@ -132,6 +132,18 @@ END_TEXSET
 TEXSET
 	PAS = data/TEXTURE/HiScore000.png
 	NAME = TEX_TYPE_LOGO_HISCORE
+END_TEXSET
+
+// タイトルロゴ
+TEXSET
+	PAS = data/TEXTURE/title000.png
+	NAME = TEX_TYPE_LOGO_TITLE
+END_TEXSET
+
+// 開始催促ロゴ
+TEXSET
+	PAS = data/TEXTURE/title001.png
+	NAME = TEX_TYPE_LOGO_TITLEPUSH
 END_TEXSET
 
 END_SCRIPT		# この行は消さないこと！

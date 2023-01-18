@@ -31,6 +31,8 @@
 #include "model_obstacle.h"
 #include "model_manager.h"
 #include "mesh_sphere.h"
+#include "logo.h"
+#include "logo_flash.h"
 //#include "avalanche.h"
 
 #include "set_model.h"
@@ -51,8 +53,8 @@ LPDIRECT3DTEXTURE9 CTitle::m_apTexture[OBJ_MAX] = { nullptr };
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CTitle::CTitle() :m_bPush(false), m_move(0.0f,0.0f,0.0f), m_nCounter(0),
-				m_pPlayer{}, m_pCamera(), m_bEntryKeyboard(false), m_nEntryNum(0)
+CTitle::CTitle() :m_bPush(false), m_move(0.0f, 0.0f, 0.0f), m_nCounter(0),
+m_pPlayer{}, m_pCamera(), m_bEntryKeyboard(false), m_nEntryNum(0), m_pLogo{ nullptr }, m_bLogoMove(false)
 {
 	for (int nCnt = 0; nCnt < OBJ_MAX - 1; nCnt++)
 	{
@@ -125,6 +127,10 @@ HRESULT CTitle::Init()
 	
 	// モデルの配置
 	CManager::GetManager()->GetModelSet()->LoadModel("MODEL_TITLE");
+
+	// タイトルロゴの生成
+	m_pLogo = CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, -250.0f, 0.0f),
+		D3DXVECTOR2(CRenderer::SCREEN_WIDTH - 300.0f, 400.0f), "TEX_TYPE_LOGO_TITLE", -1);
 
 	//// テクスチャのロード
 	//CTitle::Load();
@@ -253,6 +259,20 @@ void CTitle::Update()
 				{// エントリー番号の加算
 					m_nEntryNum++;
 				}
+
+				if (m_pLogo != nullptr)
+				{
+					m_pLogo->Uninit();
+					m_pLogo = nullptr;
+					m_bLogoMove = true;
+				}
+
+				if (m_pLogoFlash != nullptr)
+				{
+					m_pLogoFlash->Uninit();
+					m_pLogoFlash = nullptr;
+				}
+
 				break;
 			}
 			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) == true && m_bEntryKeyboard == false)
@@ -268,6 +288,20 @@ void CTitle::Update()
 				{// エントリー番号の加算
 					m_nEntryNum++;
 				}
+
+				if (m_pLogo != nullptr)
+				{
+					m_pLogo->Uninit();
+					m_pLogo = nullptr;
+					m_bLogoMove = true;
+				}
+
+				if (m_pLogoFlash != nullptr)
+				{
+					m_pLogoFlash->Uninit();
+					m_pLogoFlash = nullptr;
+				}
+
 				break;
 			}
 		}
@@ -295,6 +329,25 @@ void CTitle::Update()
 		}
 	}
 
-	//m_nCounter++;
+	if (m_bLogoMove == false)
+	{
+		// 位置取得
+		D3DXVECTOR3 posLogo = m_pLogo->GetPosition();
 
+		if (posLogo.y >= 250.0f)
+		{
+			m_bLogoMove = true;
+
+			m_pLogoFlash = CLogoFlash::Create(D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 3, 80.0f), "TEX_TYPE_LOGO_TITLEPUSH", -1);
+		}
+		else
+		{
+			posLogo.y += 3.0f;
+		}
+
+		m_pLogo->SetPosition(posLogo);
+		m_pLogo->SetVertex();
+	}
+
+	//m_nCounter++;
 }

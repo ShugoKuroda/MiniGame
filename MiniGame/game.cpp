@@ -67,7 +67,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CGame::CGame() 
+CGame::CGame()
 	:m_pPlayer{}, m_pEnemyBoss(), m_pItem(), m_pCamera(), m_bStart(false), m_bEnd(false), m_nStartCnt(0), m_nPlayerDie(0),
 	m_bCameraPlayer(false), m_pRank(nullptr)
 {
@@ -87,20 +87,16 @@ CGame::~CGame()
 //-----------------------------------------------------------------------------------------------
 HRESULT CGame::Init()
 {
-	//球体メッシュの配置
-	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
-
 	// 板ポリ生成
 	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	// 板ポリ生成
-	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f));
-	// 板ポリ生成
-	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -400.0f));
-	// 板ポリ生成
-	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -600.0f));
-	// 板ポリ生成
-	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
+	//// 板ポリ生成
+	//CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f));
+	//// 板ポリ生成
+	//CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -400.0f));
+	//// 板ポリ生成
+	//CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -600.0f));
+	//// 板ポリ生成
+	//CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
 
 	// ライト生成
 	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -114,13 +110,17 @@ HRESULT CGame::Init()
 	// 敵ボス生成
 	m_pEnemyBoss = CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_BOSS");
 
+	//球体メッシュの配置
+	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG")->SetPosTracking(m_pEnemyBoss->GetpPosition());
+
 	// カメラ生成
-	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 230.0f, -630.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10.0f);
+	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 230.0f, -530.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10.0f);
 	// 追従対象の設定
 	m_pCamera->SetPosTracking(m_pEnemyBoss->GetpPosition());
 
 	// Item生成
-	m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
+	//m_pItem = CItem::Create(D3DXVECTOR3(50.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), CItem::TYPE_NONE, "XFILE_TYPE_SHOE");
 
 	// 木を生成
 	CModel::Create(D3DXVECTOR3(-200.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
@@ -145,7 +145,7 @@ HRESULT CGame::Init()
 	CModelManager::Create();
 
 	// モデル生成
-	CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
+	//CModel::Create(D3DXVECTOR3(0.0f, -55.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_CREVASSE");
 
 	// 逃走喚起ロゴの生成
 	CLogoExtend::Create(D3DXVECTOR2(200.0f, 140.0f), "TEX_TYPE_LOGO_ESCAPE", 180);
@@ -163,13 +163,13 @@ HRESULT CGame::Init()
 			if (pEntry[nCntPlayer].bEntryKeyboard == true)
 			{
 				// プレイヤー生成
-				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(-200.0f + (nCntPlayer * 125.0f), 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
 			}
 			else
 			{
 				// プレイヤー生成
-				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
+				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(-200.0f + (nCntPlayer * 125.0f), 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
 				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
 			}
 
@@ -263,15 +263,6 @@ void CGame::Uninit()
 
 	// 決定音
 	CSound::Stop();
-
-	// プレイヤー破棄
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		if (m_pPlayer[nCntPlayer] != nullptr)
-		{
-			m_pPlayer[nCntPlayer] = nullptr;
-		}
-	}
 }
 
 //-----------------------------------------------------------------------------------------------

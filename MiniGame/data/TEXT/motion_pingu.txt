@@ -27,8 +27,8 @@ MODEL_FILENAME = data/MODEL/pingu/pengu006_collision.x		# [6]
 #------------------------------------------------------------------------------
 CHARACTERSET
 	NUM_PARTS = 7					# パーツ数
-	MOVE = 0.35						# 移動量
-	JUMP = 2.25						# ジャンプ量
+	MOVE = 0.4						# 移動量
+	JUMP = 2.6						# ジャンプ量
 	RADIUS = 20.0					# 半径
 	HEIGHT = 40.0					# 高さ
 

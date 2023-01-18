@@ -19,6 +19,7 @@
 #include "game.h"
 #include "camera.h"
 #include "model_obstacle.h"
+#include "object3D.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -32,7 +33,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CModelManager::CModelManager() :m_nCounter(0), m_nCounterCreate(0), m_nNumCreate(0)
+CModelManager::CModelManager() :m_nCounter(0), m_nCounterCreate(0), m_nNumCreate(0), m_nCreateInterval(0)
 {
 }
 
@@ -68,6 +69,8 @@ HRESULT CModelManager::Init()
 	// モデル生成までの数値取得
 	m_nCounterCreate = GetRandNum(120, 60);
 
+	m_nCreateInterval = 90;
+
 	return S_OK;
 }
 
@@ -97,9 +100,11 @@ void CModelManager::Update()
 			// カウンターリセット
 			m_nCounter = 0;
 			// モデル生成までの数値取得
-			m_nCounterCreate = GetRandNum(240, 90);
+			m_nCounterCreate = GetRandNum(240, m_nCreateInterval);
 			// 生成するオブジェクト数を取得
 			m_nNumCreate = GetRandNum(3, 1);
+
+			m_nCreateInterval--;
 
 			// カメラ情報の取得
 			D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
@@ -132,20 +137,27 @@ void CModelManager::Update()
 				float fRand = (float)GetRandNum(80, -80);
 
 				// 障害物生成
-				switch (GetRandNum(1, 0))
+				switch (GetRandNum(2, 0))
 				{
 				case 0:
 					CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_SMALL");
 					break;
 
 				case 1:
-					CObstacle::Create(D3DXVECTOR3(fRand, -0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
+					CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_NORMAL");
+					break;
+
+				case 2:
+					CObstacle::Create(D3DXVECTOR3(fRand,-0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
 					break;
 
 				default:
 					break;
 				}
 			}
+
+			// 板ポリ生成
+			CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, posCamera.z));
 		}
 	}
 }

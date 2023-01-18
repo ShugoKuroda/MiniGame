@@ -199,7 +199,7 @@ bool CSetModel::LoadModel(std::string name)
 						//	Model.nIdxShadow = SetShadow(D3DXVECTOR3(Model.pos.x, 0.1f, Model.pos.z), Model.rot, fShadowX, fShadowZ);
 
 						// ƒ‚ƒfƒ‹”z’u
-						CModel::Create(model.pos, model.rot, &model.cName[0]);
+						CModel::Create(model.pos, model.rot, &model.cName[0])->SetCont(-1);
 
 						break;
 					}

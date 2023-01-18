@@ -25,8 +25,9 @@
 //-----------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------
-CModel::CModel() :m_pos(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
-					m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f), m_nIdxShadow(0)
+CModel::CModel() :
+	m_pos(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
+	m_vtxMax(0.0f, 0.0f, 0.0f), m_vtxMin(0.0f, 0.0f, 0.0f), m_nIdxShadow(0), m_nDel(0)
 {
 }
 
@@ -140,6 +141,17 @@ void CModel::Uninit()
 //-----------------------------------------------------------------------------
 void CModel::Update()
 {
+	if (m_nDel > -1)
+	{
+		m_nDel++;
+
+		if (m_nDel >= 1800)
+		{
+			Uninit();
+			return;
+		}
+	}
+
 	//for (int nCntVtx = 0; nCntVtx < MAX_MODEL_TYPE; nCntVtx++)
 	//{
 	//	for (int nCnt = 0; nCnt < MAX_MODEL; nCnt++)

@@ -19,8 +19,9 @@
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CMeshSphere::CMeshSphere() :m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pIdxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f),
-							m_rot(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_rad(0.0f, 0.0f), m_nMeshX(0), m_nMeshZ(0)
+CMeshSphere::CMeshSphere() :
+	m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pIdxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f), m_pPosTrak(nullptr),
+	m_rot(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_rad(0.0f, 0.0f), m_nMeshX(0), m_nMeshZ(0)
 {
 }
 
@@ -173,6 +174,10 @@ void CMeshSphere::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CMeshSphere::Update()
 {
+	if (m_pPosTrak != nullptr)
+	{
+		m_pos = *m_pPosTrak;
+	}
 }
 
 //-----------------------------------------------------------------------------------------------

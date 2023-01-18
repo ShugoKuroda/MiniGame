@@ -36,6 +36,8 @@ public:
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
 	// 角度設定
 	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
+	// 破棄カウンター設定
+	void SetCont(int nCnt) { m_nDel = nCnt; }
 	// 位置取得
 	D3DXVECTOR3 GetPosition() { return m_pos; }
 	// 位置取得
@@ -64,6 +66,8 @@ private:
 	D3DXMATRIX m_mtxWorld;
 	//影の番号
 	int m_nIdxShadow;
+
+	int m_nDel;
 };
 
 #endif

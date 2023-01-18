@@ -40,19 +40,19 @@ END_XFILESET
 
 //è·äQï®(è¨)
 XFILESET
-	PAS = data/MODEL/model/RockIce.x
+	PAS = data/MODEL/model/RockIce2.x
 	NAME = XFILE_TYPE_ROCKICE_SMALL
 END_XFILESET
 
 //è·äQï®(íÜ)
 XFILESET
-	PAS = data/MODEL/model/RockIce2.x
+	PAS = data/MODEL/model/RockIce_big.x
 	NAME = XFILE_TYPE_ROCKICE_NORMAL
 END_XFILESET
 
 //è·äQï®(ëÂ)
 XFILESET
-	PAS = data/MODEL/model/RockIce2.x
+	PAS = data/MODEL/model/RockIce_giga.x
 	NAME = XFILE_TYPE_ROCKICE_BIG
 END_XFILESET
 

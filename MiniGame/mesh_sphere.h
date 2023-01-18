@@ -35,6 +35,8 @@ public:
 	// 描画
 	void Draw() override;
 
+	void SetPosTracking(D3DXVECTOR3* pPos) { m_pPosTrak = pPos; }
+
 private:
 	// テクスチャのポインタ
 	LPDIRECT3DTEXTURE9 m_pTexture;			// テクスチャのポインタ
@@ -50,6 +52,8 @@ private:
 	int m_nTop;				// 頂点
 	int m_nIdx;				// インデックス数
 	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
+
+	D3DXVECTOR3 *m_pPosTrak;
 };
 
 #endif		// _MESH_SPHERE_H_

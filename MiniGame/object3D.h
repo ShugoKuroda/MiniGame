@@ -61,6 +61,9 @@ private:
 	D3DXVECTOR3 m_rot;
 	// ワールドマトリックス
 	D3DXMATRIX m_mtxWorld;
+
+	// 破棄カウンター
+	int m_nDel;
 };
 
 #endif

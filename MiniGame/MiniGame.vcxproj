@@ -191,6 +191,7 @@
     <ClCompile Include="logo.cpp" />
     <ClCompile Include="logo_countdown.cpp" />
     <ClCompile Include="logo_extend.cpp" />
+    <ClCompile Include="logo_flash.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="mesh_sphere.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="logo.h" />
     <ClInclude Include="logo_countdown.h" />
     <ClInclude Include="logo_extend.h" />
+    <ClInclude Include="logo_flash.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="mesh_sphere.h" />

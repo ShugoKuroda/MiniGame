@@ -16,6 +16,8 @@
 class CObject2D;
 class CPlayer;
 class CCamera;
+class CLogo;
+class CLogoFlash;
 
 //-----------------------------------------------------------------------------
 // タイトル画面クラス
@@ -48,6 +50,8 @@ public:
 	CPlayer* GetPlayer(int nNum) { return m_pPlayer[nNum]; }
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
+	//タイトルロゴ情報
+	CLogo* GetLogo() { return m_pLogo; }
 
 private:
 	//メンバ変数
@@ -55,6 +59,9 @@ private:
 	CPlayer* m_pPlayer[CPlayer::PLAYER_MAX];
 	CCamera* m_pCamera;
 	CObject2D *m_apObject2D[OBJ_MAX - 1];
+	CLogo* m_pLogo;
+	CLogoFlash* m_pLogoFlash;
+
 	bool m_bPush;
 	// キーボードで参加したかどうか
 	bool m_bEntryKeyboard;
@@ -62,6 +69,8 @@ private:
 	int m_nEntryNum;
 	int m_nCounter;
 	D3DXVECTOR3 m_move;		// 移動量
+
+	bool m_bLogoMove;
 };
 
 #endif		// _TITLE_H_
