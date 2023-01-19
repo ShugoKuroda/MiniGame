@@ -95,6 +95,7 @@ HRESULT CTitle::Init()
 	// ライト生成
 	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	CLight::Create(D3DXVECTOR3(0.2f, -0.1f, -0.8f), D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f));
+	//CLight::Create(D3DXVECTOR3(0.2f, 1.0f, -0.0f), D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f));
 
 	// エントリー情報のリセット
 	CManager::GetManager()->ResetEntry();

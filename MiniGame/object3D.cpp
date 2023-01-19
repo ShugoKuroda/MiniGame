@@ -82,10 +82,10 @@ HRESULT CObject3D::Init()
 	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z - (m_size.y / 2));
 
 	//各頂点の法線の設定(ベクトルの大きさは１にする必要がある)
-	pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	pVtx[1].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	pVtx[2].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	pVtx[0].nor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+	pVtx[1].nor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+	pVtx[2].nor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+	pVtx[3].nor = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 
 	//頂点カラーの設定
 	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
