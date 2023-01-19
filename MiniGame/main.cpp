@@ -96,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 	CManager::SetManager(pManager);
 
 	// ‰Šú‰»ˆ—
-	if (FAILED(pManager->Init(hInstance, hWnd, TRUE)))
+	if (FAILED(pManager->Init(hInstance, hWnd, FALSE)))
 	{//‰Šú‰»‚ª¸”s‚µ‚½ê‡
 		return -1;
 	}

@@ -52,7 +52,7 @@ const int CBoss::RUSH_OPERATION = 60;
 //-----------------------------------------------------------------------------------------------
 CBoss::CBoss()
 	:m_move(0.0f, 0.0f, 0.0f), m_pattern(PATTERN_ENTRY), m_nCounter(0), m_fAttackRot(0.0f),
-	m_bSizeChange(false), m_nCountObject(0)
+	m_bSizeChange(false), m_nCountObject(0), m_fAdd(0.0f)
 {
 }
 
@@ -245,8 +245,13 @@ bool CBoss::Pattern(D3DXVECTOR3& pos)
 		//=================================
 	case CBoss::PATTERN_RUN:
 
+		if (m_fAdd > 0.9f)
+		{
+			m_fAdd = 0.9f;
+		}
+
 		// ˆÚ“®—Ê‚Ì‰ÁŽZ
-		m_move.z -= GetMotion().fMove;
+		m_move.z -= GetMotion().fMove + m_fAdd;
 
 		CMotion::Set(2);
 

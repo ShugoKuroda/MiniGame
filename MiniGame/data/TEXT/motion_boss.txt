@@ -123,10 +123,10 @@ CHARACTERSET
 	END_PARTSSET
 	
 	PARTSSET						# [0]ëÃ
-			INDEX = 12
-			PARENT = 0				# (êe)ëÃ	
-			POS = 0.0 11.0 -1.0
-			ROT = 0.0 0.0 0.0
+		INDEX = 12
+		PARENT = 0					# (êe)ëÃ	
+		POS = 0.0 11.0 -1.0
+		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 END_CHARACTERSET
 

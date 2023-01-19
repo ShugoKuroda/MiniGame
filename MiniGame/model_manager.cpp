@@ -20,6 +20,7 @@
 #include "camera.h"
 #include "model_obstacle.h"
 #include "object3D.h"
+#include "boss.h"
 
 //-----------------------------------------------------------------------------------------------
 // using宣言
@@ -113,9 +114,17 @@ void CModelManager::Update()
 
 			m_nNumModel++;
 
-			if (m_nNumModel >= 10)
+			if (m_nNumModel >= 5)
 			{
 				m_nNumCreateModel++;
+
+				// ボスの移動速度を早める
+				CManager::GetManager()->GetGame()->GetEnemyBoss()->SetAdd(0.002f);
+
+				if (m_nNumCreateModel > 8)
+				{
+					m_nNumCreateModel = 8;
+				}
 			}
 
 			// カメラ情報の取得
@@ -145,7 +154,7 @@ void CModelManager::Update()
 			for (int nCntModel = 0; nCntModel < m_nNumCreate; nCntModel++)
 			{
 				//2列木生成
-				float fRand = (float)GetRandNum(120, -120);
+				float fRand = (float)GetRandNum(180, -180);
 
 				// 障害物生成
 				switch (GetRandNum(2, 0))

@@ -73,6 +73,7 @@ public:
 
 	PATTERN GetPattern() { return m_pattern; }
 	void SetPattern(PATTERN pattern) { m_pattern = pattern; }
+	void SetAdd(const float& fAdd) { m_fAdd += fAdd; }
 
 private:
 	// 移動量
@@ -89,6 +90,9 @@ private:
 	bool m_bSizeChange;
 	// オブジェクトを生成した数
 	int m_nCountObject;
+
+	// 加速度
+	float m_fAdd;
 };
 
 #endif	// _BOSS_H_
