@@ -103,6 +103,8 @@ public:
 	// プレイヤー参加情報の設定
 	void SetEntryAll(SEntryInfo *pEntry);
 
+	void ResetEntry();
+
 	// プレイヤー参加情報の取得
 	SEntryInfo *GetEntry() { return &m_EntryInfo[0]; }
 

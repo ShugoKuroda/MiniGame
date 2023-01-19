@@ -31,12 +31,15 @@ public:
 	void Update() override;
 	void Draw() override;
 
+	void SetCollision(bool bCol) { m_bCollision = bCol; }
+
 	static void CollisionAll(D3DXVECTOR3* pPosIn, int nNumPlayer);
 	bool Collision(D3DXVECTOR3* pPosIn, int nNumPlayer);
 
 private:
 	D3DXVECTOR3 m_PosOld;	//‘O‰ñ‚ÌˆÊ’u
 	int m_nDel;
+	bool m_bCollision;		// “–‚½‚è”»’è‚Ì—L–³
 };
 
 #endif	// _OBSTACLE_H_

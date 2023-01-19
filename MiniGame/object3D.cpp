@@ -12,10 +12,15 @@
 
 #include "input_keyboard.h"
 
+#include "game.h"
+#include "boss.h"
+
 //======================================================
 //	コンストラクタ
 //======================================================
-CObject3D::CObject3D() : m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f), m_nDel(0)
+CObject3D::CObject3D() :
+	m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f), m_rot(0.0f, 0.0f, 0.0f),
+	m_size(0.0f, 0.0f), m_nDel(0), m_bStop(false)
 {
 }
 
@@ -29,13 +34,16 @@ CObject3D::~CObject3D()
 //======================================================
 //	生成処理
 //======================================================
-CObject3D *CObject3D::Create(const D3DXVECTOR3& pos)
+CObject3D *CObject3D::Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size)
 {
 	//インスタンス生成
 	CObject3D *pObject3D = new CObject3D;
-	
+
 	// 位置設定
 	pObject3D->SetPosition(pos);
+
+	// サイズ設定
+	pObject3D->SetSize(size);
 
 	// 初期化
 	pObject3D->Init();
@@ -68,10 +76,10 @@ HRESULT CObject3D::Init()
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (POLYGON_SIZE / 2), m_pos.y, m_pos.z + (POLYGON_SIZE / 2));
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (POLYGON_SIZE / 2), m_pos.y, m_pos.z + (POLYGON_SIZE / 2));
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (POLYGON_SIZE / 2), m_pos.y, m_pos.z - (POLYGON_SIZE / 2));
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (POLYGON_SIZE / 2), m_pos.y, m_pos.z - (POLYGON_SIZE / 2));
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y, m_pos.z + (m_size.y / 2));
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z + (m_size.y / 2));
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y, m_pos.z - (m_size.y / 2));
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z - (m_size.y / 2));
 
 	//各頂点の法線の設定(ベクトルの大きさは１にする必要がある)
 	pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -125,11 +133,22 @@ void CObject3D::Update()
 	//	m_rot.x += 0.01f;
 	//}
 
-	m_nDel++;
+	if (m_bStop == false)
+	{
+		if (CManager::GetManager()->GetGame() != nullptr)
+		{
+			if (CManager::GetManager()->GetGame()->GetEnd() == false)
+			{
+				m_pos.z = CManager::GetManager()->GetGame()->GetEnemyBoss()->GetPosition().z;
+			}
 
-	if (2400 <= m_nDel)
-	{// 破棄
-		Uninit();
+			//m_nDel++;
+
+			//if (2400 <= m_nDel)
+			//{// 破棄
+			//	
+			//}
+		}
 	}
 }
 

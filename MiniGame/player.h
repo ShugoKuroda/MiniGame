@@ -15,6 +15,7 @@
 //*******************************************************************
 class CLife;
 class CScore;
+class CLogo;
 
 //*******************************************************************
 //	マクロ定義
@@ -116,6 +117,8 @@ public:
 	int GetNum() { return m_nPlayerNum; }
 	// プレイヤー番号の取得
 	int GetPadNum() { return m_nGamePadNum; }
+	// プレイヤー番号の取得
+	bool GetReady() { return m_bReady; }	
 	
 	// 移動量の設定
 	void SetMove(const D3DXVECTOR3& move) { m_move = move; }
@@ -159,6 +162,7 @@ private:
 	CLife *m_pLife;
 	// スコアのポインタ
 	CScore *m_pScore;
+	CLogo *m_pLogo;
 
 	//移動量
 	D3DXVECTOR3 m_move;
@@ -212,6 +216,8 @@ private:
 	bool m_bStart;
 	// 死亡したかどうか
 	bool m_bDie;
+
+	bool m_bReady;
 };
 
 #endif	//_PLAYER_H_

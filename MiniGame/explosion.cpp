@@ -117,7 +117,7 @@ HRESULT CExplosion::Init()
 	CObject2D::SetAnimation(m_nPatternAnim, 2, DIVISION_U, DIVISION_V);
 
 	// ”š”­‰¹
-	CSound::Play(CSound::SOUND_LABEL_SE_EXPLOSION);
+	//CSound::Play(CSound::SOUND_LABEL_SE_EXPLOSION);
 
 	return S_OK;
 }

@@ -38,7 +38,7 @@ HRESULT CResult::Init()
 	// ランキングの生成
 	CRank::Create();
 	// リザルトBGM
-	CSound::Play(CSound::SOUND_LABEL_RESULT);
+	//CSound::Play(CSound::SOUND_LABEL_RESULT);
 
 	return S_OK;
 }

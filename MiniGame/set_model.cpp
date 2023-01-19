@@ -16,6 +16,7 @@
 
 // 追加
 #include "model.h"
+#include "model_obstacle.h"
 
 //=============================================================================
 // マクロ定義
@@ -199,7 +200,7 @@ bool CSetModel::LoadModel(std::string name)
 						//	Model.nIdxShadow = SetShadow(D3DXVECTOR3(Model.pos.x, 0.1f, Model.pos.z), Model.rot, fShadowX, fShadowZ);
 
 						// モデル配置
-						CModel::Create(model.pos, model.rot, &model.cName[0])->SetCont(-1);
+						CObstacle::Create(model.pos, model.rot, &model.cName[0])->SetCont(-1);
 
 						break;
 					}

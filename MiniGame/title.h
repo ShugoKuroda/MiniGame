@@ -46,12 +46,17 @@ public:
 	void Uninit();
 	void Update();
 
+	void LogoMove();
+	void Ready();
+
 	// プレイヤー情報
 	CPlayer* GetPlayer(int nNum) { return m_pPlayer[nNum]; }
 	//カメラ情報
 	CCamera* GetCamera() { return m_pCamera; }
 	//タイトルロゴ情報
 	CLogo* GetLogo() { return m_pLogo; }
+	//タイトルロゴ情報
+	int GetEntry() { return m_nEntryNum; }
 
 private:
 	//メンバ変数
@@ -71,6 +76,11 @@ private:
 	D3DXVECTOR3 m_move;		// 移動量
 
 	bool m_bLogoMove;
+	bool m_bPlay;
+
+	bool m_PlayerEnt[CPlayer::PLAYER_MAX];
+
+	bool m_bUi;
 };
 
 #endif		// _TITLE_H_

@@ -9,7 +9,7 @@ SCRIPT		# この行は消さないこと！
 //==================================================
 // テクスチャ最大数
 //==================================================
-TEX_NUM = 22
+TEX_NUM = 28
 
 //==================================================
 // テクスチャ読み込み情報
@@ -144,6 +144,42 @@ END_TEXSET
 TEXSET
 	PAS = data/TEXTURE/title001.png
 	NAME = TEX_TYPE_LOGO_TITLEPUSH
+END_TEXSET
+
+// チュートリアルボタン
+TEXSET
+	PAS = data/TEXTURE/tutorial000.png
+	NAME = TEX_TYPE_TUTORIAL_BUTTON
+END_TEXSET
+
+// チュートリアル画像
+TEXSET
+	PAS = data/TEXTURE/tutorial002.png
+	NAME = TEX_TYPE_TUTORIAL_IMAGE
+END_TEXSET
+
+// 準備中
+TEXSET
+	PAS = data/TEXTURE/UI000.png
+	NAME = TEX_TYPE_UI_SET
+END_TEXSET
+
+// 準備完了
+TEXSET
+	PAS = data/TEXTURE/UI001.png
+	NAME = TEX_TYPE_UI_OK
+END_TEXSET
+
+// 準備する
+TEXSET
+	PAS = data/TEXTURE/UI002.png
+	NAME = TEX_TYPE_UI_1
+END_TEXSET
+
+// 参加
+TEXSET
+	PAS = data/TEXTURE/UI003.png
+	NAME = TEX_TYPE_UI_2
 END_TEXSET
 
 END_SCRIPT		# この行は消さないこと！

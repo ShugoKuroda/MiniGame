@@ -37,15 +37,21 @@ public:
 	CObject3D();
 	~CObject3D() override;
 
-	static CObject3D *Create(const D3DXVECTOR3& pos);
+	static CObject3D *Create(const D3DXVECTOR3& pos, const D3DXVECTOR2& size);
 
-	HRESULT Init() override;
-	void Uninit() override;
-	void Update() override;
-	void Draw() override;
+	virtual HRESULT Init() override;
+	virtual void Uninit() override;
+	virtual void Update() override;
+	virtual void Draw() override;
+
+	D3DXVECTOR3 GetPosition() { return m_pos; }
+	D3DXVECTOR3 GetRotation() { return m_rot; }
+	D3DXVECTOR2 GetSize() { return m_size; }
 
 	void SetPosition(const D3DXVECTOR3& pos) { m_pos = pos; }
 	void SetRotation(const D3DXVECTOR3& rot) { m_rot = rot; }
+	void SetSize(const D3DXVECTOR2& size) { m_size = size; }
+	void SetStop(const bool& bStop) { m_bStop = bStop; }
 
 	// テクスチャの設定
 	void BindTexture(LPDIRECT3DTEXTURE9 Texture) { m_pTexture = Texture; }
@@ -59,11 +65,14 @@ private:
 	D3DXVECTOR3 m_pos;
 	// 向き
 	D3DXVECTOR3 m_rot;
+	// サイズ
+	D3DXVECTOR2 m_size;
 	// ワールドマトリックス
 	D3DXMATRIX m_mtxWorld;
 
 	// 破棄カウンター
 	int m_nDel;
+	bool m_bStop;
 };
 
 #endif

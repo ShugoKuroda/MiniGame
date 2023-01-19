@@ -245,14 +245,14 @@ bool CBullet::Collision(D3DXVECTOR3 posStart)
 				//オブジェクトポインタを敵にキャスト
 				CEnemy *pEnemy = (CEnemy*)pObject;
 
-				if (LibrarySpace::SphereCollision2D(posStart, pEnemy->GetPosition(), fStartLength, pEnemy->GetLength()))
+				if (LibrarySpace::SphereCollision(posStart, pEnemy->GetPosition(), fStartLength, pEnemy->GetLength()))
 				{//弾と当たったら(球体の当たり判定)
 
 					// プレイヤー情報の取得
 					CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(m_parent);
 
 					// 被弾音
-					CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+					//CSound::Play(CSound::SOUND_LABEL_SE_HIT);
 
 					//ダメージ処理
 					pEnemy->Damage(m_nDamage, pPlayer);

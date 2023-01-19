@@ -31,6 +31,8 @@
 #include "camera.h"
 #include "x_file_motion.h"
 #include "billboard_player.h"
+#include "logo.h"
+#include "texture.h"
 
 //-----------------------------------------------------------------------------
 // マクロ定義
@@ -88,7 +90,7 @@ CPlayer::CPlayer() :
 	m_move(0.0f, 0.0f, 0.0f), m_posOld(0.0f, 0.0f, 0.0f), m_state(STATE_NORMAL), m_nCntState(0), m_nCntAttack(0), m_nCntAnim(0),
 	m_nPatternAnim(0), m_nCntAnimMove(0), m_bControlKeyboard(false), m_nGamePadNum(0), m_nTexRotType(TYPE_NEUTRAL), m_nPlayerNum(0),
 	m_bIsJumping(false), m_bControl(false), m_bInSea(false), m_pLife(nullptr), m_pScore(nullptr), m_bDie(false), m_bStart(false),
-	m_knockBack(0.0f, 0.0f, 0.0f), m_nDamageCnt(0), m_nAttackCnt(0)
+	m_knockBack(0.0f, 0.0f, 0.0f), m_nDamageCnt(0), m_nAttackCnt(0), m_pLogo(nullptr), m_bReady(0)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_PLAYER);
@@ -140,10 +142,10 @@ HRESULT CPlayer::Init()
 		CMotion::SetRotation(D3DXVECTOR3(0.0f, rotCamera.y, 0.0f));
 		// 目的の角度設定
 		CMotion::SetRotDest(rotCamera);
-	}
 
-	// 操作可能状態にする
-	m_bControl = true;
+		// 効果音
+		CSound::Play(CSound::SOUND_LABEL_SE_ENTRY);
+	}
 
 	// 色の設定
 	switch (m_nPlayerNum)
@@ -157,7 +159,15 @@ HRESULT CPlayer::Init()
 			// スコアの生成
 			m_pScore = CScore::Create(D3DXVECTOR3(150.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
-			m_pScore->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+			m_pScore->SetColor(D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f));
+		}
+		// タイトル画面なら
+		else if (CManager::GetManager()->GetTitle() != nullptr)
+		{
+			m_pLogo = CLogo::Create(D3DXVECTOR3(150.0f, 30.0f, 0.0f), D3DXVECTOR2(220.0f, 60.0f), "TEX_TYPE_UI_SET", -1);
+
+			// 操作可能状態にする
+			m_bControl = true;
 		}
 
 		// 色の設定
@@ -177,7 +187,15 @@ HRESULT CPlayer::Init()
 			// スコアの生成
 			m_pScore = CScore::Create(D3DXVECTOR3(450.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
-			m_pScore->SetColor(D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+			m_pScore->SetColor(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
+		}
+		// タイトル画面なら
+		else if (CManager::GetManager()->GetTitle() != nullptr)
+		{
+			m_pLogo = CLogo::Create(D3DXVECTOR3(450.0f, 30.0f, 0.0f), D3DXVECTOR2(220.0f, 60.0f), "TEX_TYPE_UI_SET", -1);
+
+			// 操作可能状態にする
+			m_bControl = true;
 		}
 
 		// 色の設定
@@ -196,7 +214,15 @@ HRESULT CPlayer::Init()
 			// スコアの生成
 			m_pScore = CScore::Create(D3DXVECTOR3(750.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
-			m_pScore->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+			m_pScore->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f));
+		}
+		// タイトル画面なら
+		else if (CManager::GetManager()->GetTitle() != nullptr)
+		{
+			m_pLogo = CLogo::Create(D3DXVECTOR3(750.0f, 30.0f, 0.0f), D3DXVECTOR2(220.0f, 60.0f), "TEX_TYPE_UI_SET", -1);
+
+			// 操作可能状態にする
+			m_bControl = true;
 		}
 
 		// 色の設定
@@ -215,7 +241,15 @@ HRESULT CPlayer::Init()
 			// スコアの生成
 			m_pScore = CScore::Create(D3DXVECTOR3(1050.0f, 25.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f), 20);
 			// 色の設定
-			m_pScore->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+			m_pScore->SetColor(D3DXCOLOR(0.5f, 1.0f, 0.5f, 1.0f));
+		}
+		// タイトル画面なら
+		else if (CManager::GetManager()->GetTitle() != nullptr)
+		{
+			m_pLogo = CLogo::Create(D3DXVECTOR3(1050.0f, 30.0f, 0.0f), D3DXVECTOR2(220.0f, 60.0f), "TEX_TYPE_UI_SET", -1);
+
+			// 操作可能状態にする
+			m_bControl = true;
 		}
 
 		// 色の設定
@@ -247,6 +281,17 @@ void CPlayer::Uninit()
 //-----------------------------------------------------------------------------
 void CPlayer::Update()
 {
+	if (CManager::GetManager()->GetGame() != nullptr)
+	{
+		if (CManager::GetManager()->GetGame()->GetStart() == true && CManager::GetManager()->GetGame()->GetEnd() == false)
+		{
+			if (m_state != STATE_DAMAGE)
+			{
+				m_bControl = true;
+			}
+		}
+	}
+
 	// 前回の位置を保存
 	m_posOld = GetPosition();
 
@@ -280,26 +325,26 @@ void CPlayer::Update()
 	// 重力負荷をかける
 	m_move.y -= GRAVITY;
 	
-	//プレイヤーが雪崩に巻き込まれていたら
-	if (m_state == STATE_INAVALANCHE)
-	{
-		// キーボード情報の取得
-		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
-		// ジョイパッド情報の取得
-		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
+	////プレイヤーが雪崩に巻き込まれていたら
+	//if (m_state == STATE_INAVALANCHE)
+	//{
+	//	// キーボード情報の取得
+	//	CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
+	//	// ジョイパッド情報の取得
+	//	CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
-		//プレイヤーを後退させる
-		m_move.z -= 1.0f;
+	//	//プレイヤーを後退させる
+	//	m_move.z -= 1.0f;
 
-		if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_OK))
-		{
-			m_nPushButton++;
-			if (m_nPushButton >= 1/*何回押したら雪崩を抜けるか*/)
-			{
-				m_state = STATE_NORMAL;
-			}
-		}
-	}
+	//	if (pKeyboard->GetPress(CInputKeyboard::KEYINFO_OK))
+	//	{
+	//		m_nPushButton++;
+	//		if (m_nPushButton >= 1/*何回押したら雪崩を抜けるか*/)
+	//		{
+	//			m_state = STATE_NORMAL;
+	//		}
+	//	}
+	//}
 
 	// 移動量の加算
 	pos += m_move;
@@ -328,18 +373,21 @@ void CPlayer::Update()
 	// ゲーム参加中であれば
 	if (m_bStart == true)
 	{
-		// ゲームが始まったら
-		if (CManager::GetManager()->GetGame()->GetStart() == true && m_bDie == false)
+		if (CManager::GetManager()->GetGame()->GetEnd() == false)
 		{
-			m_pScore->Add(1);
-		}
+			// ゲームが始まったら
+			if (CManager::GetManager()->GetGame()->GetStart() == true && m_bDie == false)
+			{
+				m_pScore->Add(1);
+			}
 
-		// カメラ位置の取得
-		D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
+			// カメラ位置の取得
+			D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
-		if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT_CAMERA)
-		{// 手前壁
-			pos.z = (posCamera.z + FIELD_SIZE_HEIGHT_CAMERA) + (size.z / 2);
+			if (pos.z - (size.z / 2) <= posCamera.z + FIELD_SIZE_HEIGHT_CAMERA)
+			{// 手前壁
+				pos.z = (posCamera.z + FIELD_SIZE_HEIGHT_CAMERA) + (size.z / 2);
+			}
 		}
 	}
 	// ロビー待機中であれば
@@ -348,6 +396,39 @@ void CPlayer::Update()
 		if (pos.z - (size.z / 2) <= -FIELD_SIZE_HEIGHT / 2)
 		{// 手前壁
 			pos.z = (-FIELD_SIZE_HEIGHT / 2) + (size.z / 2);
+		}
+
+		// キーボード情報の取得
+		CInputKeyboard *pKeyboard = CManager::GetManager()->GetInputKeyboard();
+		// ジョイパッド情報の取得
+		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
+
+		// キーボード操作の場合
+		if (m_bControlKeyboard == true &&
+			pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_1) == true)
+		{// SPACEキー押下
+			m_bReady = m_bReady ? false : true;
+
+			// 被弾音
+			CSound::Play(CSound::SOUND_LABEL_SE_COUNT);
+		}
+		// ゲームパッド操作の場合
+		else if (m_bControlKeyboard == false &&
+			pJoypad->GetTrigger(CInputJoypad::JOYKEY_X, m_nGamePadNum) == true)
+		{// Aボタン押下
+			m_bReady = m_bReady ? false : true;
+
+			// 被弾音
+			CSound::Play(CSound::SOUND_LABEL_SE_COUNT);
+		}
+
+		if (m_bReady == true)
+		{
+			m_pLogo->BindTexture(CManager::GetManager()->GetTexture()->GetTexture("TEX_TYPE_UI_OK"));
+		}
+		else
+		{
+			m_pLogo->BindTexture(CManager::GetManager()->GetTexture()->GetTexture("TEX_TYPE_UI_SET"));
 		}
 	}
 
@@ -625,6 +706,9 @@ void CPlayer::Jump()
 
 			// ジャンプフラグの設定
 			m_bIsJumping = true;
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_JUMP);
 		}
 		// ゲームパッド操作の場合
 		else if (m_bControlKeyboard == false &&
@@ -636,6 +720,9 @@ void CPlayer::Jump()
 
 			// ジャンプフラグの設定
 			m_bIsJumping = true;
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_JUMP);
 		}
 	}
 }
@@ -681,12 +768,12 @@ void CPlayer::Attack()
 				{
 					D3DXVECTOR3 OutPos = pPlayer->GetPosition();
 
-					if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision2D(AttackPos,
+					if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision(AttackPos,
 						D3DXVECTOR3(OutPos.x, OutPos.y + 50.0f, OutPos.z), ATTACK_LENGTH, pPlayer->GetSizeMax().x))
 					{//弾と当たったら(球体の当たり判定)
 
 						// 被弾音
-						CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+						CSound::Play(CSound::SOUND_LABEL_SE_DAMAGE);
 
 						//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
 						D3DXVECTOR3 vecToPlayer = pPlayer->GetPosition() - AttackPos;
@@ -716,12 +803,12 @@ void CPlayer::Attack()
 				{
 					D3DXVECTOR3 OutPos = pPlayer->GetPosition();
 
-					if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision2D(AttackPos,
+					if (pPlayer->GetState() != STATE_DAMAGE && LibrarySpace::SphereCollision(AttackPos,
 						D3DXVECTOR3(OutPos.x, OutPos.y + 50.0f, OutPos.z), ATTACK_LENGTH, pPlayer->GetSizeMax().x))
 					{//弾と当たったら(球体の当たり判定)
 
-					 // 被弾音
-						CSound::Play(CSound::SOUND_LABEL_SE_HIT);
+						// 被弾音
+						CSound::Play(CSound::SOUND_LABEL_SE_DAMAGE);
 
 						//敵とプレイヤーの距離差分を保存(目的の位置 - 現在の位置)
 						D3DXVECTOR3 vecToPlayer = pPlayer->GetPosition() - AttackPos;
@@ -759,6 +846,9 @@ void CPlayer::Attack()
 		if (m_bControlKeyboard == true && pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_ATTACK) == true ||
 			m_bControlKeyboard == false && pJoypad->GetTrigger(CInputJoypad::JOYKEY_B, m_nGamePadNum) == true)
 		{// SPACEキー押下
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_ATTACK);
 
 			m_bAttack = true;
 		}
@@ -909,8 +999,11 @@ void CPlayer::Die()
 	if (m_pScore != nullptr)
 	{
 		// スコアの色を変える
-		m_pScore->SetColor(D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f));
+		m_pScore->SetColor(D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f));
 	}
+
+	// 効果音
+	CSound::Play(CSound::SOUND_LABEL_SE_DIE);
 
 	//// ライフが破棄されていなければ
 	//if (m_pLife != nullptr)

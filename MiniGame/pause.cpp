@@ -158,7 +158,11 @@ void CPause::Update()
 		// ゲームパッド情報の取得
 		CInputJoypad *pJoypad = CManager::GetManager()->GetInputJoypad();
 
-		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_LEFT) == true || pJoypad->GetTrigger(CInputJoypad::JOYKEY_UP, m_nNumPlayer) == true)
+		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_LEFT) == true 
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_LEFT, 0) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_LEFT, 1) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_LEFT, 2) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_LEFT, 3) == true)
 		{
 			// 現在選択されている項目の色を元に戻す
 			m_apObject2D[m_nPauseSelect]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -178,9 +182,13 @@ void CPause::Update()
 			m_apObject2D[TYPE_SELECTOR]->SetPosition(pos);
 
 			// 効果音
-			CSound::Play(CSound::SOUND_LABEL_SE_MENU_SELECT);
+			CSound::Play(CSound::SOUND_LABEL_SE_COUNT);
 		}
-		else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_RIGHT) || pJoypad->GetTrigger(CInputJoypad::JOYKEY_DOWN, m_nNumPlayer))
+		else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_RIGHT) 
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_RIGHT, 0) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_RIGHT, 1) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_RIGHT, 2) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_RIGHT, 3) == true)
 		{
 			// 現在選択されている項目の色を元に戻す
 			m_apObject2D[m_nPauseSelect]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -200,13 +208,17 @@ void CPause::Update()
 			m_apObject2D[TYPE_SELECTOR]->SetPosition(pos);
 
 			// 効果音
-			CSound::Play(CSound::SOUND_LABEL_SE_MENU_SELECT);
+			CSound::Play(CSound::SOUND_LABEL_SE_COUNT);
 		}
 
 		// 現在選択されている項目は色を黄色に設定
 		m_apObject2D[m_nPauseSelect]->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
 
-		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) || pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, m_nNumPlayer))
+		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) 
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, 0) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, 1) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, 2) == true
+			|| pJoypad->GetTrigger(CInputJoypad::JOYKEY_A, 3) == true)
 		{
 			// 選択されているUIを参照し、どの処理をするか決定
 			switch (m_nPauseSelect)
@@ -268,11 +280,11 @@ void CPause::SetPause()
 
 	if (m_bPause == true)
 	{
-		CSound::Play(CSound::SOUND_LABEL_SE_MENU_IN);
+		CSound::Play(CSound::SOUND_LABEL_SE_PAUSE);
 	}
 	else if (m_bPause == false)
 	{
-		CSound::Play(CSound::SOUND_LABEL_SE_MENU_OUT);
+		CSound::Play(CSound::SOUND_LABEL_SE_PAUSE);
 	}
 
 	CManager::GetManager()->SetPause(m_bPause);

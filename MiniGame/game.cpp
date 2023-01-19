@@ -87,8 +87,7 @@ CGame::~CGame()
 //-----------------------------------------------------------------------------------------------
 HRESULT CGame::Init()
 {
-	// 板ポリ生成
-	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
 	//// 板ポリ生成
 	//CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f));
 	//// 板ポリ生成
@@ -110,6 +109,8 @@ HRESULT CGame::Init()
 	// 敵ボス生成
 	m_pEnemyBoss = CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_BOSS");
 
+	// 板ポリ生成
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(3000.0f, 3000.0f));
 	//球体メッシュの配置
 	CMeshSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG")->SetPosTracking(m_pEnemyBoss->GetpPosition());
@@ -284,7 +285,10 @@ void CGame::Update()
 		if (m_nScene == 180)
 		{
 			// ポーズメニューを開く
-			CPause::Create(0);
+			CPause::Create(m_nPlayerDie);
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_PAUSE);
 			// モードの設定
 			//CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_TITLE);
 		}
@@ -298,6 +302,9 @@ void CGame::Update()
 		if (m_nStartCnt == 180)
 		{// カウントダウン生成
 			CLogoCountDown::Create(5);
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_COUNT);
 		}
 	}
 
@@ -434,13 +441,7 @@ bool CGame::CheckGameEnd()
 			{// プレイヤーの死亡数を加算
 				nNumDie++;
 				// 最後に死んだプレイヤー番号保存
-				m_nPlayerDie = m_pPlayer[nCntPlayer]->GetPadNum();
-			}
-
-			// プレイヤーが全員死亡していたら
-			if (CPlayer::PLAYER_MAX <= nNumDie)
-			{
-				nNumDie = 0;
+				//m_nPlayerDie = m_pPlayer[nCntPlayer]->GetPadNum();
 			}
 		}
 		else
@@ -452,10 +453,38 @@ bool CGame::CheckGameEnd()
 	// プレイヤーが全員死亡していたら
 	if (CPlayer::PLAYER_MAX <= nNumDie)
 	{
+		int nHiScore = 0;
+
+		// プレイヤー生成
+		for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+		{
+			// 現在のプレイヤーが参加しているなら
+			if (m_pPlayer[nCntPlayer] != nullptr)
+			{
+				if (nHiScore <= m_pPlayer[nCntPlayer]->GetScore()->GetScore())
+				{
+					nHiScore = m_pPlayer[nCntPlayer]->GetScore()->GetScore();
+					m_nPlayerDie = m_pPlayer[nCntPlayer]->GetNum();
+				}
+			}
+		}
+
 		// ゲーム終了フラグを立てる
 		m_bEnd = true;
 		// ゲーム終了ロゴの生成
 		CLogoExtend::Create(D3DXVECTOR2(250.0f, 80.0f), "TEX_TYPE_END_UI", 180)->SetSceneChange(true);
+
+		// 板ポリ生成
+		CObject3D::Create(m_pEnemyBoss->GetPosition(), D3DXVECTOR2(3000.0f, 3000.0f))->SetStop(true);
+		//球体メッシュの配置
+		CMeshSphere::Create(m_pEnemyBoss->GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
+
+		// 決定音
+		CSound::Stop();
+
+		// 効果音
+		CSound::Play(CSound::SOUND_LABEL_SE_START);
 
 		return true;
 	}
@@ -468,53 +497,53 @@ bool CGame::CheckGameEnd()
 //-----------------------------------------------------------------------------------------------
 void CGame::CreateEnemy()
 {
-	// 敵生成カウンターの加算
-	m_EnemyInfo.nCreatenCount++;
+	//// 敵生成カウンターの加算
+	//m_EnemyInfo.nCreatenCount++;
 
-	//敵のウェーブ数だけ生成する
-	for (int nCntEnemy = 0; nCntEnemy < m_EnemyInfo.nWave; nCntEnemy++)
-	{
-		// 敵が出現するフレーム数に達したら && 敵の出現が終わっていないなら
-		if (m_EnemyInfo.pCreate[nCntEnemy].nFrame <= m_EnemyInfo.nCreatenCount && m_EnemyInfo.count[nCntEnemy].bCreate == false)
-		{
-			//敵が連続で出現するまでのカウンターを加算
-			m_EnemyInfo.count[nCntEnemy].nCreate++;
-			//敵の連続出現間隔カウンターが最大に達したら
-			if (m_EnemyInfo.count[nCntEnemy].nCreate >= m_EnemyInfo.pCreate[nCntEnemy].nInterval)
-			{
-				//敵の生成(位置、種類、体力、移動情報を引数に設定)
-				CEnemy *pEnemy = CEnemy::Create(m_EnemyInfo.pCreate[nCntEnemy].pos, (CEnemy::TYPE)m_EnemyInfo.pCreate[nCntEnemy].nType, m_EnemyInfo.pCreate[nCntEnemy].nLife, &m_EnemyInfo.pCreate[nCntEnemy].move[0]);
+	////敵のウェーブ数だけ生成する
+	//for (int nCntEnemy = 0; nCntEnemy < m_EnemyInfo.nWave; nCntEnemy++)
+	//{
+	//	// 敵が出現するフレーム数に達したら && 敵の出現が終わっていないなら
+	//	if (m_EnemyInfo.pCreate[nCntEnemy].nFrame <= m_EnemyInfo.nCreatenCount && m_EnemyInfo.count[nCntEnemy].bCreate == false)
+	//	{
+	//		//敵が連続で出現するまでのカウンターを加算
+	//		m_EnemyInfo.count[nCntEnemy].nCreate++;
+	//		//敵の連続出現間隔カウンターが最大に達したら
+	//		if (m_EnemyInfo.count[nCntEnemy].nCreate >= m_EnemyInfo.pCreate[nCntEnemy].nInterval)
+	//		{
+	//			//敵の生成(位置、種類、体力、移動情報を引数に設定)
+	//			CEnemy *pEnemy = CEnemy::Create(m_EnemyInfo.pCreate[nCntEnemy].pos, (CEnemy::TYPE)m_EnemyInfo.pCreate[nCntEnemy].nType, m_EnemyInfo.pCreate[nCntEnemy].nLife, &m_EnemyInfo.pCreate[nCntEnemy].move[0]);
 
-				//敵の生成数カウンターを加算
-				m_EnemyInfo.count[nCntEnemy].nNum++;
-				//敵の連続出現間隔カウンターのリセット
-				m_EnemyInfo.count[nCntEnemy].nCreate = 0;
+	//			//敵の生成数カウンターを加算
+	//			m_EnemyInfo.count[nCntEnemy].nNum++;
+	//			//敵の連続出現間隔カウンターのリセット
+	//			m_EnemyInfo.count[nCntEnemy].nCreate = 0;
 
-				//敵が最大数まで生成したら
-				if (m_EnemyInfo.pCreate[nCntEnemy].nNum <= m_EnemyInfo.count[nCntEnemy].nNum)
-				{
-					// 色の設定がされていたら
-					if (m_EnemyInfo.pCreate[nCntEnemy].nColor > 0)
-					{// 最後尾の敵の色を設定
-						pEnemy->SetItemColor((CEnemy::COLORITEM)m_EnemyInfo.pCreate[nCntEnemy].nColor);
-					}
-					// このウェーブの生成をやめる
-					m_EnemyInfo.count[nCntEnemy].bCreate = true;
-				}
-			}
-		}
-	}
+	//			//敵が最大数まで生成したら
+	//			if (m_EnemyInfo.pCreate[nCntEnemy].nNum <= m_EnemyInfo.count[nCntEnemy].nNum)
+	//			{
+	//				// 色の設定がされていたら
+	//				if (m_EnemyInfo.pCreate[nCntEnemy].nColor > 0)
+	//				{// 最後尾の敵の色を設定
+	//					pEnemy->SetItemColor((CEnemy::COLORITEM)m_EnemyInfo.pCreate[nCntEnemy].nColor);
+	//				}
+	//				// このウェーブの生成をやめる
+	//				m_EnemyInfo.count[nCntEnemy].bCreate = true;
+	//			}
+	//		}
+	//	}
+	//}
 
-	// ボスを出現させる
-	if (m_EnemyInfo.nCreatenCount == 5260)
-	{
-		//CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
-		// 警告音
-		CSound::Play(CSound::SOUND_LABEL_BOSS);
-	}
+	//// ボスを出現させる
+	//if (m_EnemyInfo.nCreatenCount == 5260)
+	//{
+	//	//CEnemyBoss::Create(D3DXVECTOR3((float)CRenderer::SCREEN_WIDTH, (float)CRenderer::SCREEN_HEIGHT + CEnemyBoss::SIZE_HEIGHT, 0.0f), CEnemy::TYPE_DARK_BOSS);
+	//	// 警告音
+	//	//CSound::Play(CSound::SOUND_LABEL_BOSS);
+	//}
 
-	//ロゴの生成
-	CreateLogo(m_EnemyInfo.nCreatenCount);
+	////ロゴの生成
+	//CreateLogo(m_EnemyInfo.nCreatenCount);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -565,6 +594,15 @@ void CGame::SetCameraPlayer(bool bCamera)
 			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH / 2, 300.0f, 0.0f),
 				D3DXVECTOR2(CRenderer::SCREEN_WIDTH / 2, 100.0f), "TEX_TYPE_LOGO_HISCORE", 180);
 		}
+
+		// 板ポリ生成
+		CObject3D::Create(m_pPlayer[m_nPlayerDie]->GetPosition(), D3DXVECTOR2(3000.0f, 3000.0f))->SetStop(true);
+		//球体メッシュの配置
+		CMeshSphere::Create(m_pPlayer[m_nPlayerDie]->GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG")->SetMove(true);
+
+		// 効果音
+		CSound::Play(CSound::SOUND_LABEL_SE_WIN);
 
 		// 最後に死亡したプレイヤーに注視点を設定
 		m_pCamera->SetPosTracking(m_pPlayer[m_nPlayerDie]->GetpPosition());

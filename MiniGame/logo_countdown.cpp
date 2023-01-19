@@ -14,6 +14,7 @@
 #include "logo_countdown.h"
 #include "number.h"
 #include "renderer.h"
+#include "sound.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -114,11 +115,20 @@ void CLogoCountDown::Update()
 		if (m_nNum > 1)
 		{
 			Create(m_nNum - 1);
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_COUNT);
 		}
 		else if (m_nNum == 1)
 		{
 			// ゲーム開始ロゴの追加
 			CLogo::Create(m_apNumber->GetPosition(), D3DXVECTOR2(200.0f, 80.0f), "TEX_TYPE_START_UI", 90);
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_SE_START);
+
+			// 効果音
+			CSound::Play(CSound::SOUND_LABEL_GAME);
 
 			// ゲームの開始フラグを立てる
 			CManager::GetManager()->GetGame()->SetStart(true);

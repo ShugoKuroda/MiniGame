@@ -244,7 +244,7 @@ LibrarySpace::EStatePush LibrarySpace::BoxCollisionUnder3D(D3DXVECTOR3 * pPosIn,
 //-----------------------------------------------------------------------------------------------
 // ãÖëÃÇÃìñÇΩÇËîªíË
 //-----------------------------------------------------------------------------------------------
-bool LibrarySpace::SphereCollision2D(const D3DXVECTOR3& posIn, const D3DXVECTOR3& posOut, const float& fsizeIn, const float& fsizeOut)
+bool LibrarySpace::SphereCollision(const D3DXVECTOR3& posIn, const D3DXVECTOR3& posOut, const float& fsizeIn, const float& fsizeOut)
 {
 	//2Ç¬ÇÃç¿ïWç∑ï™ÇãÅÇﬂÇÈ
 	D3DXVECTOR3 Length = posIn - posOut;

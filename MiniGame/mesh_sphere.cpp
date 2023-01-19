@@ -11,6 +11,8 @@
 #include "mesh_sphere.h"
 #include "texture.h"
 
+#include "game.h"
+
 //-----------------------------------------------------------------------------
 // ƒ}ƒNƒ’è‹`
 //-----------------------------------------------------------------------------
@@ -21,7 +23,7 @@
 //-----------------------------------------------------------------------------------------------
 CMeshSphere::CMeshSphere() :
 	m_pTexture(nullptr), m_pVtxBuff(nullptr), m_pIdxBuff(nullptr), m_pos(0.0f, 0.0f, 0.0f), m_pPosTrak(nullptr),
-	m_rot(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_rad(0.0f, 0.0f), m_nMeshX(0), m_nMeshZ(0)
+	m_rot(0.0f, 0.0f, 0.0f), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_rad(0.0f, 0.0f), m_nMeshX(0), m_nMeshZ(0), m_bMove(false)
 {
 }
 
@@ -167,6 +169,8 @@ void CMeshSphere::Uninit()
 		m_pIdxBuff->Release();
 		m_pIdxBuff = nullptr;
 	}
+
+	Release();
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -174,9 +178,23 @@ void CMeshSphere::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CMeshSphere::Update()
 {
-	if (m_pPosTrak != nullptr)
+	if (m_bMove == false)
 	{
-		m_pos = *m_pPosTrak;
+		if (CManager::GetManager()->GetGame() != nullptr)
+		{
+			if (CManager::GetManager()->GetGame()->GetEnd() == true)
+			{
+				m_pPosTrak = nullptr;
+				m_bMove = true;
+			}
+			else if (CManager::GetManager()->GetGame()->GetEnd() == false)
+			{
+				if (m_pPosTrak != nullptr)
+				{
+					m_pos = *m_pPosTrak;
+				}
+			}
+		}
 	}
 }
 

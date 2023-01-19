@@ -15,6 +15,7 @@
 #include "sound.h"
 
 #include "game.h"
+#include "title.h"
 #include "library.h"
 #include "effect.h"
 #include "logo.h"
@@ -29,6 +30,7 @@
 // 追加
 #include "x_file.h"
 #include "model_obstacle.h"
+#include "boss.h"
 
 //-----------------------------------------------------------------------------------------------
 // 定数宣言
@@ -37,7 +39,7 @@
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CObstacle::CObstacle() :m_PosOld(0.0f, 0.0f, 0.0f), m_nDel(0)
+CObstacle::CObstacle() :m_PosOld(0.0f, 0.0f, 0.0f), m_nDel(0), m_bCollision(false)
 {
 	//オブジェクトの種類設定
 	SetType(EObject::OBJ_OBSTACLE);
@@ -97,11 +99,25 @@ void CObstacle::Uninit()
 //-----------------------------------------------------------------------------------------------
 void CObstacle::Update()
 {
-	m_nDel++;
+	//if (GetCnt() > -1)
+	//{
+	//	m_nDel++;
 
-	if (1800 <= m_nDel)
-	{// 破棄
-		Uninit();
+	//	if (1200 <= m_nDel)
+	//	{// 破棄
+	//		Uninit();
+	//		return;
+	//	}
+	//}
+
+	if (CManager::GetManager()->GetGame() != nullptr)
+	{
+		D3DXVECTOR3 pos = CManager::GetManager()->GetGame()->GetEnemyBoss()->GetPosition();
+		if ((pos.z + 1300.0f) <= GetPosition().z)
+		{
+			Uninit();
+			return;
+		}
 	}
 }
 
@@ -119,27 +135,27 @@ void CObstacle::Draw()
 //-----------------------------------------------------------------------------------------------
 void CObstacle::CollisionAll(D3DXVECTOR3* pPosIn, int nNumPlayer)
 {
-	for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
-	{
-		// オブジェクトのポインタ取得
-		CObject *pObject = CObject::GetObject(nCntObject);
-
-		if (pObject != nullptr)
+		for (int nCntObject = 0; nCntObject < CObject::MAX_OBJECT; nCntObject++)
 		{
-			// オブジェクトの種類取得
-			CObject::EObject objType = pObject->GetObjType();
+			// オブジェクトのポインタ取得
+			CObject *pObject = CObject::GetObject(nCntObject);
 
-			//プレイヤーの弾と敵の判定
-			if (objType == OBJ_OBSTACLE)
+			if (pObject != nullptr)
 			{
-				//オブジェクトポインタをキャスト
-				CObstacle *pObstacle = (CObstacle*)pObject;
+				// オブジェクトの種類取得
+				CObject::EObject objType = pObject->GetObjType();
 
-				// 当たり判定
-				pObstacle->Collision(pPosIn, nNumPlayer);
+				//プレイヤーの弾と敵の判定
+				if (objType == OBJ_OBSTACLE)
+				{
+					//オブジェクトポインタをキャスト
+					CObstacle *pObstacle = (CObstacle*)pObject;
+
+					// 当たり判定
+					pObstacle->Collision(pPosIn, nNumPlayer);
+				}
 			}
 		}
-	}
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -149,43 +165,56 @@ bool CObstacle::Collision(D3DXVECTOR3* pPosPlayer, int nNumPlayer)
 {
 	bool bPush = false;
 
-	// プレイヤー情報の取得
-	CPlayer *pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nNumPlayer);
+	if (m_bCollision == false)
+	{	
+		CPlayer *pPlayer = nullptr;
 
-	if (pPlayer != nullptr)
-	{
-		// プレイヤーの過去の位置取得
-		D3DXVECTOR3 posPlayerOld = pPlayer->GetPositionOld();
-		// プレイヤーのサイズ取得
-		//D3DXVECTOR3 sizePlayer = pPlayer->GetSizeMax();
-
-		// 位置取得
-		D3DXVECTOR3 pos = GetPosition();
-		//サイズ取得
-		D3DXVECTOR3 size = GetSizeMax();
-
-		// 押し出し判定
-		switch (LibrarySpace::BoxCollisionUnder3D(pPosPlayer, &posPlayerOld, &pos, &PLAYER_SIZE, &size))
+		if (CManager::GetManager()->GetGame() != nullptr)
 		{
-		case LibrarySpace::PUSH_X:
-			pPlayer->SetMoveX(0.0f);
-			break;
+			// プレイヤー情報の取得
+			pPlayer = CManager::GetManager()->GetGame()->GetPlayer(nNumPlayer);
+		}
+		else if (CManager::GetManager()->GetTitle() != nullptr)
+		{
+			// プレイヤー情報の取得
+			pPlayer = CManager::GetManager()->GetTitle()->GetPlayer(nNumPlayer);
+		}
 
-		case LibrarySpace::PUSH_Z:
-			pPlayer->SetMoveZ(0.0f);
-			break;
+		if (pPlayer != nullptr)
+		{
+			// プレイヤーの過去の位置取得
+			D3DXVECTOR3 posPlayerOld = pPlayer->GetPositionOld();
+			// プレイヤーのサイズ取得
+			//D3DXVECTOR3 sizePlayer = pPlayer->GetSizeMax();
 
-		case LibrarySpace::PUSH_Y:
-			pPlayer->SetMoveY(0.0f);
-			break;
+			// 位置取得
+			D3DXVECTOR3 pos = GetPosition();
+			//サイズ取得
+			D3DXVECTOR3 size = GetSizeMax();
 
-		case LibrarySpace::PUSH_JUMP:
-			pPlayer->SetMoveY(0.0f);
-			pPlayer->SetJumping(false);
-			break;
+			// 押し出し判定
+			switch (LibrarySpace::BoxCollisionUnder3D(pPosPlayer, &posPlayerOld, &pos, &PLAYER_SIZE, &size))
+			{
+			case LibrarySpace::PUSH_X:
+				pPlayer->SetMoveX(0.0f);
+				break;
 
-		default:
-			break;
+			case LibrarySpace::PUSH_Z:
+				pPlayer->SetMoveZ(0.0f);
+				break;
+
+			case LibrarySpace::PUSH_Y:
+				pPlayer->SetMoveY(0.0f);
+				break;
+
+			case LibrarySpace::PUSH_JUMP:
+				pPlayer->SetMoveY(0.0f);
+				pPlayer->SetJumping(false);
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 

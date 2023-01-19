@@ -36,6 +36,7 @@ public:
 	void Draw() override;
 
 	void SetPosTracking(D3DXVECTOR3* pPos) { m_pPosTrak = pPos; }
+	void SetMove(bool bMove) { m_bMove = bMove; }
 
 private:
 	// テクスチャのポインタ
@@ -52,6 +53,8 @@ private:
 	int m_nTop;				// 頂点
 	int m_nIdx;				// インデックス数
 	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
+
+	bool m_bMove;
 
 	D3DXVECTOR3 *m_pPosTrak;
 };

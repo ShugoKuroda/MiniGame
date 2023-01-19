@@ -33,7 +33,7 @@ using namespace LibrarySpace;
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CModelManager::CModelManager() :m_nCounter(0), m_nCounterCreate(0), m_nNumCreate(0), m_nCreateInterval(0)
+CModelManager::CModelManager() :m_nCounter(0), m_nCounterCreate(0), m_nNumCreate(0), m_nCreateInterval(0), m_nNumModel(0), m_nNumCreateModel(0)
 {
 }
 
@@ -102,39 +102,50 @@ void CModelManager::Update()
 			// モデル生成までの数値取得
 			m_nCounterCreate = GetRandNum(240, m_nCreateInterval);
 			// 生成するオブジェクト数を取得
-			m_nNumCreate = GetRandNum(3, 1);
+			m_nNumCreate = GetRandNum(3 + m_nNumCreateModel, 1);
 
 			m_nCreateInterval--;
+
+			if (m_nCreateInterval <= 0)
+			{
+				m_nCreateInterval = 1;
+			}
+
+			m_nNumModel++;
+
+			if (m_nNumModel >= 10)
+			{
+				m_nNumCreateModel++;
+			}
 
 			// カメラ情報の取得
 			D3DXVECTOR3 posCamera = CManager::GetManager()->GetGame()->GetCamera()->GetPosV();
 
 			//木を生成
-			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z+100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z - 200.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z - 450.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
-			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z - 600.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
+			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z - 200.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z - 450.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(-200.0f, 0.0f, posCamera.z - 600.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4")->SetCollision(true);
 
-			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z - 200.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z - 450.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
-			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z - 600.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
+			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z - 200.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z - 450.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(-270.0f, 0.0f, posCamera.z - 600.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4")->SetCollision(true);
 
-			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z - 200.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z - 450.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
-			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z - 600.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
+			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z - 200.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z - 450.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(200.0f, 0.0f, posCamera.z - 600.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4")->SetCollision(true);
 
-			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1");
-			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z - 200.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2");
-			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z - 450.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3");
-			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z - 600.0f*m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4");
-
+			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z + 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_1")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z - 200.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_2")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z - 450.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_3")->SetCollision(true);
+			CObstacle::Create(D3DXVECTOR3(270.0f, 0.0f, posCamera.z - 600.0f * m_nNumCreate), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_WOOD_4")->SetCollision(true);
 
 			for (int nCntModel = 0; nCntModel < m_nNumCreate; nCntModel++)
 			{
 				//2列木生成
-				float fRand = (float)GetRandNum(80, -80);
+				float fRand = (float)GetRandNum(120, -120);
 
 				// 障害物生成
 				switch (GetRandNum(2, 0))
@@ -148,7 +159,7 @@ void CModelManager::Update()
 					break;
 
 				case 2:
-					CObstacle::Create(D3DXVECTOR3(fRand,-0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
+					CObstacle::Create(D3DXVECTOR3(fRand, 0.0f, posCamera.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_ROCKICE_BIG");
 					break;
 
 				default:
@@ -157,7 +168,7 @@ void CModelManager::Update()
 			}
 
 			// 板ポリ生成
-			CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, posCamera.z));
+			//CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, posCamera.z), D3DXVECTOR2(2000.0f, 2000.0f));
 		}
 	}
 }

@@ -24,28 +24,18 @@ public:
 		// BGM音
 		SOUND_LABEL_TITLE = 0,			// タイトルBGM
 		SOUND_LABEL_GAME,				// ゲームBGM
-		SOUND_LABEL_RESULT,				// リザルトBGM
-		SOUND_LABEL_BOSS,				// ボス戦BGM
 		// ゲームSE音
-		SOUND_LABEL_SE_ENTRY,			// 自機登場
-		SOUND_LABEL_SE_SHOT,			// 弾発射
-		SOUND_LABEL_SE_SHOT2,			// 弾発射
-		SOUND_LABEL_SE_HIT,				// 弾ヒット
-		SOUND_LABEL_SE_EXPLOSION,		// 爆発
-		SOUND_LABEL_SE_EXPLOSION_BOSS,	// ボス爆破
-		SOUND_LABEL_SE_DIE_PLAYER,		// プレイヤーやられ
-		SOUND_LABEL_SE_DIE_BOSS,		// ボス撃破
-		SOUND_LABEL_SE_ITEM,			// アイテム取得
-		SOUND_LABEL_SE_CLEAR,			// ゲームクリア
-		SOUND_LABEL_SE_WARNING,			// 警報サイレン
-		SOUND_LABEL_SE_WARNING2,		// 警報サイレン2
-		SOUND_LABEL_SE_RUSH,			// 敵の突進
-		// UI関連SE音
-		SOUND_LABEL_SE_MENU_IN,			// メニューイン
-		SOUND_LABEL_SE_MENU_OUT,		// メニューアウト
-		SOUND_LABEL_SE_MENU_SELECT,		// 選択
+		SOUND_LABEL_SE_ATTACK,			// 攻撃
+		SOUND_LABEL_SE_DAMAGE,			// 被弾
+		SOUND_LABEL_SE_DIE,				// 死亡
+		SOUND_LABEL_SE_JUMP,			// ジャンプ
+		SOUND_LABEL_SE_ENTRY,			// プレイヤー参加
+		SOUND_LABEL_SE_PAUSE,			// ポーズ画面を開く
+		SOUND_LABEL_SE_BOSS,			// 猛獣の咆哮
+		SOUND_LABEL_SE_WIN,				// 勝利ファンファーレ
+		SOUND_LABEL_SE_COUNT,			// カウントダウン音
+		SOUND_LABEL_SE_START,			// スタート
 		SOUND_LABEL_SE_MENU_OK,			// 決定
-		SOUND_LABEL_SE_CANCEL,			// キャンセル
 		SOUND_LABEL_MAX,
 	} SOUND_LABEL;
 

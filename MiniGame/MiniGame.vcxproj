@@ -203,6 +203,7 @@
     <ClCompile Include="model_obstacle.cpp" />
     <ClCompile Include="motion_parts.cpp" />
     <ClCompile Include="set_model.cpp" />
+    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="x_file_motion.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="motion_data.h" />
     <ClInclude Include="motion_parts.h" />
     <ClInclude Include="set_model.h" />
+    <ClInclude Include="tutorial.h" />
     <ClInclude Include="x_file_data.h" />
     <ClInclude Include="x_file_motion.h" />
     <ClInclude Include="number.h" />

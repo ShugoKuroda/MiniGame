@@ -64,6 +64,8 @@ public:		//メンバ関数
 	int GetPlayerDie() { return m_nPlayerDie; }
 	// ゲーム開始フラグを取得
 	bool GetStart() { return m_bStart; }
+	// ゲーム開始フラグを取得
+	bool GetEnd() { return m_bEnd; }
 	// プレイヤーのスコアをランキングに設定1
 	void SetPlayerScore();
 

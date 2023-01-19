@@ -39,6 +39,8 @@
 
 #include "motion.h"
 
+#include "tutorial.h"
+
 //-----------------------------------------------------------------------------------------------
 // using宣言
 //-----------------------------------------------------------------------------------------------
@@ -53,8 +55,8 @@ LPDIRECT3DTEXTURE9 CTitle::m_apTexture[OBJ_MAX] = { nullptr };
 //-----------------------------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------------------------
-CTitle::CTitle() :m_bPush(false), m_move(0.0f, 0.0f, 0.0f), m_nCounter(0),
-m_pPlayer{}, m_pCamera(), m_bEntryKeyboard(false), m_nEntryNum(0), m_pLogo{ nullptr }, m_bLogoMove(false)
+CTitle::CTitle() :m_bPush(false), m_move(0.0f, 0.0f, 0.0f), m_nCounter(0), m_bPlay(false), m_PlayerEnt{false},
+m_pPlayer{}, m_pCamera(), m_bEntryKeyboard(false), m_nEntryNum(0), m_pLogo{ nullptr }, m_bLogoMove(false), m_bUi(false)
 {
 	for (int nCnt = 0; nCnt < OBJ_MAX - 1; nCnt++)
 	{
@@ -74,6 +76,12 @@ CTitle::~CTitle()
 //-----------------------------------------------------------------------------------------------
 HRESULT CTitle::Init()
 {
+	// 決定音
+	CSound::Play(CSound::SOUND_LABEL_TITLE);
+
+	// チュートリアルボタン
+	CTutorial::Create(D3DXVECTOR3(0.0f, 2.0f, -50.0f));
+
 	// カメラ生成
 	m_pCamera = CCamera::Create(D3DXVECTOR3(0.0f, 60.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),50.0f);
 
@@ -82,48 +90,50 @@ HRESULT CTitle::Init()
 		D3DXVECTOR2(3000.0f, 3000.0f), 10, 10, "TEX_TYPE_GAME_BG");
 
 	// 板ポリ生成
-	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(2000.0f, 2000.0f));
 
 	// ライト生成
 	CLight::Create(D3DXVECTOR3(-0.2f, -0.8f, 0.4f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	CLight::Create(D3DXVECTOR3(0.2f, -0.1f, -0.8f), D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f));
 
+	// エントリー情報のリセット
+	CManager::GetManager()->ResetEntry();
 	// プレイヤー参加情報の取得
 	CManager::SEntryInfo *pEntry = CManager::GetManager()->GetEntry();
 
-	// プレイヤー生成
-	for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
-	{
-		// 現在の番号が参加しているなら
-		if (pEntry[nCntPlayer].bEntry == true)
-		{
-			// キーボードで参加しているなら
-			if (pEntry[nCntPlayer].bEntryKeyboard == true)
-			{
-				// プレイヤー生成
-				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
-				m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
+	//// プレイヤー生成
+	//for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+	//{
+	//	// 現在の番号が参加しているなら
+	//	if (pEntry[nCntPlayer].bEntry == true)
+	//	{
+	//		// キーボードで参加しているなら
+	//		if (pEntry[nCntPlayer].bEntryKeyboard == true)
+	//		{
+	//			// プレイヤー生成
+	//			m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
+	//			m_pPlayer[nCntPlayer]->SetKeyboard(pEntry[nCntPlayer].bEntryKeyboard);
 
-				// エントリー可能数が上限を超えるまで
-				if (m_nEntryNum < CPlayer::PLAYER_MAX)
-				{// エントリー番号の加算
-					m_nEntryNum++;
-				}
-			}
-			else
-			{
-				// プレイヤー生成
-				m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
-				m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
+	//			// エントリー可能数が上限を超えるまで
+	//			if (m_nEntryNum < CPlayer::PLAYER_MAX)
+	//			{// エントリー番号の加算
+	//				m_nEntryNum++;
+	//			}
+	//		}
+	//		else
+	//		{
+	//			// プレイヤー生成
+	//			m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", nCntPlayer);
+	//			m_pPlayer[nCntPlayer]->SetGamePadNum(pEntry[nCntPlayer].nGamePadNum);
 
-				// エントリー可能数が上限を超えるまで
-				if (m_nEntryNum < CPlayer::PLAYER_MAX)
-				{// エントリー番号の加算
-					m_nEntryNum++;
-				}
-			}
-		}
-	}
+	//			// エントリー可能数が上限を超えるまで
+	//			if (m_nEntryNum < CPlayer::PLAYER_MAX)
+	//			{// エントリー番号の加算
+	//				m_nEntryNum++;
+	//			}
+	//		}
+	//	}
+	//}
 	
 	// モデルの配置
 	CManager::GetManager()->GetModelSet()->LoadModel("MODEL_TITLE");
@@ -249,35 +259,39 @@ void CTitle::Update()
 		{
 			if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_START, nCntPlayer) == true)
 			{// スタートボタン押下
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", m_nEntryNum);
-				m_pPlayer[m_nEntryNum]->SetGamePadNum(nCntPlayer);
-				pEntry[m_nEntryNum].nGamePadNum = nCntPlayer;
-				pEntry[m_nEntryNum].bEntry = true;
-
-				// エントリー可能数が上限を超えるまで
-				if (m_nEntryNum < CPlayer::PLAYER_MAX)
-				{// エントリー番号の加算
-					m_nEntryNum++;
-				}
-
-				if (m_pLogo != nullptr)
+				if (m_PlayerEnt[nCntPlayer] == false)
 				{
-					m_pLogo->Uninit();
-					m_pLogo = nullptr;
-					m_bLogoMove = true;
-				}
+					m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", m_nEntryNum);
+					m_pPlayer[m_nEntryNum]->SetGamePadNum(nCntPlayer);
+					pEntry[m_nEntryNum].nGamePadNum = nCntPlayer;
+					pEntry[m_nEntryNum].bEntry = true;
+					m_PlayerEnt[nCntPlayer] = true;
 
-				if (m_pLogoFlash != nullptr)
-				{
-					m_pLogoFlash->Uninit();
-					m_pLogoFlash = nullptr;
-				}
+					// エントリー可能数が上限を超えるまで
+					if (m_nEntryNum < CPlayer::PLAYER_MAX)
+					{// エントリー番号の加算
+						m_nEntryNum++;
+					}
 
-				break;
+					if (m_pLogo != nullptr)
+					{
+						m_pLogo->Uninit();
+						m_pLogo = nullptr;
+						m_bLogoMove = true;
+					}
+
+					if (m_pLogoFlash != nullptr)
+					{
+						m_pLogoFlash->Uninit();
+						m_pLogoFlash = nullptr;
+					}
+
+					break;
+				}
 			}
 			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) == true && m_bEntryKeyboard == false)
 			{// エンターキー押下 && キーボードで参加していなければ
-				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU_TYPE4", m_nEntryNum);
+				m_pPlayer[m_nEntryNum] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "MODEL_PINGU", m_nEntryNum);
 				m_pPlayer[m_nEntryNum]->SetKeyboard(true);
 				m_bEntryKeyboard = true;
 				pEntry[m_nEntryNum].bEntryKeyboard = true;
@@ -306,29 +320,47 @@ void CTitle::Update()
 			}
 		}
 
-		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_2))
+		//// ゲーム開始の繰り返し防止
+		//if (m_bPush == false)
+		//{
+		//	//キーを押されたら
+		//	if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_1) == true)
+		//	{
+		//		// 決定音
+		//		CSound::Play(CSound::SOUND_LABEL_SE_MENU_OK);
+
+		//		// モードの設定
+		//		CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_GAME);
+		//		m_bPush = true;
+
+		//		return;
+		//	}
+		//}
+	}
+
+	if (m_bUi == false)
+	{
+		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) || pJoypad->GetTrigger(CInputJoypad::JOYKEY_START, 0))
 		{
-			CModel* pModel = CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "XFILE_TYPE_BOSS");
-		}
-
-		// ゲーム開始の繰り返し防止
-		if (m_bPush == false)
-		{
-			//キーを押されたら
-			if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_1) == true)
-			{
-				// 決定音
-				CSound::Play(CSound::SOUND_LABEL_SE_MENU_OK);
-
-				// モードの設定
-				CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_GAME);
-				m_bPush = true;
-
-				return;
-			}
+			CLogo::Create(D3DXVECTOR3(150.0f, CRenderer::SCREEN_HEIGHT - 30.0f, 0.0f), D3DXVECTOR2(220.0f, 60.0f), "TEX_TYPE_UI_1", -1);
+			CLogo::Create(D3DXVECTOR3(CRenderer::SCREEN_WIDTH - 110.0f, CRenderer::SCREEN_HEIGHT - 30.0f, 0.0f), D3DXVECTOR2(220.0f, 60.0f), "TEX_TYPE_UI_2", -1);
+			m_bUi = true;
 		}
 	}
 
+	if (m_pLogo == nullptr)
+	{
+		// 準備
+		Ready();
+	}
+	// タイトルの動き
+	LogoMove();
+
+	//m_nCounter++;
+}
+
+void CTitle::LogoMove()
+{
 	if (m_bLogoMove == false)
 	{
 		// 位置取得
@@ -348,6 +380,44 @@ void CTitle::Update()
 		m_pLogo->SetPosition(posLogo);
 		m_pLogo->SetVertex();
 	}
+}
 
-	//m_nCounter++;
+void CTitle::Ready()
+{
+	if (m_bPlay == false)
+	{
+		// プレイヤーの死亡数
+		int nNumReady = 0;
+
+		// プレイヤー生成
+		for (int nCntPlayer = 0; nCntPlayer < CPlayer::PLAYER_MAX; nCntPlayer++)
+		{
+			// 現在のプレイヤーが参加しているなら
+			if (m_pPlayer[nCntPlayer] != nullptr)
+			{
+				// 死亡していたら
+				if (m_pPlayer[nCntPlayer]->GetReady() == true)
+				{// プレイヤーの死亡数を加算
+					nNumReady++;
+				}
+			}
+			else
+			{// プレイヤーの死亡数を加算
+				nNumReady++;
+			}
+		}
+
+		// プレイヤーが全員死亡していたら
+		if (CPlayer::PLAYER_MAX <= nNumReady)
+		{
+			// ゲーム終了フラグを立てる
+			m_bPlay = true;
+
+			// 決定音
+			CSound::Play(CSound::SOUND_LABEL_SE_MENU_OK);
+
+			// モードの設定
+			CManager::GetManager()->GetFade()->SetFade(CFade::FADE_OUT, CManager::MODE::MODE_GAME);
+		}
+	}
 }

@@ -187,6 +187,9 @@
     <ClCompile Include="logo_flash.cpp">
       <Filter>ソースファイル\logo</Filter>
     </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソースファイル\tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avalanche.h">
@@ -384,6 +387,9 @@
     <ClInclude Include="logo_flash.h">
       <Filter>ソースファイル\logo</Filter>
     </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ソースファイル\tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ソースファイル">
@@ -436,6 +442,9 @@
     </Filter>
     <Filter Include="ソースファイル\pause">
       <UniqueIdentifier>{a4af2800-1985-4b70-ab4c-dde4ddcc9966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\tutorial">
+      <UniqueIdentifier>{dcac0766-d4b0-420c-85b7-4067de379b8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

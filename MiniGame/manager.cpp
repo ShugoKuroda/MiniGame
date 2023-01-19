@@ -443,3 +443,9 @@ void CManager::SetEntryAll(SEntryInfo *pEntry)
 		m_EntryInfo[nCntPlayer] = pEntry[nCntPlayer];
 	}
 }
+
+void CManager::ResetEntry()
+{
+	// ‰Šú‰»
+	ZeroMemory(&m_EntryInfo, sizeof(m_EntryInfo));
+}
